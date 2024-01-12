@@ -1,0 +1,79 @@
+package com.plantaccion.alartapp.admin.staff.service;
+
+import com.plantaccion.alartapp.common.dto.StaffDTO;
+import com.plantaccion.alartapp.admin.staff.response.StaffResponse;
+import com.plantaccion.alartapp.common.enums.Roles;
+import com.plantaccion.alartapp.common.model.AppUser;
+import com.plantaccion.alartapp.common.model.RegionalControlHeadProfile;
+import com.plantaccion.alartapp.common.repository.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.RCHProfileRepository;
+import com.plantaccion.alartapp.common.utils.AppUtils;
+import com.plantaccion.alartapp.exception.StaffNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class WriteStaffsServiceImpl implements WriteStaffsService {
+    private final AppUserRepository userRepository;
+    private final RCHProfileRepository rchRepository;
+    private final PasswordEncoder encoder;
+
+    public WriteStaffsServiceImpl(AppUserRepository userRepository, RCHProfileRepository rchRepository, PasswordEncoder encoder) {
+        this.userRepository = userRepository;
+        this.rchRepository = rchRepository;
+        this.encoder = encoder;
+    }
+
+    @Override
+    public StaffResponse createStaff(StaffDTO staffDTO) {
+        var authenticatedUser = AppUtils.getAuthenticatedUserDetails();
+        var user = new AppUser(staffDTO.getStaffId(), staffDTO.getFirstname(), staffDTO.getLastname(),
+                staffDTO.getEmail(), Roles.RCH,
+                encoder.encode("Welcome@123"));
+        userRepository.save(user);
+
+        //create the RCH profile
+        var rchProfile = new RegionalControlHeadProfile();
+        rchProfile.setCreatedBy(authenticatedUser);
+        rchProfile.setStaff(user);
+        rchRepository.save(rchProfile);
+
+        Map<String, Object> profileResponse = new HashMap<>();
+        profileResponse.put("id", rchProfile.getId());
+        profileResponse.put("staffId", rchProfile.getStaff().getStaffId());
+//        profileResponse.put("Cluster", rchProfile.getCluster());
+        profileResponse.put("createdBy", rchProfile.getCreatedBy().getStaffId());
+        return new StaffResponse(user.getStaffId(), user.getFirstname(), user.getLastname(), user.getEmail(), user.getRole().name(), profileResponse);
+    }
+
+    @Override
+    public StaffResponse editStaff(String staffId, StaffDTO staffDTO) {
+        var authenticatedUser = AppUtils.getAuthenticatedUserDetails();
+
+        var user = userRepository.findByStaffId(staffId);
+        if (user == null) {
+            throw new StaffNotFoundException("Staff does not exist in our record");
+        }
+        user.setFirstname(staffDTO.getFirstname());
+        user.setLastname(staffDTO.getLastname());
+        user.setRole(Roles.RCH);
+        userRepository.save(user);
+
+        var rchProfile = rchRepository.findByStaff(user);
+        rchProfile.setUpdatedBy(authenticatedUser);
+        rchProfile.setUpdatedOn(LocalDateTime.now());
+
+        Map<String, Object> profileResponse = new HashMap<>();
+        profileResponse.put("id", rchProfile.getId());
+        profileResponse.put("staffId", rchProfile.getStaff().getStaffId());
+        profileResponse.put("createdBy", rchProfile.getCreatedBy().getStaffId());
+        profileResponse.put("updatedBy", rchProfile.getUpdatedBy().getStaffId());
+
+        return new StaffResponse(user.getStaffId(), user.getFirstname(),
+                user.getLastname(), user.getEmail(), user.getRole().name(), profileResponse);
+    }
+}
