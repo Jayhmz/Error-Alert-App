@@ -1,9 +1,16 @@
 package com.plantaccion.alartapp.email.service;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class WriteEmailServiceImpl implements WriteEmailService {
@@ -17,24 +24,25 @@ public class WriteEmailServiceImpl implements WriteEmailService {
     private String sender;
 
     @Override
-    public void sendMail() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("jayhmz10@gmail.com");
-        message.setSubject("Testing alert app email service");
-        message.setText("" +
-                "<html>" +
-                "<body>" +
-                "<table>" +
-                "<tr style='font-style=bold; font-size=20px; color=blue;'>" +
-                "<th>Header 1</th>" + "<th>Header 2</th>" + "<th>Header 3</th>" +
-                "</tr>" +
-                "<tr style='font-style=bold; font-size=20px; color=blue;'>" +
-                "<td>Body 1</td>" + "<td>Body 2</td>" + "<td>Body 3</td>" +
-                "</tr>" +
-                " </table>" +
-                "</body>" +
-                " </html>");
-        message.setFrom(sender);
+    public void sendMail() throws MessagingException {
+        System.out.println(">>>>>>>>>>>>>>> Inside the Send mail method <<<<<<<<<<<<<<<<");
+        String[] emails = {"jayhmz10@gmail.com", "jamesdamilare1996@gmail.com", "james.ogunrinola@fcmb.com"};
+
+        for (String email : emails) {
+            MimeMessage message = mailSender.createMimeMessage();
+            message.setRecipients(MimeMessage.RecipientType.TO, email);
+            message.setSubject("Testing alert app email service");
+
+            String content = "<html>" +
+                    "<body>" +
+                    "<table>" +
+                    "Hello world, this is a test for the mail sending feature..."+
+                    "</body>" +
+                    " </html>";
+
+            message.setContent(content, "text/html; charset=utf-8");
+            System.out.println("----------------------------->   Message has been sent successfully!   ");
             mailSender.send(message);
+        }
     }
 }
