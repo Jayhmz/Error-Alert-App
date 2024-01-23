@@ -26,7 +26,7 @@ public class WriteEmailServiceImpl implements WriteEmailService {
     @Override
     public void sendMail() throws MessagingException {
         System.out.println(">>>>>>>>>>>>>>> Inside the Send mail method <<<<<<<<<<<<<<<<");
-        String[] emails = {"jayhmz10@gmail.com", "jamesdamilare1996@gmail.com", "james.ogunrinola@fcmb.com"};
+        String[] emails = {"jayhmz10@gmail.com", "jamesdamilare1996@gmail.com", "jamesdamilare12@outlook.com"};
 
         for (String email : emails) {
             MimeMessage message = mailSender.createMimeMessage();

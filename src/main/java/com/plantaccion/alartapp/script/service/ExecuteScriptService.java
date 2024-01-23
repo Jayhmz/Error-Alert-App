@@ -6,5 +6,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface ExecuteScriptService {
-    List<Map<String,Object>> executeQuery(Script query);
+    void executeQuery(Script query);
 }
