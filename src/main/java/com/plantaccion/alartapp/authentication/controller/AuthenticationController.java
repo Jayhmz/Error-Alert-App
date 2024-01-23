@@ -6,13 +6,10 @@ import com.plantaccion.alartapp.authentication.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
-@RequestMapping("/api/v1/users")
 public class AuthenticationController {
 
     @Autowired
@@ -22,9 +19,23 @@ public class AuthenticationController {
     @Autowired
     private AppUserService appUserService;
 
-    @PostMapping(value = "/login", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping("/")
+    @ResponseBody
+    public String freeHomepage(){
+        return "this is free homepage";
+    }
+    @GetMapping("/home")
+    @ResponseBody
+    public String homepage(){
+        return "this is secured homepage";
+    }
+    @PostMapping(value = "/api/v1/users/login", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String login(@RequestBody SignInDTO signInDTO) {
        return appUserService.authenticate(signInDTO);
     }
 
+    @GetMapping(value = "/api/v1/users/login/google")
+    public RedirectView loginWithGoogle() {
+        return new RedirectView("/oauth2/authorization/google");
+    }
 }
