@@ -66,6 +66,10 @@ public class Alert {
     @JoinColumn(name = "resolved_by", referencedColumnName = "staff_id")
     private AppUser resolvedBy;
 
+    @ManyToOne
+    @JoinColumn(name = "cluster", referencedColumnName = "cluster_name")
+    private Cluster cluster;
+
     public Alert() {
         this.generatedOn = LocalDateTime.now();
     }
@@ -177,5 +181,13 @@ public class Alert {
 
     public void setTranId(String tranId) {
         this.tranId = tranId;
+    }
+
+    public Cluster getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
     }
 }

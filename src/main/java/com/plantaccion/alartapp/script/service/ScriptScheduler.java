@@ -2,9 +2,11 @@ package com.plantaccion.alartapp.script.service;
 
 import com.plantaccion.alartapp.common.repository.ScriptRepository;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
+import jakarta.mail.MessagingException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,8 +31,8 @@ public class ScriptScheduler {
         }
     }
 
-    @Scheduled(fixedDelay = 10000)
-    public void processScript() {
+    @Scheduled(fixedDelay = 50000)
+    public void processScript() throws MessagingException, IOException {
         synchronized (lock) {
             Iterator<Long> iterator = scriptIdList.iterator();
             while (iterator.hasNext()) {
