@@ -17,7 +17,7 @@ public class OAuth2UserServiceImpl implements OAuth2UserService {
 
     @Override
     public Optional<AppUser> findByEmail(String email) {
-        return Optional.ofNullable(userRepository.findByEmail(email));
+        return userRepository.findByEmail(email);
     }
 
     @Override

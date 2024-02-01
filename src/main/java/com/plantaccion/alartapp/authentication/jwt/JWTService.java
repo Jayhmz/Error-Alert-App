@@ -28,7 +28,7 @@ public class JWTService {
     private UsernamePasswordAuthenticationProvider authenticationProvider;
     @Autowired
     private ObjectMapper mapper;
-    @Value("${encryption-key}")
+    @Value("${SECRET-KEY}")
     private String secretKey;
 
     public String generateToken(String username, AppUser appUser) {

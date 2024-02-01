@@ -28,7 +28,7 @@ public class AppUser {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, columnDefinition = "ENUM('GOOGLE', 'AZURE')")
+    @Column(nullable = false, columnDefinition = "ENUM('GOOGLE', 'AZURE', 'BASIC')")
     @Enumerated(EnumType.STRING)
     private LoginProvider provider;
 

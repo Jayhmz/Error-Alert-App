@@ -19,16 +19,6 @@ public class AuthenticationController {
     @Autowired
     private AppUserService appUserService;
 
-    @GetMapping("/")
-    @ResponseBody
-    public String freeHomepage(){
-        return "this is free homepage";
-    }
-    @GetMapping("/home")
-    @ResponseBody
-    public String homepage(){
-        return "this is secured homepage";
-    }
     @PostMapping(value = "/api/v1/users/login", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String login(@RequestBody SignInDTO signInDTO) {
        return appUserService.authenticate(signInDTO);

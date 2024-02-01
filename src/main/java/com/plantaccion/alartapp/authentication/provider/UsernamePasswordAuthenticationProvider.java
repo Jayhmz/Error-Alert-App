@@ -35,12 +35,8 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        AppUser user;
-        try {
-             user = repository.findByEmail(username);
-        } catch (NullPointerException e) {
-            throw new UsernameNotFoundException("Incorrect username or password");
-        }
+        AppUser user = repository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Incorrect username or password"));
 
         if (encoder.matches(password, user.getPassword())) {
             return new UsernamePasswordAuthenticationToken(user, password, getRoles(user));
