@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class AppUtils {
     private static AppUserRepository userRepository;
@@ -17,7 +19,7 @@ public class AppUtils {
     public static Authentication getAuthenticatedUser(){
         return SecurityContextHolder.getContext().getAuthentication();
     }
-    public static AppUser getAuthenticatedUserDetails(){
+    public static Optional<AppUser> getAuthenticatedUserDetails(){
         var principal = getAuthenticatedUser().getPrincipal();
         return userRepository.findByEmail(principal.toString());
     }

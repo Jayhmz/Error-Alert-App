@@ -27,9 +27,10 @@ public class ReadICOServiceImpl implements ReadICOService {
 
     @Override
     public List<StaffResponse> getAllStaff() {
-        var authenticatedUser = AppUtils.getAuthenticatedUserDetails();
+        var authenticatedUser = AppUtils.getAuthenticatedUserDetails()
+                .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         var rchProfile = rchProfileRepository.findByStaff(authenticatedUser);
-        var allStaffs = icoProfileRepository.findAllByCreatedBy(rchProfile);
+        var allStaffs = icoProfileRepository.findAllByOnboardedBy(rchProfile);
 
         List<StaffResponse> response = new ArrayList<>();
         for (InternalControlOfficerProfile profile : allStaffs) {
@@ -38,7 +39,7 @@ public class ReadICOServiceImpl implements ReadICOService {
             if (profile != null) {
                 profileResponse.put("id", staff.getId());
                 profileResponse.put("staffId", staff.getStaffId());
-                profileResponse.put("cluster", profile.getCreatedBy().getCluster());
+                profileResponse.put("cluster", profile.getOnboardedBy().getCluster());
                 profileResponse.put("updatedBy", profile.getUpdatedBy().getStaff().getStaffId());
                 response.add(new StaffResponse(staff.getStaffId(), staff.getFirstname(),
                         staff.getLastname(), staff.getEmail(), staff.getRole().name(), profileResponse));
@@ -58,7 +59,7 @@ public class ReadICOServiceImpl implements ReadICOService {
         if (profile != null) {
             profileResponse.put("id", profile.getId());
             profileResponse.put("staffId", staff.getStaffId());
-            profileResponse.put("createdBy", profile.getCreatedBy().getStaff().getStaffId());
+            profileResponse.put("createdBy", profile.getOnboardedBy().getStaff().getStaffId());
             profileResponse.put("updatedBy", profile.getUpdatedBy().getStaff().getStaffId());
         }
         return new StaffResponse(staff.getStaffId(), staff.getFirstname(),

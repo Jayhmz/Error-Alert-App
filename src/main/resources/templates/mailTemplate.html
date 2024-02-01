@@ -33,39 +33,51 @@
           align-items: center;
           justify: center;
          }
+         p{
+         color: #800080;
+         }
     </style>
 </head>
-<body>
-<h1 th:text="${alert_group}" class="htext">Alert Group</h1>
-    <table class=".table-striped-columns">
-        <thead class="th-back">
-            <tr>
-                <th scope="col">Alert ID</th>
-                <th scope="col">Transaction ID</th>
-                <th scope="col">Transaction Amount</th>
-                <th scope="col">Transaction Date</th>
-                <th scope="col">Sol ID</th>
-                <th scope="col">Account Opened At</th>
-                <th scope="col">Status</th>
+    <body>
+        <p>Dear Team, </p>
+        <h1 th:text="${alert_group}" class="htext text-center">Alert Group</h1>
+        <p>This is just a test mail, don't worry you are safest as this does not implicate you in any way. <br>
+        This mail is just to test the possible alert review app on an MVP phase 1.
+            <br>
+            Hopefully it works well, then we have an app to pitch about.
+        </p>
+            <table class=".table-striped-columns">
+                <thead class="th-back">
+                    <tr>
+                        <th scope="col">Alert ID</th>
+                        <th scope="col">Transaction ID</th>
+                        <th scope="col">Transaction Amount</th>
+                        <th scope="col">Transaction Date</th>
+                        <th scope="col">Sol ID</th>
+                        <th scope="col">Account Opened At</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+            <tbody>
+            <!-- Loop over alert body dynamically -->
+            <tr th:each="alert : ${alerts}">
+                <td scope="col" class="text-dark-purple" th:text="${alert.alertId}"></td>
+                <td scope="col" class="text-dark-purple" th:text="${alert.tranId}"></td>
+                <td scope="col" class="text-dark-purple" th:text="${#numbers.formatDecimal(alert.tranAmount, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td scope="col" class="text-dark-purple" th:text="${alert.transactionDate}"></td>
+                <td scope="col" class="text-dark-purple" th:text="${alert.solId}"></td>
+                <td scope="col" class="text-dark-purple" th:text="999">999</td>
+                <td scope="col" class="text-dark-purple" th:text="${alert.status}"></td>
             </tr>
-        </thead>
-    <tbody>
-    <!-- Loop over alert body dynamically -->
-    <tr th:each="alert : ${alerts}">
-        <td scope="col" class="text-dark-purple" th:text="${alert.alertId}"></td>
-        <td scope="col" class="text-dark-purple" th:text="${alert.tranId}"></td>
-        <td scope="col" class="text-dark-purple" th:text="${#numbers.formatDecimal(alert.tranAmount, 0, 'COMMA', 2, 'POINT')}"></td>
-        <td scope="col" class="text-dark-purple" th:text="${alert.transactionDate}"></td>
-        <td scope="col" class="text-dark-purple" th:text="${alert.solId}"></td>
-        <td scope="col" class="text-dark-purple" th:text="999">999</td>
-        <td scope="col" class="text-dark-purple" th:text="${alert.status}"></td>
-    </tr>
-    </tbody>
-</table>
-<p>Please ensure 100% review of these transactions and document your
-    findings in the <a class="link" href="#">Alert Review App</a>. Also, ensure your follow-up to regularize every exception noted.</p>
-<br><br>
-Regards.
-</body>
+            </tbody>
+        </table>
+        <p>Please ensure 100% review of these transactions and document your
+            findings in the <a class="link" href="#">Alert Review App</a>. This link is not working now,
+            so no need to click as this is just the format to which the mail will be like.</p>
+        <br>
+        Regards.
+    <br>
+    <i> James Damilare Ogunrinola </i>
+    </body>
 </html>
 

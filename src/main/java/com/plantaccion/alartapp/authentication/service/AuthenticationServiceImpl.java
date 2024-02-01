@@ -4,6 +4,7 @@ import com.plantaccion.alartapp.authentication.dto.RegistrationDTO;
 import com.plantaccion.alartapp.authentication.dto.SignInDTO;
 import com.plantaccion.alartapp.authentication.jwt.JWTService;
 import com.plantaccion.alartapp.authentication.response.RegistrationResponse;
+import com.plantaccion.alartapp.common.enums.LoginProvider;
 import com.plantaccion.alartapp.common.repository.AppUserRepository;
 import com.plantaccion.alartapp.common.model.AppUser;
 import com.plantaccion.alartapp.common.enums.Roles;
@@ -36,6 +37,7 @@ public class AuthenticationServiceImpl implements AppUserService {
     public RegistrationResponse createUser(RegistrationDTO regDTO) {
         AppUser user = new AppUser(regDTO.getStaffId(), regDTO.getFirstname(), regDTO.getLastname(),
                 regDTO.getEmail(), Roles.ADMIN, encoder.encode(regDTO.getPassword()));
+        user.setProvider(LoginProvider.BASIC);
                 repository.save(user);
         var r = new RegistrationResponse(user.getStaffId(), user.getFirstname(),
                 user.getLastname(), user.getEmail(), user.getRole());
@@ -46,7 +48,9 @@ public class AuthenticationServiceImpl implements AppUserService {
     public String authenticate(SignInDTO signInDTO) {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInDTO.getEmail(), signInDTO.getPassword()));
-        if (authenticate.isAuthenticated()){SecurityContextHolder.getContext().setAuthentication(authenticate);return jwtService.generateToken(signInDTO.getEmail(), (AppUser) authenticate.getPrincipal());
+        if (authenticate.isAuthenticated()){
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            return jwtService.generateToken(signInDTO.getEmail(), (AppUser) authenticate.getPrincipal());
         }else{
             throw new NullPointerException("Incorrect username or password");
         }

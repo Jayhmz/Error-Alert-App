@@ -1,10 +1,10 @@
-package com.plantaccion.alartapp.common.dto;
+package com.plantaccion.alartapp.rch.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.plantaccion.alartapp.authentication.validation.ValidEmail;
 import jakarta.validation.constraints.NotNull;
 
-public class StaffDTO {
+public class IcoDTO {
     @JsonProperty("staffId")
     @NotNull(message = "staffId cannot be null")
     private String staffId;

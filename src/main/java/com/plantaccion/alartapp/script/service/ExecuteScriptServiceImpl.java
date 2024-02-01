@@ -89,7 +89,7 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
             alert.setCluster(cluster);
             alerts.add(alert);
             alertRepository.save(alert);
-            log.info("================= created Alert for " + alert.getAlertId() + " ===================");
+            log.info("================= created Alert for " + alert.getAlertId()+" " +alert.getScript() +" "+ alert.getCluster()+" ===================");
         }
         return alerts;
     }

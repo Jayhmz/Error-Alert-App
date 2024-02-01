@@ -4,6 +4,7 @@ import com.plantaccion.alartapp.authentication.jwt.JWTAuthenticationFilter;
 import com.plantaccion.alartapp.authentication.oauth2.config.OAuth2SuccessHandler;
 import com.plantaccion.alartapp.authentication.oauth2.config.OAuth2UserAuthorization;
 import com.plantaccion.alartapp.authentication.provider.UsernamePasswordAuthenticationProvider;
+import com.plantaccion.alartapp.exception.AuthenticationEntryPointException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +13,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -35,12 +33,14 @@ public class AppSecurityConfig {
     private final OAuth2UserAuthorization userService;
     private final UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider;
     private final JWTAuthenticationFilter authenticationFilter;
+    private final AuthenticationEntryPointException authenticationEntryPointException;
 
-    public AppSecurityConfig(OAuth2SuccessHandler successHandler, OAuth2UserAuthorization userService, UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider, JWTAuthenticationFilter authenticationFilter) {
+    public AppSecurityConfig(OAuth2SuccessHandler successHandler, OAuth2UserAuthorization userService, UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider, JWTAuthenticationFilter authenticationFilter, AuthenticationEntryPointException authenticationEntryPointException) {
         this.successHandler = successHandler;
         this.userService = userService;
         this.usernamePasswordAuthenticationProvider = usernamePasswordAuthenticationProvider;
         this.authenticationFilter = authenticationFilter;
+        this.authenticationEntryPointException = authenticationEntryPointException;
     }
 
     @Bean
@@ -49,9 +49,10 @@ public class AppSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/swagger-ui/**", "/api/v1/users/**", "/v3/api-docs").permitAll()
+                    auth.requestMatchers("/swagger-ui/**", "/api/v1/users/**", "/v3/api-docs").permitAll()
                             .requestMatchers("/app/v1/admin/**").hasAuthority("ADMIN")
                             .requestMatchers("/app/v1/rch/**").hasAuthority("RCH")
+                            .requestMatchers("/app/v1/ico/**").hasAuthority("ICO")
                             .anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
