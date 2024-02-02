@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 @SpringBootApplication
 @ComponentScan("com.plantaccion.alartapp")
-@PropertySource("classpath:application-local.properties")
 @EnableScheduling
 public class AlartAppApplication {
 
