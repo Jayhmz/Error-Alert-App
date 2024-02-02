@@ -5,6 +5,7 @@ import com.plantaccion.alartapp.common.repository.AppUserRepository;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.TableGenerator;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.model.IdGeneratorStrategyInterpreter;
 import org.hibernate.boot.model.IdentifierGeneratorDefinition;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
@@ -13,11 +14,13 @@ import org.hibernate.engine.config.spi.ConfigurationService;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -27,6 +30,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Collections;
 
 @Configuration
+@Slf4j
 public class BeanConfigurations {
 
     private final AppUserRepository repository;
@@ -57,14 +61,10 @@ public class BeanConfigurations {
         return new CorsFilter(source);
     }
 
-//    @Bean
-//    public ThreadPoolTaskExecutor taskExecutor() {
-//        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-//        executor.setCorePoolSize(5); // Set the core pool size as needed
-//        executor.setMaxPoolSize(10); // Set the max pool size as needed
-//        executor.setQueueCapacity(25); // Set the queue capacity as needed
-//        executor.setThreadNamePrefix("script-executor-");
-//        executor.initialize();
-//        return executor;
-//    }
+    @Bean
+    ApplicationListener<AuthenticationSuccessEvent> successfulLogin(){
+        return event -> {
+          log.info("Authenticated user is : {} "+ event.getAuthentication());
+        };
+    }
 }

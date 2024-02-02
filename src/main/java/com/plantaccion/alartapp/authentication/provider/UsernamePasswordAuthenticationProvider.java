@@ -11,10 +11,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
@@ -30,12 +35,8 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        AppUser user;
-        try {
-             user = repository.findByEmail(username);
-        } catch (NullPointerException e) {
-            throw new UsernameNotFoundException("Incorrect username or password");
-        }
+        AppUser user = repository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Incorrect username or password"));
 
         if (encoder.matches(password, user.getPassword())) {
             return new UsernamePasswordAuthenticationToken(user, password, getRoles(user));
@@ -55,4 +56,5 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
+
 }

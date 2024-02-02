@@ -1,5 +1,6 @@
 package com.plantaccion.alartapp.common.model;
 
+import com.plantaccion.alartapp.common.enums.LoginProvider;
 import com.plantaccion.alartapp.common.enums.Roles;
 import jakarta.persistence.*;
 
@@ -26,6 +27,10 @@ public class AppUser {
     private Roles role;
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, columnDefinition = "ENUM('GOOGLE', 'AZURE', 'BASIC')")
+    @Enumerated(EnumType.STRING)
+    private LoginProvider provider;
 
     @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isDisabled;
@@ -106,19 +111,11 @@ public class AppUser {
         isDisabled = disabled;
     }
 
-//    public List<RegionalControlHeadProfile> getProfile() {
-//        return profile;
-//    }
-//
-//    public void setProfile(List<RegionalControlHeadProfile> profile) {
-//        this.profile = profile;
-//    }
+    public LoginProvider getProvider() {
+        return provider;
+    }
 
-//    public List<RegionalControlHeadProfile> getUpdatedBy() {
-//        return updatedBy;
-//    }
-//
-//    public void setUpdatedBy(List<RegionalControlHeadProfile> updatedBy) {
-//        this.updatedBy = updatedBy;
-//    }
+    public void setProvider(LoginProvider provider) {
+        this.provider = provider;
+    }
 }

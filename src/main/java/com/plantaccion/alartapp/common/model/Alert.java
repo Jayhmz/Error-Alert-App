@@ -50,7 +50,7 @@ public class Alert {
     private String tranId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'RESOLVED', 'UNASSIGNED')")
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'RESOLVED', 'UNASSIGNED', 'TAKEN')")
     private AlertStatus status;
 
     @Column(name = "is_mail_sent", nullable = false, columnDefinition = "BIT DEFAULT b'0'")
@@ -65,6 +65,10 @@ public class Alert {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "resolved_by", referencedColumnName = "staff_id")
     private AppUser resolvedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "cluster", referencedColumnName = "cluster_name")
+    private Cluster cluster;
 
     public Alert() {
         this.generatedOn = LocalDateTime.now();
@@ -177,5 +181,13 @@ public class Alert {
 
     public void setTranId(String tranId) {
         this.tranId = tranId;
+    }
+
+    public Cluster getCluster() {
+        return cluster;
+    }
+
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
     }
 }

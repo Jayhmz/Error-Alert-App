@@ -1,5 +1,6 @@
 package com.plantaccion.alartapp.script.service;
 
+import ch.qos.logback.core.BasicStatusManager;
 import com.plantaccion.alartapp.common.enums.AlertStatus;
 import com.plantaccion.alartapp.common.model.Alert;
 import com.plantaccion.alartapp.common.model.Branch;
@@ -11,13 +12,16 @@ import com.plantaccion.alartapp.common.repository.ScriptRepository;
 import com.plantaccion.alartapp.email.service.WriteEmailService;
 import com.plantaccion.alartapp.exception.MailNotSentException;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class ExecuteScriptServiceImpl implements ExecuteScriptService {
     private final JdbcTemplate template;
     private final AlertRepository alertRepository;
@@ -44,67 +49,51 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
 
     @Override
     @Transactional
-    public List<Map<String, Object>> executeQuery(Script script) {
-        List<Map<String, Object>> aggregatedQueryResult = new ArrayList<>();
+    public void executeQuery(Script script) {
         Script queriedScript = scriptRepository.findById(script.getId())
                 .orElseThrow(() -> new ScriptNotFoundException("Script does not exist in our record"));
         Alert lastRecordedAlert = getLastRecordedAlert(queriedScript);
+
         for (Cluster cluster : getClusters()) {
+            List<Alert> alertsForCluster = new ArrayList<>();
             for (Branch branch : cluster.getBranches()) {
-                String replacedQuery = queriedScript.getBody().replace("&branch", "'" + branch.getSolId() + "'");
+                String newScript = queriedScript.getBody().replace("&branch", "'" + branch.getSolId() + "'");
                 if (lastRecordedAlert != null) {
-//                    String completeQuery = replacedQuery + " AND a.tran_date > TO_DATE('" + date + "', 'DD/MM/YYYY')";
-                    String completeQuery = replacedQuery + " AND a.entry_date > '" + lastRecordedAlert.getEntryDate() + "'";
-                    List<Map<String, Object>> queryResult = template.queryForList(completeQuery);
-                    aggregatedQueryResult.addAll(queryResult);
+                    String completeQuery = newScript + " AND a.entry_date > '" + lastRecordedAlert.getEntryDate() + "'";
+                    var result = template.queryForList(completeQuery);
+                    createAlerts(result, queriedScript, cluster);
+//                    alertsForCluster.addAll(createAlerts(result, queriedScript, cluster));
                 } else {
-                    List<Map<String, Object>> queryResult = template.queryForList(replacedQuery);
-                    aggregatedQueryResult.addAll(queryResult);
+                    List<Map<String, Object>> result = template.queryForList(newScript);
+                    createAlerts(result, queriedScript, cluster);
+//                    alertsForCluster.addAll(createAlerts(result, queriedScript, cluster));
                 }
             }
-        }
-        System.out.println(">>>>>>>>>>>> query result : " + aggregatedQueryResult);
-
-        List<Map<String, Object>> result = new ArrayList<>();
-        if (!aggregatedQueryResult.isEmpty()) {
-            List<String> headers = new ArrayList<>();
-            Map<String, Object> firstRecord = aggregatedQueryResult.get(0);
-            for (String title : firstRecord.keySet()) {
-                headers.add(title);
-            }
-
-            List<String> alertBody = new ArrayList<>();
-            List<Alert> alerts = new ArrayList<>();
-            for (Map<String, Object> record : aggregatedQueryResult) {
-                for (String header : headers) {
-                    var value = record.get(header);
-                    alertBody.add(value.toString());
-                }
-                Alert alert = new Alert(queriedScript, AlertStatus.UNASSIGNED);
-                alert.setEntryDate(LocalDateTime.parse(record.get("entry_date").toString()));
-                alert.setTransactionDate(LocalDate.parse(record.get("tran_date").toString()));
-                alert.setTranId(record.get("tran_id").toString());
-                alert.setTranAmount((Double) record.get("tran_amt"));
-                alert.setSolId((Integer) record.get("sol_id"));
-                alerts.add(alert);
-                alertRepository.save(alert);
-            }
-            //input the sendmail method here. sendMail(header, body, from, to, cc)
             try {
-                emailService.sendMail();
-                System.out.println("mail sent successfully....");
-            }catch (Exception e){
-//                throw new MailNotSentException("Mail sending failed..."+ e.getCause());
-                System.out.println(e);
+                emailService.sendMail(cluster, queriedScript);
+            } catch (MailNotSentException | MessagingException e) {
+                throw new MailNotSentException("Mail sending failed." + e.getCause());
             }
-//            result.addAll(aggregatedQueryResult);
-//            System.out.println(">>>>>>>>>>>> Total result : " + result);
-//            System.out.println(">>>>>>>>>>>> Total aggregate result  : " + aggregatedQueryResult);
-//            System.out.println(">>>>>>>>>>>> Header : " + headers);
-//            System.out.println(">>>>>>>>>>>> Body : " + alertBody);
         }
-        return aggregatedQueryResult;
     }
+
+    private List<Alert> createAlerts(List<Map<String, Object>> result, Script queriedScript, Cluster cluster) {
+        List<Alert> alerts = new ArrayList<>();
+        for (Map<String, Object> record : result) {
+            Alert alert = new Alert(queriedScript, AlertStatus.UNASSIGNED);
+            alert.setEntryDate(LocalDateTime.parse(record.get("entry_date").toString()));
+            alert.setTransactionDate(LocalDate.parse(record.get("tran_date").toString()));
+            alert.setTranId(record.get("tran_id").toString());
+            alert.setTranAmount((Double) record.get("tran_amt"));
+            alert.setSolId((Integer) record.get("sol_id"));
+            alert.setCluster(cluster);
+            alerts.add(alert);
+            alertRepository.save(alert);
+            log.info("================= created Alert for " + alert.getAlertId()+" " +alert.getScript() +" "+ alert.getCluster()+" ===================");
+        }
+        return alerts;
+    }
+
 
     private Alert getLastRecordedAlert(Script queriedScript) {
         Pageable pageable = PageRequest.of(0, 1);

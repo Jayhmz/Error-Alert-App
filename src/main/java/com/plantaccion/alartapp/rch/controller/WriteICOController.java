@@ -1,6 +1,7 @@
 package com.plantaccion.alartapp.rch.controller;
 
-import com.plantaccion.alartapp.common.dto.StaffDTO;
+import com.plantaccion.alartapp.common.dto.RchDTO;
+import com.plantaccion.alartapp.rch.dto.IcoDTO;
 import com.plantaccion.alartapp.rch.service.WriteICOService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class WriteICOController {
     }
 
     @PostMapping(value = "/staffs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createStaff(@Valid @RequestBody StaffDTO staffDTO, BindingResult result) {
+    public ResponseEntity<?> createStaff(@Valid @RequestBody IcoDTO staffDTO, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {
@@ -35,7 +36,7 @@ public class WriteICOController {
     }
 
     @PostMapping(value = "/staffs/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editStaff(@Valid @PathVariable("id") String staffId, @RequestBody StaffDTO staffDTO, BindingResult result) {
+    public ResponseEntity<?> editStaff(@Valid @PathVariable("id") String staffId, @RequestBody IcoDTO staffDTO, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {

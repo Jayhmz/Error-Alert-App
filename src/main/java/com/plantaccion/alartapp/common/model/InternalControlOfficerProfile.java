@@ -17,7 +17,7 @@ public class InternalControlOfficerProfile {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by", referencedColumnName = "rch_staff_id")
-    private RegionalControlHeadProfile createdBy;
+    private RegionalControlHeadProfile onboardedBy;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "updated_by", referencedColumnName = "rch_staff_id")
@@ -35,12 +35,12 @@ public class InternalControlOfficerProfile {
     @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isDisabled;
 
-    public RegionalControlHeadProfile getCreatedBy() {
-        return createdBy;
+    public RegionalControlHeadProfile getOnboardedBy() {
+        return onboardedBy;
     }
 
-    public void setCreatedBy(RegionalControlHeadProfile createdBy) {
-        this.createdBy = createdBy;
+    public void setOnboardedBy(RegionalControlHeadProfile onboardedBy) {
+        this.onboardedBy = onboardedBy;
     }
 
     public Long getId() {
