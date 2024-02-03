@@ -9,18 +9,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.plantaccion</groupId>
-    <artifactId>alart-app</artifactId>
+    <artifactId>alert-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>alart-app</name>
-    <description>Demo project for alart-app</description>
+    <name>alert-app</name>
+    <description>This is an app that allows script to be run, generate results and send them via mails automatically to users and stakeholders</description>
     <properties>
         <java.version>17</java.version>
     </properties>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-jdbc</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
