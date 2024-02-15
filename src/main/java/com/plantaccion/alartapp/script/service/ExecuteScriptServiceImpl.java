@@ -70,8 +70,9 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
                 }
             }
             try {
-                emailService.sendMail(cluster, queriedScript);
-            } catch (MailNotSentException | MessagingException e) {
+                log.info("email sendig will be performed here...");
+                //emailService.sendMail(cluster, queriedScript);
+            } catch (MailNotSentException  e) {
                 throw new MailNotSentException("Mail sending failed." + e.getCause());
             }
         }

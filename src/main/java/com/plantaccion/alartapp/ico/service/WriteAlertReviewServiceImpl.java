@@ -66,10 +66,11 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
             if (authenticatedStaff.equals(alert.getResolvedBy())) {
                 alert.setResolution(resolution.getResolution());
                 alert.setResolvedBy(authenticatedStaff);
+                alert.setStatus(AlertStatus.RESOLVED);
                 alertRepository.save(alert);
                 return true;
             } else {
-                log.warn("Unauthorized attempt to create a review for an alert not assigned to the user.");
+                log.warn("Unauthorized attempt to review this alert.");
                 return false;
             }
         } catch (Exception e) {
@@ -87,7 +88,6 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
 
             if (authenticatedStaff.equals(alert.getResolvedBy())) {
                 alert.setResolution(resolution.getResolution());
-                alert.setResolvedBy(authenticatedStaff);
                 alertRepository.save(alert);
                 return true;
             } else {

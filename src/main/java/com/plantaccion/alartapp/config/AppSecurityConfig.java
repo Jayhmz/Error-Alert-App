@@ -49,7 +49,7 @@ public class AppSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/swagger-ui/**", "/api/v1/users/**", "/v3/api-docs").permitAll()
+                    auth.requestMatchers("/swagger-ui/**", "/api/v1/users/**", "/v3/api-docs/**").permitAll()
                             .requestMatchers("/app/v1/admin/**").hasAuthority("ADMIN")
                             .requestMatchers("/app/v1/rch/**").hasAuthority("RCH")
                             .requestMatchers("/app/v1/ico/**").hasAuthority("ICO")

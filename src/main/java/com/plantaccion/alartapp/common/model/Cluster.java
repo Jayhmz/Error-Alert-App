@@ -35,6 +35,9 @@ public class Cluster {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "cluster")
     private List<Branch> branches;
 
+    @Column(name = "region")
+    private String region;
+
     public Long getId() {
         return id;
     }
@@ -90,4 +93,14 @@ public class Cluster {
     public void setBranches(List<Branch> branches) {
         this.branches = branches;
     }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+
 }
