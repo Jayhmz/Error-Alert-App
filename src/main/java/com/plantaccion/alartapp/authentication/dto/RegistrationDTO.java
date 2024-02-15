@@ -18,10 +18,12 @@ public class RegistrationDTO {
     private String lastname;
     @JsonProperty("email")
     @ValidEmail(message = "Enter a valid email")
+    @NotNull(message = "Email cannot be null")
     private String email;
     @JsonProperty("password")
     @Size(min = 8, message = "Password less than 8 characters")
     @StrongPassword(message = "Password is not strong enough")
+    @NotNull(message = "Email cannot be null")
     private String password;
 
     public RegistrationDTO(String staffId,String firstname, String lastname, String email, String password) {

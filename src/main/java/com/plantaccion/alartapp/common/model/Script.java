@@ -17,6 +17,8 @@ public class Script {
     private AppUser createdBy;
     @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isDisabled;
+    @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
+    private boolean isActive;
 
     public Script() {
     }
@@ -68,5 +70,11 @@ public class Script {
         this.isDisabled = isDisabled;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
 
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }
