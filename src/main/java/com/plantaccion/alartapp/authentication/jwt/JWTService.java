@@ -89,7 +89,6 @@ public class JWTService {
 
     public JwtTokenDetails validateToken(String token) {
         if (!isTokenExpired(token)) {
-            System.out.println("inside the jwt service validate token");
             HashMap<String, Object> tokenDetails = getTokenDetails(token);
             return getBasicDetails(tokenDetails);
         } else {
