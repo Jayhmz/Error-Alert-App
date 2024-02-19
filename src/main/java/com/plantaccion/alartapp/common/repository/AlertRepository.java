@@ -41,4 +41,9 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
     Long countAlertsByYear(@Param("year") int year);
     @Query("SELECT COUNT(a) FROM Alert a WHERE MONTH(a.generatedOn) = :month AND YEAR(a.generatedOn) = :year")
     Long countAlertsByMonthAndYear(@Param("month") int month, @Param("year") int year);
+    @Query("SELECT a.script.title, COUNT(a.alertId) AS count FROM Alert a " +
+            "WHERE MONTH(a.generatedOn) = MONTH(CURRENT_TIMESTAMP) " +
+            "AND YEAR(a.generatedOn) = YEAR(CURRENT_TIMESTAMP) " +
+            "GROUP BY a.script.title ORDER BY count DESC")
+    List<Object[]> findMostOccurringAlert();
 }

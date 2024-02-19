@@ -44,5 +44,9 @@ public class CountAlertsController {
     public ResponseEntity<?> percentageMonthlyAlertsReviewed(){
         return new ResponseEntity<>(countAlertService.percentageOfAlertsReviewed(), HttpStatus.OK);
     }
+    @GetMapping("/most-occurring-alert-group")
+    public ResponseEntity<?> mostOccurringAlertGroup(){
+        return new ResponseEntity<>(countAlertService.mostOccurringAlertGroup(), HttpStatus.OK);
+    }
 
 }
