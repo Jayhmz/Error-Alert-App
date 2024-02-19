@@ -12,5 +12,6 @@ public interface CountAlertService {
     Long countOfAlertsByMonth();
     int percentageOfAlertsTaken();
     int percentageOfAlertsReviewed();
+    List<Object[]> mostOccurringAlertGroup();
 
 }

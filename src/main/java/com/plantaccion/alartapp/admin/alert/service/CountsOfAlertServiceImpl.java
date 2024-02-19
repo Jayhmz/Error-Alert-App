@@ -71,5 +71,13 @@ public class CountsOfAlertServiceImpl implements CountAlertService {
         return (int) Math.round(percentage);
     }
 
+    @Override
+    public List<Object[]> mostOccurringAlertGroup() {
+        var mostOccurringAlert = alertRepository.findMostOccurringAlert();
+        if (!mostOccurringAlert.isEmpty()){
+            return mostOccurringAlert;
+        }
+        return null;
+    }
 
 }
