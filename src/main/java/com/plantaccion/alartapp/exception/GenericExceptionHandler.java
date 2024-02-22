@@ -78,5 +78,4 @@ public class GenericExceptionHandler {
 //        errorResponse.put("message", ex.getMessage());
 //        return errorResponse;
 //    }
-
 }
