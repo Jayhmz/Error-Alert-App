@@ -13,7 +13,7 @@ public class AppUtils {
     private static AppUserRepository userRepository;
 
     public AppUtils(AppUserRepository userRepository) {
-        this.userRepository = userRepository;
+        AppUtils.userRepository = userRepository;
     }
 
     public static Authentication getAuthenticatedUser(){
