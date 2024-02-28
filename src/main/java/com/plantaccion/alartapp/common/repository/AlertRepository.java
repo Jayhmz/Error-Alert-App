@@ -17,10 +17,10 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
     Page<Alert> findLastRecordByScriptTitle(@Param("title") String title, Pageable pageable);
     @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.isMailSent <> true AND a.script = :script")
     List<Alert> findAlertsByClusterAndScript(@Param("cluster") Cluster cluster, @Param("script") Script script);
-    @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.resolvedBy IS NULL")
-    List<Alert> findAlertsByCluster(@Param("cluster") Cluster cluster);
+    @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.status = 'UNASSIGNED' ")
+    Page<Alert> findAlertsByCluster(@Param("cluster") Cluster cluster, Pageable pageable);
     @Query("SELECT a FROM Alert a WHERE a.resolvedBy = :staffId ORDER BY a.alertId DESC")
-    List<Alert> findAlertsByResolvedBy(@Param("staffId") AppUser staffId);
+    Page<Alert> findAlertsByResolvedBy(@Param("staffId") AppUser staffId, Pageable pageable);
     @Query("SELECT a FROM Alert a WHERE MONTH(a.generatedOn) = :month")
     List<Alert> findAlertsByMonth(@Param("month") int month);
 
@@ -50,4 +50,6 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
     int countAlertByCluster(@Param("cluster") Cluster cluster);
     @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND a.resolvedBy = :staff")
     int countAlertReviewedByICO(@Param("cluster") Cluster cluster, @Param("staff") AppUser staff);
+    @Query("SELECT a from Alert a where a.cluster = :cluster AND a.resolvedBy = :staff")
+    Page<Alert> findAlertsByICO(@Param("cluster") Cluster cluster, Pageable pageable, @Param("staff") AppUser staff);
 }

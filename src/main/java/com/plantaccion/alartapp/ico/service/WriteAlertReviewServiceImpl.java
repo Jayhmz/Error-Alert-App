@@ -57,7 +57,7 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
 
 
     @Override
-    public boolean createAlertReview(ResolutionDTO resolution, String alertId) {
+    public boolean submitAlertReview(ResolutionDTO resolution, String alertId) {
         try {
             var authenticatedStaff = AppUtils.getAuthenticatedUserDetails()
                     .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
