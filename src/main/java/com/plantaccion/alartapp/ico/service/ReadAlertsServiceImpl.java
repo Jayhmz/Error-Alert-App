@@ -4,8 +4,11 @@ import com.plantaccion.alartapp.common.model.Alert;
 import com.plantaccion.alartapp.common.repository.AlertRepository;
 import com.plantaccion.alartapp.common.repository.ICOProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
+import com.plantaccion.alartapp.exception.NoContentException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import com.plantaccion.alartapp.ico.response.AlertResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,39 +24,40 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
         this.alertRepository = alertRepository;
     }
 
-    @Override
-    public List<AlertResponse> getAllAlertsByCluster() {
+    public Page<AlertResponse> getAllAlertsByCluster(Pageable pageable) {
         var ico = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
-
         var icoProfile = icoProfileRepository.findByStaffId(ico.getStaffId());
-
         var cluster = icoProfile.getOnboardedBy().getCluster();
 
-        List<AlertResponse> responses = new ArrayList<>();
-        var alerts = alertRepository.findAlertsByCluster(cluster);
-        for (Alert alert : alerts) {
-            responses.add(new AlertResponse(alert.getAlertId(), alert.getScript().getTitle(), alert.getResolution(),
-                    alert.getSolId(), alert.getTranAmount(), alert.getTranId(), alert.getTransactionDate(), alert.getStatus())
-            );
+        Page<Alert> alerts = alertRepository.findAlertsByCluster(cluster, pageable);
+
+        if (!alerts.hasContent()) {
+            throw new NoContentException("No alerts found for the specified page");
         }
-        return responses;
+        return alerts.map(this::mapToAlertResponse);
     }
 
+
     @Override
-    public List<AlertResponse> getAllAlertByICO() {
+    public Page<AlertResponse> getAllAlertByICO(Pageable pageable) {
         var ico = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
-
         List<AlertResponse> responses = new ArrayList<>();
+        var alerts = alertRepository.findAlertsByResolvedBy(ico, pageable);
+        return alerts.map(this::mapToAlertResponse);
+    }
 
-        var alerts = alertRepository.findAlertsByResolvedBy(ico);
-
-        for (Alert alert : alerts) {
-            responses.add(new AlertResponse(alert.getAlertId(), alert.getScript().getTitle(), alert.getResolution(),
-                    alert.getSolId(), alert.getTranAmount(), alert.getTranId(), alert.getTransactionDate(), alert.getStatus())
-            );
-        }
-        return responses;
+    private AlertResponse mapToAlertResponse(Alert alert) {
+        return new AlertResponse(
+                alert.getAlertId(),
+                alert.getScript().getTitle(),
+                alert.getResolution(),
+                alert.getSolId(),
+                alert.getTranAmount(),
+                alert.getTranId(),
+                alert.getTransactionDate(),
+                alert.getStatus()
+                );
     }
 }

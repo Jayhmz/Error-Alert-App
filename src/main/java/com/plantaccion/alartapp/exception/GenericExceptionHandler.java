@@ -70,12 +70,21 @@ public class GenericExceptionHandler {
         errorResponse.put("message", ex.getMessage());
         return errorResponse;
     }
-//    @ExceptionHandler(value = AccessDeniedException.class)
-//    @ResponseStatus(HttpStatus.GATEWAY_TIMEOUT)
-//    public Map<String, Object> handleAccessDeniedException(AccessDeniedException ex) {
-//        Map<String, Object> errorResponse = new HashMap<>();
-//        errorResponse.put("exception name", "AccessDeniedException");
-//        errorResponse.put("message", ex.getMessage());
-//        return errorResponse;
-//    }
+    @ExceptionHandler(value = AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.GATEWAY_TIMEOUT)
+    public Map<String, Object> handleAccessDeniedException(AccessDeniedException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("exception name", "AccessDeniedException");
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(value = ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, Object> handleExpiredJwtException(ExpiredJwtException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("exception name", "ExpiredJwtException");
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
+    }
 }

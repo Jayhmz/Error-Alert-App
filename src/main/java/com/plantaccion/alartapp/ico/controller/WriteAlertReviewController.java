@@ -27,7 +27,7 @@ public class WriteAlertReviewController {
 
     @PostMapping("/create-review/{alertId}")
     public ResponseEntity<?> createReviewForAssignedAlert(@PathVariable String alertId, @RequestBody ResolutionDTO resolution) {
-        if (alertReviewService.createAlertReview(resolution, alertId)) {
+        if (alertReviewService.submitAlertReview(resolution, alertId)) {
             return new ResponseEntity<>("Review created successfully.", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Failed to create review.", HttpStatus.INTERNAL_SERVER_ERROR);
