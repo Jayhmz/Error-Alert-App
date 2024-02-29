@@ -32,7 +32,7 @@ public class ReadAlertController {
             return new ResponseEntity<>(alertResponses, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Error retrieving alerts: {}", e.getMessage());
-            return new ResponseEntity<>("",HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("End of list",HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

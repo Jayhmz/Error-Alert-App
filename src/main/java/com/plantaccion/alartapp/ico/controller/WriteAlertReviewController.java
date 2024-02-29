@@ -16,7 +16,7 @@ public class WriteAlertReviewController {
         this.alertReviewService = alertReviewService;
     }
 
-    @PostMapping("/assign/{alertId}")
+    @PostMapping("/claim/{alertId}")
     public ResponseEntity<?> assignAlertToUser(@PathVariable String alertId) {
         if (alertReviewService.assignAlertToUser(alertId)) {
             return new ResponseEntity<>("Alert assigned successfully.", HttpStatus.OK);

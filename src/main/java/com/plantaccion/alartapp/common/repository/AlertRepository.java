@@ -46,7 +46,7 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
             "AND YEAR(a.generatedOn) = YEAR(CURRENT_TIMESTAMP) " +
             "GROUP BY a.script.title ORDER BY count DESC")
     List<Object[]> findMostOccurringAlert();
-    @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster")
+    @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND MONTH(a.generatedOn) = MONTH(CURRENT_TIMESTAMP)")
     int countAlertByCluster(@Param("cluster") Cluster cluster);
     @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND a.resolvedBy = :staff")
     int countAlertReviewedByICO(@Param("cluster") Cluster cluster, @Param("staff") AppUser staff);
