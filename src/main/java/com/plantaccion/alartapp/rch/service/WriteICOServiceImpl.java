@@ -28,6 +28,7 @@ public class WriteICOServiceImpl implements WriteICOService{
 
     @Value("${staff.password}")
     private String password;
+
     public WriteICOServiceImpl(AppUserRepository icoRepository, PasswordEncoder encoder,
                                ICOProfileRepository icoProfileRepository, RCHProfileRepository rchProfileRepository) {
         this.icoRepository = icoRepository;
