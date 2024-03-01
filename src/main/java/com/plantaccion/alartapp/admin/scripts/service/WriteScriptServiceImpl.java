@@ -2,6 +2,7 @@ package com.plantaccion.alartapp.admin.scripts.service;
 
 import com.plantaccion.alartapp.common.dto.ScriptDTO;
 import com.plantaccion.alartapp.admin.scripts.response.ScriptResponse;
+import com.plantaccion.alartapp.common.enums.Roles;
 import com.plantaccion.alartapp.common.model.Script;
 import com.plantaccion.alartapp.common.repository.AppUserRepository;
 import com.plantaccion.alartapp.common.repository.ScriptRepository;
@@ -29,6 +30,9 @@ public class WriteScriptServiceImpl implements WriteScriptService {
     public ScriptResponse createScript(ScriptDTO scriptDTO) {
         var authenticatedUser = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
+        if (!authenticatedUser.getRole().equals(Roles.ADMIN)){
+            throw new StaffNotFoundException("Unauthorized staff");
+        }
         Script script = new Script(scriptDTO.getTitle(), scriptDTO.getBody(), authenticatedUser);
         repository.save(script);
 
@@ -47,6 +51,10 @@ public class WriteScriptServiceImpl implements WriteScriptService {
     public ScriptResponse editScript(Long id, ScriptDTO scriptDTO) {
         var authenticatedUser = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
+
+        if (!authenticatedUser.getRole().equals(Roles.ADMIN)){
+            throw new StaffNotFoundException("Unauthorized staff");
+        }
 
         Optional<Script> scriptResult = Optional.ofNullable(repository.findById(id)
                 .orElseThrow(() -> new ScriptNotFoundException("Script cannot be found")));

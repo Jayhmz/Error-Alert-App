@@ -11,6 +11,7 @@ import com.plantaccion.alartapp.common.repository.ClusterRepository;
 import com.plantaccion.alartapp.common.repository.RCHProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
     private final ClusterRepository clusterRepository;
     private final PasswordEncoder encoder;
 
+    @Value("${staff.password}")
+    private String password;
+
     public WriteStaffsServiceImpl(AppUserRepository userRepository, RCHProfileRepository rchRepository, ClusterRepository clusterRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.rchRepository = rchRepository;
@@ -38,7 +42,7 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         var user = new AppUser(staffDTO.getStaffId(), staffDTO.getFirstname(), staffDTO.getLastname(),
                 staffDTO.getEmail(), Roles.RCH,
-                encoder.encode("Welcome@123"));
+                encoder.encode(password));
         user.setProvider(LoginProvider.BASIC);
         userRepository.save(user);
 
