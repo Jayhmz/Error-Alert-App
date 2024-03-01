@@ -3,6 +3,7 @@ package com.plantaccion.alartapp.ico.controller;
 import com.plantaccion.alartapp.ico.dto.ResolutionDTO;
 import com.plantaccion.alartapp.ico.service.WriteAlertReviewService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class WriteAlertReviewController {
         this.alertReviewService = alertReviewService;
     }
 
-    @PostMapping("/claim/{alertId}")
+    @PostMapping(value = "/claim/{alertId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> assignAlertToUser(@PathVariable String alertId) {
         if (alertReviewService.assignAlertToUser(alertId)) {
             return new ResponseEntity<>("Alert assigned successfully.", HttpStatus.OK);
@@ -25,7 +26,7 @@ public class WriteAlertReviewController {
         }
     }
 
-    @PostMapping("/create-review/{alertId}")
+    @PostMapping(value = "/create-review/{alertId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> createReviewForAssignedAlert(@PathVariable String alertId, @RequestBody ResolutionDTO resolution) {
         if (alertReviewService.submitAlertReview(resolution, alertId)) {
             return new ResponseEntity<>("Review created successfully.", HttpStatus.OK);
@@ -34,7 +35,7 @@ public class WriteAlertReviewController {
         }
     }
 
-    @PutMapping("/update-review/{alertId}")
+    @PutMapping(value = "/update-review/{alertId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> updateAssignedAlert(@PathVariable String alertId, @RequestBody ResolutionDTO resolution) {
         if (alertReviewService.updateAlertReview(resolution, alertId)) {
             return new ResponseEntity<>("Review updated successfully.", HttpStatus.OK);
