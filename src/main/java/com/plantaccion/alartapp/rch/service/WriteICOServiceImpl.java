@@ -11,6 +11,7 @@ import com.plantaccion.alartapp.common.repository.RCHProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import com.plantaccion.alartapp.rch.dto.IcoDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,8 @@ public class WriteICOServiceImpl implements WriteICOService{
     private final ICOProfileRepository icoProfileRepository;
     private final RCHProfileRepository rchProfileRepository;
 
+    @Value("${staff.password}")
+    private String password;
     public WriteICOServiceImpl(AppUserRepository icoRepository, PasswordEncoder encoder,
                                ICOProfileRepository icoProfileRepository, RCHProfileRepository rchProfileRepository) {
         this.icoRepository = icoRepository;
@@ -39,7 +42,7 @@ public class WriteICOServiceImpl implements WriteICOService{
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
 
         var ico = new AppUser(staffDTO.getStaffId(), staffDTO.getFirstname(), staffDTO.getLastname(),
-                staffDTO.getEmail(), Roles.ICO, encoder.encode("Welcome@123"));
+                staffDTO.getEmail(), Roles.ICO, encoder.encode(password));
         ico.setProvider(LoginProvider.BASIC);
         icoRepository.save(ico);
 
