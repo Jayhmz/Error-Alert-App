@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app/v1/admin")
+@CrossOrigin(origins = {"https://scripting-app-frontend.vercel.app", "http://localhost:5173"})
 public class DeleteStaffsController {
     private final DeleteStaffService deleteStaffService;
 

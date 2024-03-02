@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app/v1/ico")
+@CrossOrigin(origins = {"https://scripting-app-frontend.vercel.app", "http://localhost:5173"})
 public class WriteAlertReviewController {
     private final WriteAlertReviewService alertReviewService;
-
 
     public WriteAlertReviewController(WriteAlertReviewService alertReviewService) {
         this.alertReviewService = alertReviewService;
