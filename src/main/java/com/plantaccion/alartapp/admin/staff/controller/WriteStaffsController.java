@@ -15,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/app/v1/admin")
+@CrossOrigin(origins = {"https://scripting-app-frontend.vercel.app", "http://localhost:5173"})
 public class WriteStaffsController {
     private final WriteStaffsService writeStaffsService;
 

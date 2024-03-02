@@ -16,6 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/app/v1/rch")
+@CrossOrigin(origins = {"https://scripting-app-frontend.vercel.app", "http://localhost:5173"})
 public class WriteICOController {
     private final WriteICOService writeICOService;
 
