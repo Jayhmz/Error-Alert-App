@@ -50,7 +50,7 @@ public class Alert {
     private String tranId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'RESOLVED', 'UNASSIGNED', 'TAKEN')")
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'RESOLVED', 'UNASSIGNED')")
     private AlertStatus status;
 
     @Column(name = "is_mail_sent", nullable = false, columnDefinition = "BIT DEFAULT b'0'")

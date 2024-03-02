@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface ReadAlertsService {
     Page<AlertResponse> getAllAlertsByCluster(Pageable pageable);
-    Page<AlertResponse> getAllAlertByICO(Pageable pageable);
+    Page<AlertResponse> getAllAlertsReviewedByICO(Pageable pageable);
+    Page<AlertResponse> getAllPendingAlertsByICO(Pageable pageable);
 }

@@ -25,20 +25,22 @@ public class ReadAlertController {
 
     @GetMapping("/alerts")
     public ResponseEntity<?> getAllAlertsByCluster(
-                                                   @RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "2") int size) {
-        try {
-            Page<AlertResponse> alertResponses = readAlertsService.getAllAlertsByCluster(PageRequest.of(page, size));
-            return new ResponseEntity<>(alertResponses, HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("Error retrieving alerts: {}", e.getMessage());
-            return new ResponseEntity<>("End of list",HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<AlertResponse> alertResponses = readAlertsService.getAllAlertsByCluster(PageRequest.of(page, size));
+        return new ResponseEntity<>(alertResponses, HttpStatus.OK);
     }
 
-    @GetMapping("/my-alerts")
-    public ResponseEntity<?> getAllAlertByICO(@RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "1") int size){
-        return new ResponseEntity<>(readAlertsService.getAllAlertByICO(PageRequest.of(page, size)), HttpStatus.OK);
+    @GetMapping("/pending-alerts")
+    public ResponseEntity<?> getAllPendingAlertsByICO(@RequestParam(defaultValue = "0") int page,
+                                                      @RequestParam(defaultValue = "10") int size) {
+        return new ResponseEntity<>(readAlertsService.getAllPendingAlertsByICO(PageRequest.of(page, size)), HttpStatus.OK);
     }
+
+    @GetMapping("/reviewed-alerts")
+    public ResponseEntity<?> getAllReviewedAlertsByICO(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "10") int size) {
+        return new ResponseEntity<>(readAlertsService.getAllAlertsReviewedByICO(PageRequest.of(page, size)), HttpStatus.OK);
+    }
+
 }

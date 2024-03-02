@@ -65,7 +65,6 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
 
             if (authenticatedStaff.equals(alert.getResolvedBy())) {
                 alert.setResolution(resolution.getResolution());
-                alert.setResolvedBy(authenticatedStaff);
                 alert.setStatus(AlertStatus.RESOLVED);
                 alertRepository.save(alert);
                 return true;
