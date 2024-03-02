@@ -40,11 +40,23 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
 
 
     @Override
-    public Page<AlertResponse> getAllAlertByICO(Pageable pageable) {
+    public Page<AlertResponse> getAllAlertsReviewedByICO(Pageable pageable) {
         var ico = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         List<AlertResponse> responses = new ArrayList<>();
-        var alerts = alertRepository.findAlertsByResolvedBy(ico, pageable);
+        var alerts = alertRepository.findAlertsByResolvedByAndStatusResolved(ico, pageable);
+        return alerts.map(this::mapToAlertResponse);
+    }
+
+
+
+    @Override
+    public Page<AlertResponse> getAllPendingAlertsByICO(Pageable pageable) {
+        var ico = AppUtils.getAuthenticatedUserDetails()
+                .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
+        var icoProfile = icoProfileRepository.findByStaffId(ico.getStaffId());
+        var cluster = icoProfile.getOnboardedBy().getCluster();
+        var alerts = alertRepository.findAlertsByResolvedByAndStatusPending(ico, pageable);
         return alerts.map(this::mapToAlertResponse);
     }
 

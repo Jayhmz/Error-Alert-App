@@ -19,10 +19,13 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
     List<Alert> findAlertsByClusterAndScript(@Param("cluster") Cluster cluster, @Param("script") Script script);
     @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.status = 'UNASSIGNED' ")
     Page<Alert> findAlertsByCluster(@Param("cluster") Cluster cluster, Pageable pageable);
-    @Query("SELECT a FROM Alert a WHERE a.resolvedBy = :staffId ORDER BY a.alertId DESC")
-    Page<Alert> findAlertsByResolvedBy(@Param("staffId") AppUser staffId, Pageable pageable);
-    @Query("SELECT a FROM Alert a WHERE MONTH(a.generatedOn) = :month")
-    List<Alert> findAlertsByMonth(@Param("month") int month);
+    @Query("SELECT a FROM Alert a WHERE a.resolvedBy = :staffId AND a.status = 'RESOLVED' ORDER BY a.alertId DESC")
+    Page<Alert> findAlertsByResolvedByAndStatusResolved(@Param("staffId") AppUser staffId, Pageable pageable);
+    @Query("SELECT a FROM Alert a WHERE a.resolvedBy = :staffId AND a.status = 'PENDING' ORDER BY a.alertId DESC")
+    Page<Alert> findAlertsByResolvedByAndStatusPending(@Param("staffId") AppUser staffId, Pageable pageable);
+    @Query("SELECT a FROM Alert a WHERE a.status = 'PENDING'")
+    List<Alert> findAlertsByResolvedByAndMonth();
+
 
     //ALERT COUNTS
     @Query("SELECT COUNT(a) FROM Alert a WHERE a.status = 'RESOLVED' AND YEAR(a.generatedOn) = :year")

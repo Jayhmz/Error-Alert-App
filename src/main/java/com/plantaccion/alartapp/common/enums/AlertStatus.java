@@ -4,5 +4,4 @@ public enum AlertStatus {
     PENDING,
     RESOLVED,
     UNASSIGNED,
-    TAKEN
 }
