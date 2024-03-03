@@ -47,7 +47,6 @@ public class AppSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/swagger-ui/**", "/api/v1/users/**", "/v3/api-docs/**", "/").permitAll()
                             .requestMatchers("/app/v1/admin/**").hasAuthority("ADMIN")
