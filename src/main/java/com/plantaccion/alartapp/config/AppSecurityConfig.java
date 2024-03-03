@@ -58,10 +58,10 @@ public class AppSecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(usernamePasswordAuthenticationProvider)
-//                .oauth2Login(oauth2 -> {
-//                    oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
-//                    oauth2.successHandler(successHandler);
-//                })
+                .oauth2Login(oauth2 -> {
+                    oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
+                    oauth2.successHandler(successHandler);
+                })
                 .logout(l ->
                         l.clearAuthentication(true)
                         .invalidateHttpSession(true)
@@ -74,13 +74,11 @@ public class AppSecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(frontendUrl, "http://localhost:5173"));
-        configuration.setAllowedMethods(List.of("OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-//        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
+        return urlBasedCorsConfigurationSource;
     }
 }
