@@ -14,6 +14,7 @@ import org.hibernate.engine.config.spi.ConfigurationService;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.spi.TypeConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,10 +29,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @Slf4j
 public class BeanConfigurations {
+
+    @Value("${frontend-url}")
+    private String frontendUrl;
 
     private final AppUserRepository repository;
     public BeanConfigurations(AppUserRepository repository) {
@@ -54,7 +59,7 @@ public class BeanConfigurations {
 //    public CorsFilter corsFilter() {
 //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 //        CorsConfiguration config = new CorsConfiguration();
-//        config.addAllowedOrigin("http://localhost:3000");
+//        config.setAllowedOrigins(List.of(frontendUrl, "http://localhost:5173"));
 //        config.addAllowedMethod("*");
 //        config.addAllowedHeader("*");
 //        source.registerCorsConfiguration("/**", config);
