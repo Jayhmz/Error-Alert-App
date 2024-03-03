@@ -60,6 +60,7 @@ public class AppSecurityConfig {
                 .authenticationProvider(usernamePasswordAuthenticationProvider)
                 .oauth2Login(oauth2 -> {
                     oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
+
                     oauth2.successHandler(successHandler);
                 })
                 .logout(l ->
@@ -73,15 +74,12 @@ public class AppSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
         configuration.setAllowedOrigins(List.of(frontendUrl, "http://localhost:5173"));
-        configuration.setAllowedMethods(List.of("OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
-        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
-
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", configuration);
         return urlBasedCorsConfigurationSource;
     }
-   
 }

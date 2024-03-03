@@ -23,24 +23,42 @@ public class ReadAlertController {
         this.readAlertsService = readAlertsService;
     }
 
+
     @GetMapping("/alerts")
     public ResponseEntity<?> getAllAlertsByCluster(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        Page<AlertResponse> alertResponses = readAlertsService.getAllAlertsByCluster(PageRequest.of(page, size));
-        return new ResponseEntity<>(alertResponses, HttpStatus.OK);
+        try {
+            Page<AlertResponse> alertResponses = readAlertsService.getAllAlertsByCluster(PageRequest.of(page, size));
+            return new ResponseEntity<>(alertResponses, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error retrieving alerts: {}", e.getMessage());
+            return new ResponseEntity<>("Empty alert list", HttpStatus.NO_CONTENT);
+        }
     }
 
     @GetMapping("/pending-alerts")
     public ResponseEntity<?> getAllPendingAlertsByICO(@RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "10") int size) {
-        return new ResponseEntity<>(readAlertsService.getAllPendingAlertsByICO(PageRequest.of(page, size)), HttpStatus.OK);
+
+        try {
+            return new ResponseEntity<>(readAlertsService.getAllPendingAlertsByICO(PageRequest.of(page, size)), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error retrieving alerts: {}", e.getMessage());
+            return new ResponseEntity<>("Empty alert list", HttpStatus.NO_CONTENT);
+        }
     }
 
     @GetMapping("/reviewed-alerts")
     public ResponseEntity<?> getAllReviewedAlertsByICO(@RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "10") int size) {
-        return new ResponseEntity<>(readAlertsService.getAllAlertsReviewedByICO(PageRequest.of(page, size)), HttpStatus.OK);
+
+        try {
+            return new ResponseEntity<>(readAlertsService.getAllAlertsReviewedByICO(PageRequest.of(page, size)), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Error retrieving alerts: {}", e.getMessage());
+            return new ResponseEntity<>("Empty alert list", HttpStatus.NO_CONTENT);
+        }
     }
 
 }
