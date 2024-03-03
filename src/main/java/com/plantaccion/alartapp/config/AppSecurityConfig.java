@@ -58,10 +58,10 @@ public class AppSecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(usernamePasswordAuthenticationProvider)
-                .oauth2Login(oauth2 -> {
-                    oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
-                    oauth2.successHandler(successHandler);
-                })
+//                .oauth2Login(oauth2 -> {
+//                    oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
+//                    oauth2.successHandler(successHandler);
+//                })
                 .logout(l ->
                         l.clearAuthentication(true)
                         .invalidateHttpSession(true)
