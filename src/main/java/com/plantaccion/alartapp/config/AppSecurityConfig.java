@@ -75,7 +75,7 @@ public class AppSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(frontendUrl, "http://localhost:5173"));
         configuration.setAllowedMethods(List.of("OPTIONS", "HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
-        configuration.addAllowedHeader("*");
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
 //        configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
 
