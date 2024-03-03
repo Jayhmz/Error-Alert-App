@@ -60,6 +60,7 @@ public class AppSecurityConfig {
                 .authenticationProvider(usernamePasswordAuthenticationProvider)
                 .oauth2Login(oauth2 -> {
                     oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
+
                     oauth2.successHandler(successHandler);
                 })
                 .logout(l ->
