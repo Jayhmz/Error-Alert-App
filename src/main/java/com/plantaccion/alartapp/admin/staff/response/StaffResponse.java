@@ -1,7 +1,6 @@
 package com.plantaccion.alartapp.admin.staff.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.plantaccion.alartapp.common.model.RegionalControlHeadProfile;
 
 import java.util.Map;
 

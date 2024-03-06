@@ -2,7 +2,7 @@ package com.plantaccion.alartapp.authentication.jwt;
 
 import com.plantaccion.alartapp.authentication.provider.UsernamePasswordAuthenticationProvider;
 import com.plantaccion.alartapp.common.enums.Roles;
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

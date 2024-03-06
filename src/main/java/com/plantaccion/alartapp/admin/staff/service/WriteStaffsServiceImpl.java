@@ -1,14 +1,14 @@
 package com.plantaccion.alartapp.admin.staff.service;
 
-import com.plantaccion.alartapp.common.dto.RchDTO;
 import com.plantaccion.alartapp.admin.staff.response.StaffResponse;
+import com.plantaccion.alartapp.common.dto.RchDTO;
 import com.plantaccion.alartapp.common.enums.LoginProvider;
 import com.plantaccion.alartapp.common.enums.Roles;
-import com.plantaccion.alartapp.common.model.AppUser;
-import com.plantaccion.alartapp.common.model.RegionalControlHeadProfile;
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
-import com.plantaccion.alartapp.common.repository.ClusterRepository;
-import com.plantaccion.alartapp.common.repository.RCHProfileRepository;
+import com.plantaccion.alartapp.common.model.app.RegionalControlHeadProfile;
+import com.plantaccion.alartapp.common.model.auth.AppUser;
+import com.plantaccion.alartapp.common.repository.app.ClusterRepository;
+import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
+import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import org.springframework.beans.factory.annotation.Value;

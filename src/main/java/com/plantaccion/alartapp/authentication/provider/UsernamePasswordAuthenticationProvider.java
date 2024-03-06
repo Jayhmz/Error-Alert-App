@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.authentication.provider;
 
-import com.plantaccion.alartapp.common.model.AppUser;
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
+import com.plantaccion.alartapp.common.model.auth.AppUser;
+import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,15 +11,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {

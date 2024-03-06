@@ -1,17 +1,15 @@
 package com.plantaccion.alartapp.ico.service;
 
 import com.plantaccion.alartapp.common.enums.AlertStatus;
-import com.plantaccion.alartapp.common.model.Alert;
-import com.plantaccion.alartapp.common.model.AppUser;
-import com.plantaccion.alartapp.common.model.InternalControlOfficerProfile;
-import com.plantaccion.alartapp.common.repository.AlertRepository;
-import com.plantaccion.alartapp.common.repository.ICOProfileRepository;
+import com.plantaccion.alartapp.common.model.app.Alert;
+import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;
+import com.plantaccion.alartapp.common.repository.app.AlertRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.AlertNotFoundException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import com.plantaccion.alartapp.ico.dto.ResolutionDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.engine.spi.Resolution;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -49,6 +47,11 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
             log.error("An exception occurred in the WriteAlertReviewService assignAlertToUser(): ", e);
             return false;
         }
+    }
+
+    @Override
+    public boolean unAssignAlertToUser(String alertId) {
+        return false;
     }
 
     private boolean isSameCluster(InternalControlOfficerProfile ico, Alert alert) {

@@ -1,6 +1,6 @@
 package com.plantaccion.alartapp.admin.alert.service;
 
-import com.plantaccion.alartapp.common.repository.AlertRepository;
+import com.plantaccion.alartapp.common.repository.app.AlertRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

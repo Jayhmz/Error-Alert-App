@@ -1,18 +1,20 @@
 package com.plantaccion.alartapp.admin.scripts.service;
 
-import com.plantaccion.alartapp.common.dto.ScriptDTO;
 import com.plantaccion.alartapp.admin.scripts.response.ScriptResponse;
+import com.plantaccion.alartapp.common.dto.ScriptDTO;
 import com.plantaccion.alartapp.common.enums.Roles;
-import com.plantaccion.alartapp.common.model.Script;
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
-import com.plantaccion.alartapp.common.repository.ScriptRepository;
+import com.plantaccion.alartapp.common.model.app.Script;
+import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
+import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class WriteScriptServiceImpl implements WriteScriptService {

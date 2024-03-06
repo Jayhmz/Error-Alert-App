@@ -3,7 +3,7 @@ package com.plantaccion.alartapp.authentication.oauth2.config;
 import com.plantaccion.alartapp.authentication.oauth2.service.OAuth2UserService;
 import com.plantaccion.alartapp.common.enums.LoginProvider;
 import com.plantaccion.alartapp.common.enums.Roles;
-import com.plantaccion.alartapp.common.model.AppUser;
+import com.plantaccion.alartapp.common.model.auth.AppUser;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

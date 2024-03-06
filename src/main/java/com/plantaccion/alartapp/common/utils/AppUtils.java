@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.common.utils;
 
-import com.plantaccion.alartapp.common.model.AppUser;
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
+import com.plantaccion.alartapp.common.model.auth.AppUser;
+import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

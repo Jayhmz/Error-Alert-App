@@ -1,14 +1,13 @@
-package com.plantaccion.alartapp.common.model;
+package com.plantaccion.alartapp.common.model.app;
 
 import com.plantaccion.alartapp.common.enums.AlertStatus;
 import com.plantaccion.alartapp.common.utils.AlertSequenceIdGenerator;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "alerts")

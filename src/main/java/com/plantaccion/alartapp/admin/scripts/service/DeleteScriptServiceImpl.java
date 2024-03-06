@@ -1,6 +1,6 @@
 package com.plantaccion.alartapp.admin.scripts.service;
 
-import com.plantaccion.alartapp.common.repository.ScriptRepository;
+import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
 import org.springframework.stereotype.Service;
 

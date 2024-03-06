@@ -1,25 +1,29 @@
-package com.plantaccion.alartapp.common.model;
+package com.plantaccion.alartapp.common.model.app;
 
+import com.plantaccion.alartapp.common.model.auth.AppUser;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "clusters")
-public class Cluster {
+@Table(name = "rch_profile")
+public class RegionalControlHeadProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "cluster_name", unique = true, nullable = false)
-    private String name;
-
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "rch_staff_id", referencedColumnName = "staff_id")
+    private AppUser staff;
+
+    @OneToOne
+    @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_name")
+    private Cluster cluster;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
     private AppUser createdBy;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by", referencedColumnName = "staff_id")
     private AppUser updatedBy;
 
@@ -32,11 +36,13 @@ public class Cluster {
     @Column(name = "updated_at")
     private LocalDateTime UpdatedOn;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "cluster")
-    private List<Branch> branches;
+    public Cluster getCluster() {
+        return cluster;
+    }
 
-    @Column(name = "region")
-    private String region;
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
+    }
 
     public Long getId() {
         return id;
@@ -46,12 +52,12 @@ public class Cluster {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public AppUser getStaff() {
+        return staff;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStaff(AppUser staff) {
+        this.staff = staff;
     }
 
     public AppUser getCreatedBy() {
@@ -85,22 +91,4 @@ public class Cluster {
     public void setUpdatedOn(LocalDateTime updatedOn) {
         UpdatedOn = updatedOn;
     }
-
-    public List<Branch> getBranches() {
-        return branches;
-    }
-
-    public void setBranches(List<Branch> branches) {
-        this.branches = branches;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-
 }

@@ -1,4 +1,4 @@
-package com.plantaccion.alartapp.common.model;
+package com.plantaccion.alartapp.common.model.app;
 
 import com.plantaccion.alartapp.common.enums.LoginProvider;
 import com.plantaccion.alartapp.common.enums.Roles;

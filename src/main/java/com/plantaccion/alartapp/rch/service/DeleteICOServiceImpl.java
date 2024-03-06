@@ -1,6 +1,6 @@
 package com.plantaccion.alartapp.rch.service;
 
-import com.plantaccion.alartapp.common.repository.ICOProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import org.springframework.stereotype.Service;
 

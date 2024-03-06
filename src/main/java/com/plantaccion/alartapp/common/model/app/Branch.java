@@ -1,28 +1,31 @@
-package com.plantaccion.alartapp.common.model;
+package com.plantaccion.alartapp.common.model.app;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "rch_profile")
-public class RegionalControlHeadProfile {
+@Table(name = "branches")
+public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "rch_staff_id", referencedColumnName = "staff_id")
-    private AppUser staff;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_name")
     private Cluster cluster;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(name = "branch", unique = true, nullable = false)
+    private String name;
+
+    @Column(name = "sol_id", unique = true, nullable = false)
+    private String solId;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
     private AppUser createdBy;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "updated_by", referencedColumnName = "staff_id")
     private AppUser updatedBy;
 
@@ -35,14 +38,6 @@ public class RegionalControlHeadProfile {
     @Column(name = "updated_at")
     private LocalDateTime UpdatedOn;
 
-    public Cluster getCluster() {
-        return cluster;
-    }
-
-    public void setCluster(Cluster cluster) {
-        this.cluster = cluster;
-    }
-
     public Long getId() {
         return id;
     }
@@ -51,12 +46,28 @@ public class RegionalControlHeadProfile {
         this.id = id;
     }
 
-    public AppUser getStaff() {
-        return staff;
+    public Cluster getCluster() {
+        return cluster;
     }
 
-    public void setStaff(AppUser staff) {
-        this.staff = staff;
+    public void setCluster(Cluster cluster) {
+        this.cluster = cluster;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSolId() {
+        return solId;
+    }
+
+    public void setSolId(String solId) {
+        this.solId = solId;
     }
 
     public AppUser getCreatedBy() {

@@ -1,19 +1,8 @@
 package com.plantaccion.alartapp.config;
 
 import com.plantaccion.alartapp.authentication.provider.UsernamePasswordAuthenticationProvider;
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.TableGenerator;
+import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.boot.model.IdGeneratorStrategyInterpreter;
-import org.hibernate.boot.model.IdentifierGeneratorDefinition;
-import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
-import org.hibernate.boot.registry.selector.spi.StrategySelector;
-import org.hibernate.engine.config.spi.ConfigurationService;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.type.spi.TypeConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -24,12 +13,8 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @Slf4j

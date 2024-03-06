@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.ico.service;
 
-import com.plantaccion.alartapp.common.repository.AlertRepository;
-import com.plantaccion.alartapp.common.repository.ICOProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.AlertRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
-package com.plantaccion.alartapp.common.repository;
+package com.plantaccion.alartapp.common.repository.app;
 
-import com.plantaccion.alartapp.common.model.Alert;
-import com.plantaccion.alartapp.common.model.AppUser;
-import com.plantaccion.alartapp.common.model.Cluster;
-import com.plantaccion.alartapp.common.model.Script;
+import com.plantaccion.alartapp.common.model.app.Alert;
+import com.plantaccion.alartapp.common.model.app.Cluster;
+import com.plantaccion.alartapp.common.model.app.Script;
+import com.plantaccion.alartapp.common.model.auth.AppUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
