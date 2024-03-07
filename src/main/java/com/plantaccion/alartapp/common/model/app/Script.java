@@ -1,6 +1,6 @@
 package com.plantaccion.alartapp.common.model.app;
 
-import com.plantaccion.alartapp.common.model.auth.AppUser;
+import com.plantaccion.alartapp.common.model.app.AppUser;
 import jakarta.persistence.*;
 
 @Entity

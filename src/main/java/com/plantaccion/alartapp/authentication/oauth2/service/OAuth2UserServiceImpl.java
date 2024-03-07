@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.authentication.oauth2.service;
 
-import com.plantaccion.alartapp.common.model.auth.AppUser;
-import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
+import com.plantaccion.alartapp.common.model.app.AppUser;
+import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

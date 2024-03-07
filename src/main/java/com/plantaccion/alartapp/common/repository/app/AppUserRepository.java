@@ -1,6 +1,6 @@
-package com.plantaccion.alartapp.common.repository.auth;
+package com.plantaccion.alartapp.common.repository.app;
 
-import com.plantaccion.alartapp.common.model.auth.AppUser;
+import com.plantaccion.alartapp.common.model.app.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

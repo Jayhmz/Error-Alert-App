@@ -1,6 +1,8 @@
 package com.plantaccion.alartapp.config;
 
-import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
+import com.plantaccion.alartapp.common.model.auth.AuthenticationEntity;
+import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.auth.AuthenticationRepository;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -18,7 +20,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackageClasses = AppUserRepository.class,
+@EnableJpaRepositories(basePackageClasses = AuthenticationRepository.class,
         entityManagerFactoryRef = "authenticationEntityManagerFactory",
         transactionManagerRef = "authenticationTransactionManager"
 )

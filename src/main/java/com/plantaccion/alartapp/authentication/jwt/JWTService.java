@@ -3,7 +3,7 @@ package com.plantaccion.alartapp.authentication.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.plantaccion.alartapp.authentication.provider.UsernamePasswordAuthenticationProvider;
 import com.plantaccion.alartapp.common.enums.Roles;
-import com.plantaccion.alartapp.common.model.auth.AppUser;
+import com.plantaccion.alartapp.common.model.app.AppUser;
 import com.plantaccion.alartapp.exception.TokenExpiredException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

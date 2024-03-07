@@ -5,7 +5,7 @@ import com.plantaccion.alartapp.common.dto.ScriptDTO;
 import com.plantaccion.alartapp.common.enums.Roles;
 import com.plantaccion.alartapp.common.model.app.Script;
 import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
-import com.plantaccion.alartapp.common.repository.auth.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;

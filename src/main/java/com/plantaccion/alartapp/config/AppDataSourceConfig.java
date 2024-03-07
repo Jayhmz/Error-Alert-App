@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "com.plantaccion.alartapp.common.repository",
+@EnableJpaRepositories(basePackages = "com.plantaccion.alartapp.common.repository.app",
     entityManagerFactoryRef = "appEntityManagerFactory", transactionManagerRef = "appTransactionManager"
 )
 @EnableTransactionManagement
