@@ -1,8 +1,6 @@
 package com.plantaccion.alartapp.config;
 
 import com.plantaccion.alartapp.authentication.jwt.JWTAuthenticationFilter;
-import com.plantaccion.alartapp.authentication.oauth2.config.OAuth2SuccessHandler;
-import com.plantaccion.alartapp.authentication.oauth2.config.OAuth2UserAuthorization;
 import com.plantaccion.alartapp.authentication.provider.UsernamePasswordAuthenticationProvider;
 import com.plantaccion.alartapp.exception.AuthenticationEntryPointException;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,16 +26,11 @@ public class AppSecurityConfig {
 
     @Value("${frontend-url}")
     private String frontendUrl;
-
-    private final OAuth2SuccessHandler successHandler;
-    private final OAuth2UserAuthorization userService;
     private final UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider;
     private final JWTAuthenticationFilter authenticationFilter;
     private final AuthenticationEntryPointException authenticationEntryPointException;
 
-    public AppSecurityConfig(OAuth2SuccessHandler successHandler, OAuth2UserAuthorization userService, UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider, JWTAuthenticationFilter authenticationFilter, AuthenticationEntryPointException authenticationEntryPointException) {
-        this.successHandler = successHandler;
-        this.userService = userService;
+    public AppSecurityConfig(UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider, JWTAuthenticationFilter authenticationFilter, AuthenticationEntryPointException authenticationEntryPointException) {
         this.usernamePasswordAuthenticationProvider = usernamePasswordAuthenticationProvider;
         this.authenticationFilter = authenticationFilter;
         this.authenticationEntryPointException = authenticationEntryPointException;
@@ -58,10 +51,10 @@ public class AppSecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(usernamePasswordAuthenticationProvider)
-                .oauth2Login(oauth2 -> {
-                    oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
-                    oauth2.successHandler(successHandler);
-                })
+//                .oauth2Login(oauth2 -> {
+//                    oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
+//                    oauth2.successHandler(successHandler);
+//                })
                 .logout(l ->
                         l.clearAuthentication(true)
                         .invalidateHttpSession(true)

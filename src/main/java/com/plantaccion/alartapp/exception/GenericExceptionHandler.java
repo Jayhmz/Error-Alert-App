@@ -44,16 +44,16 @@ public class GenericExceptionHandler {
         return errorResponse;
     }
 
-//    @ExceptionHandler(value = NullPointerException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public Map<String, Object> handleNullPointerException(NullPointerException ex) {
-//        Map<String, Object> errorResponse = new HashMap<>();
-//        errorResponse.put("exception name", "NullPointerException");
-//        errorResponse.put("message", ex.getMessage());
-//        errorResponse.put("source", ex.getCause());
-//        errorResponse.put("error_message", "Incorrect data entry");
-//        return errorResponse;
-//    }
+    @ExceptionHandler(value = NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, Object> handleNullPointerException(NullPointerException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("exception name", "NullPointerException");
+        errorResponse.put("message", ex.getMessage());
+        errorResponse.put("source", ex.getCause());
+        errorResponse.put("error_message", "Incorrect data entry");
+        return errorResponse;
+    }
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
@@ -84,6 +84,14 @@ public class GenericExceptionHandler {
     public Map<String, Object> handleExpiredJwtException(ExpiredJwtException ex) {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("exception name", "ExpiredJwtException");
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
+    }
+    @ExceptionHandler(value = StaffNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, Object> handleStaffNotFoundException(StaffNotFoundException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("exception name", "StaffNotFoundException");
         errorResponse.put("message", ex.getMessage());
         return errorResponse;
     }

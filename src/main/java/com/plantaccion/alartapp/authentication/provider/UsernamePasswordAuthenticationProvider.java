@@ -3,7 +3,9 @@ package com.plantaccion.alartapp.authentication.provider;
 import com.plantaccion.alartapp.common.model.app.AppUser;
 import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
 import com.plantaccion.alartapp.common.repository.auth.AuthenticationRepository;
+import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +22,8 @@ import java.util.List;
 
 @Component
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
+    @Value("${auth.entity.table}")
+    private String tableName;
     @Autowired
     private AuthenticationRepository authenticationRepository;
     private final AppUserRepository repository;
@@ -36,11 +40,11 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
         String password = authentication.getCredentials().toString();
 
         var user = authenticationRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Unauthorized user"));
+                .orElseThrow(() -> new StaffNotFoundException("Unauthorized user"));
 
         if(user != null && encoder.matches(password, user.getPassword())){
             var appUser = repository.findByEmail(user.getEmail())
-                    .orElseThrow(() -> new UsernameNotFoundException("Unauthorized user"));
+                    .orElseThrow(() -> new StaffNotFoundException("Unauthorized user"));
             return new UsernamePasswordAuthenticationToken(appUser, password, getRoles(appUser));
         } else {
             throw new BadCredentialsException("Incorrect username or password");

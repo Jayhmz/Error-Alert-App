@@ -40,17 +40,6 @@ public class BeanConfigurations {
     public AuthenticationProvider alertAppUsernamePasswordAuthenticationProvider() {
         return new UsernamePasswordAuthenticationProvider(repository,encoder());
     }
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowedOrigins(List.of(frontendUrl, "http://localhost:5173"));
-//        config.addAllowedMethod("*");
-//        config.addAllowedHeader("*");
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
-//    }
-
     @Bean
     ApplicationListener<AuthenticationSuccessEvent> successfulLogin(){
         return event -> {
