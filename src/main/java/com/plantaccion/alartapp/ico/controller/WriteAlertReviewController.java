@@ -17,7 +17,7 @@ public class WriteAlertReviewController {
         this.alertReviewService = alertReviewService;
     }
 
-    @PostMapping(value = "/claim/{alertId}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/claim/{alertId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> assignAlertToUser(@PathVariable String alertId) {
         if (alertReviewService.assignAlertToUser(alertId)) {
             return new ResponseEntity<>("Alert assigned successfully.", HttpStatus.OK);

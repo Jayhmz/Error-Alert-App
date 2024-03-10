@@ -16,9 +16,9 @@ public class Script {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private AppUser createdBy;
-    @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
+    @Column(name = "is_disabled", nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isDisabled;
-    @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
+    @Column(name = "is_active", nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isActive;
 
     public Script() {

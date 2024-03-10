@@ -22,8 +22,7 @@ import java.util.List;
 
 @Component
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
-    @Value("${auth.entity.table}")
-    private String tableName;
+
     @Autowired
     private AuthenticationRepository authenticationRepository;
     private final AppUserRepository repository;
@@ -62,5 +61,4 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
-
 }
