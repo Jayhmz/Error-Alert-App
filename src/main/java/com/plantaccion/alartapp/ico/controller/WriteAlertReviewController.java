@@ -17,7 +17,7 @@ public class WriteAlertReviewController {
         this.alertReviewService = alertReviewService;
     }
 
-    @PostMapping(value = "/claim/{alertId}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/claim/{alertId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> assignAlertToUser(@PathVariable String alertId) {
         if (alertReviewService.assignAlertToUser(alertId)) {
             return new ResponseEntity<>("Alert assigned successfully.", HttpStatus.OK);
@@ -25,6 +25,14 @@ public class WriteAlertReviewController {
             return new ResponseEntity<>("Failed to assign alert.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+//    @PostMapping(value = "/unclaim/{alertId}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = {MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<?> unAssignAlertToUser(@PathVariable String alertId) {
+//        if (alertReviewService.assignAlertToUser(alertId)) {
+//            return new ResponseEntity<>("Alert assigned successfully.", HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>("Failed to assign alert.", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PostMapping(value = "/create-review/{alertId}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> createReviewForAssignedAlert(@PathVariable String alertId, @RequestBody ResolutionDTO resolution) {

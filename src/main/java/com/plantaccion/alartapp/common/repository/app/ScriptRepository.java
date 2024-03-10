@@ -1,10 +1,8 @@
-package com.plantaccion.alartapp.common.repository;
+package com.plantaccion.alartapp.common.repository.app;
 
-import com.plantaccion.alartapp.common.model.Script;
+import com.plantaccion.alartapp.common.model.app.Script;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 public interface ScriptRepository extends JpaRepository<Script, Long> {
 

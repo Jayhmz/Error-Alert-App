@@ -23,7 +23,6 @@ public class ReadAlertController {
         this.readAlertsService = readAlertsService;
     }
 
-
     @GetMapping("/alerts")
     public ResponseEntity<?> getAllAlertsByCluster(
             @RequestParam(defaultValue = "0") int page,

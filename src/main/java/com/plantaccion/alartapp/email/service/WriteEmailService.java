@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.email.service;
 
-import com.plantaccion.alartapp.common.model.Cluster;
-import com.plantaccion.alartapp.common.model.Script;
+import com.plantaccion.alartapp.common.model.app.Cluster;
+import com.plantaccion.alartapp.common.model.app.Script;
 import jakarta.mail.MessagingException;
 
 

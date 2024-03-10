@@ -1,25 +1,19 @@
-package com.plantaccion.alartapp.common.model;
+package com.plantaccion.alartapp.common.model.app;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "branches")
-public class Branch {
+@Table(name = "clusters")
+public class Cluster {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_name")
-    private Cluster cluster;
-
-    @Column(name = "branch", unique = true, nullable = false)
+    @Column(name = "cluster_name", unique = true, nullable = false)
     private String name;
-
-    @Column(name = "sol_id", unique = true, nullable = false)
-    private String solId;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
@@ -38,6 +32,12 @@ public class Branch {
     @Column(name = "updated_at")
     private LocalDateTime UpdatedOn;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "cluster")
+    private List<Branch> branches;
+
+    @Column(name = "region")
+    private String region;
+
     public Long getId() {
         return id;
     }
@@ -46,28 +46,12 @@ public class Branch {
         this.id = id;
     }
 
-    public Cluster getCluster() {
-        return cluster;
-    }
-
-    public void setCluster(Cluster cluster) {
-        this.cluster = cluster;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getSolId() {
-        return solId;
-    }
-
-    public void setSolId(String solId) {
-        this.solId = solId;
     }
 
     public AppUser getCreatedBy() {
@@ -101,4 +85,22 @@ public class Branch {
     public void setUpdatedOn(LocalDateTime updatedOn) {
         UpdatedOn = updatedOn;
     }
+
+    public List<Branch> getBranches() {
+        return branches;
+    }
+
+    public void setBranches(List<Branch> branches) {
+        this.branches = branches;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+
 }

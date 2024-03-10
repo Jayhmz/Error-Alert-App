@@ -1,6 +1,6 @@
 package com.plantaccion.alartapp.admin.staff.service;
 
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import org.springframework.stereotype.Service;
 

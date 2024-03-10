@@ -1,7 +1,7 @@
-package com.plantaccion.alartapp.common.repository;
+package com.plantaccion.alartapp.common.repository.app;
 
-import com.plantaccion.alartapp.common.model.InternalControlOfficerProfile;
-import com.plantaccion.alartapp.common.model.RegionalControlHeadProfile;
+import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;
+import com.plantaccion.alartapp.common.model.app.RegionalControlHeadProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

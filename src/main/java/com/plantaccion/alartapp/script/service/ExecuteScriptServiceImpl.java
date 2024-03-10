@@ -1,18 +1,16 @@
 package com.plantaccion.alartapp.script.service;
 
-import ch.qos.logback.core.BasicStatusManager;
 import com.plantaccion.alartapp.common.enums.AlertStatus;
-import com.plantaccion.alartapp.common.model.Alert;
-import com.plantaccion.alartapp.common.model.Branch;
-import com.plantaccion.alartapp.common.model.Cluster;
-import com.plantaccion.alartapp.common.model.Script;
-import com.plantaccion.alartapp.common.repository.AlertRepository;
-import com.plantaccion.alartapp.common.repository.ClusterRepository;
-import com.plantaccion.alartapp.common.repository.ScriptRepository;
+import com.plantaccion.alartapp.common.model.app.Alert;
+import com.plantaccion.alartapp.common.model.app.Branch;
+import com.plantaccion.alartapp.common.model.app.Cluster;
+import com.plantaccion.alartapp.common.model.app.Script;
+import com.plantaccion.alartapp.common.repository.app.AlertRepository;
+import com.plantaccion.alartapp.common.repository.app.ClusterRepository;
+import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
 import com.plantaccion.alartapp.email.service.WriteEmailService;
 import com.plantaccion.alartapp.exception.MailNotSentException;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
-import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

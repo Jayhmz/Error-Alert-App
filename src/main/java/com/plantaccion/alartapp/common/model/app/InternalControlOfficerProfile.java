@@ -1,5 +1,6 @@
-package com.plantaccion.alartapp.common.model;
+package com.plantaccion.alartapp.common.model.app;
 
+import com.plantaccion.alartapp.common.model.app.AppUser;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

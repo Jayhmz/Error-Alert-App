@@ -1,7 +1,11 @@
 package com.plantaccion.alartapp.authentication.provider;
 
-import com.plantaccion.alartapp.common.model.AppUser;
-import com.plantaccion.alartapp.common.repository.AppUserRepository;
+import com.plantaccion.alartapp.common.model.app.AppUser;
+import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.auth.AuthenticationRepository;
+import com.plantaccion.alartapp.exception.StaffNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +22,9 @@ import java.util.List;
 
 @Component
 public class UsernamePasswordAuthenticationProvider implements AuthenticationProvider {
+
+    @Autowired
+    private AuthenticationRepository authenticationRepository;
     private final AppUserRepository repository;
     private final PasswordEncoder encoder;
 
@@ -30,11 +37,14 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        AppUser user = repository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Incorrect username or password"));
 
-        if (encoder.matches(password, user.getPassword())) {
-            return new UsernamePasswordAuthenticationToken(user, password, getRoles(user));
+        var user = authenticationRepository.findByEmail(username)
+                .orElseThrow(() -> new StaffNotFoundException("Unauthorized user"));
+
+        if(user != null && encoder.matches(password, user.getPassword())){
+            var appUser = repository.findByEmail(user.getEmail())
+                    .orElseThrow(() -> new StaffNotFoundException("Unauthorized user"));
+            return new UsernamePasswordAuthenticationToken(appUser, password, getRoles(appUser));
         } else {
             throw new BadCredentialsException("Incorrect username or password");
         }
@@ -51,5 +61,4 @@ public class UsernamePasswordAuthenticationProvider implements AuthenticationPro
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
-
 }

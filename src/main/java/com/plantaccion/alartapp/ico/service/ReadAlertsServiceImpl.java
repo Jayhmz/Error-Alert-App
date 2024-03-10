@@ -1,8 +1,8 @@
 package com.plantaccion.alartapp.ico.service;
 
-import com.plantaccion.alartapp.common.model.Alert;
-import com.plantaccion.alartapp.common.repository.AlertRepository;
-import com.plantaccion.alartapp.common.repository.ICOProfileRepository;
+import com.plantaccion.alartapp.common.model.app.Alert;
+import com.plantaccion.alartapp.common.repository.app.AlertRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.NoContentException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;

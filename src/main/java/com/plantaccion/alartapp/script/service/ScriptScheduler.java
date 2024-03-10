@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.script.service;
 
-import com.plantaccion.alartapp.common.model.Script;
-import com.plantaccion.alartapp.common.repository.ScriptRepository;
+import com.plantaccion.alartapp.common.model.app.Script;
+import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Service
