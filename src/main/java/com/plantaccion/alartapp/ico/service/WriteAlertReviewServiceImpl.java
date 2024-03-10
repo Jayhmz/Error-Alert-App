@@ -101,5 +101,4 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
             return false;
         }
     }
-
 }

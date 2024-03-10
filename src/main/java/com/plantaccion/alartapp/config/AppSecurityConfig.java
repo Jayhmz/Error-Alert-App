@@ -26,6 +26,7 @@ public class AppSecurityConfig {
 
     @Value("${frontend-url}")
     private String frontendUrl;
+
     private final UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider;
     private final JWTAuthenticationFilter authenticationFilter;
     private final AuthenticationEntryPointException authenticationEntryPointException;
@@ -51,10 +52,7 @@ public class AppSecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(usernamePasswordAuthenticationProvider)
-//                .oauth2Login(oauth2 -> {
-//                    oauth2.userInfoEndpoint(c -> c.oidcUserService(userService));
-//                    oauth2.successHandler(successHandler);
-//                })
+
                 .logout(l ->
                         l.clearAuthentication(true)
                         .invalidateHttpSession(true)
