@@ -2,7 +2,7 @@ package com.plantaccion.alartapp.common.model.auth;
 
 import jakarta.persistence.*;
 
-@Entity(name = "staffs")
+@Entity(name = "app_users")
 public class AuthenticationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
