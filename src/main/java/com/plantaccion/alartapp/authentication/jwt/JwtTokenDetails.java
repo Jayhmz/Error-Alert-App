@@ -9,6 +9,7 @@ public class JwtTokenDetails {
     private Long id;
     private String email;
     private String staffId;
+    private String zone;
 
 
     public String getStaffId() {
@@ -57,5 +58,13 @@ public class JwtTokenDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 }

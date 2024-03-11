@@ -59,5 +59,11 @@ public class ReadAlertController {
             return new ResponseEntity<>("Empty alert list", HttpStatus.NO_CONTENT);
         }
     }
+    @GetMapping("/get-user-cluster")
+    public ResponseEntity<?> getUserCluster() {
+        return new ResponseEntity<>(readAlertsService.getAuthenticatedUserCluster(), HttpStatus.OK);
+    }
+
+
 
 }

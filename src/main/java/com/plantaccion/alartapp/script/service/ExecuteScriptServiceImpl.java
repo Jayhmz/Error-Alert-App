@@ -85,6 +85,8 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
             alert.setTranAmount((Double) record.get("tran_amt"));
             alert.setSolId((Integer) record.get("sol_id"));
             alert.setCluster(cluster);
+            alert.setProcessorId(record.get("processor_id").toString());
+            alert.setAccountNo(record.get("account_no").toString());
             alerts.add(alert);
             alertRepository.save(alert);
             log.info("================= created Alert for " + alert.getAlertId()+" " +alert.getScript() +" "+ alert.getCluster()+" ===================");

@@ -14,8 +14,12 @@ public class AlertResponse {
     private LocalDate tran_date;
     private AlertStatus status;
 
-    public AlertResponse(String alertId, String scriptCategory, String resolution, int sol_id,
-                         double tran_amt, String tran_id, LocalDate tran_date, AlertStatus status) {
+    private String accountNo;
+
+    private String processorId;
+
+    public AlertResponse(String alertId, String scriptCategory, String resolution, int sol_id, double tran_amt,
+                         String tran_id, LocalDate tran_date, AlertStatus status, String accountNo, String processorId) {
         this.alertId = alertId;
         this.scriptCategory = scriptCategory;
         this.resolution = resolution;
@@ -24,6 +28,8 @@ public class AlertResponse {
         this.tran_id = tran_id;
         this.tran_date = tran_date;
         this.status = status;
+        this.accountNo = accountNo;
+        this.processorId = processorId;
     }
 
     public String getAlertId() {
@@ -88,5 +94,21 @@ public class AlertResponse {
 
     public void setStatus(AlertStatus status) {
         this.status = status;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public String getProcessorId() {
+        return processorId;
+    }
+
+    public void setProcessorId(String processorId) {
+        this.processorId = processorId;
     }
 }

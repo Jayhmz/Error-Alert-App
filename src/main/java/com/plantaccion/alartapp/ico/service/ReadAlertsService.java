@@ -8,4 +8,5 @@ public interface ReadAlertsService {
     Page<AlertResponse> getAllAlertsByCluster(Pageable pageable);
     Page<AlertResponse> getAllAlertsReviewedByICO(Pageable pageable);
     Page<AlertResponse> getAllPendingAlertsByICO(Pageable pageable);
+    String getAuthenticatedUserCluster();
 }

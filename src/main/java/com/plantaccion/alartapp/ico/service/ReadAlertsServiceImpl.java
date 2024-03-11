@@ -3,6 +3,7 @@ package com.plantaccion.alartapp.ico.service;
 import com.plantaccion.alartapp.common.model.app.Alert;
 import com.plantaccion.alartapp.common.repository.app.AlertRepository;
 import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.NoContentException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
@@ -18,10 +19,13 @@ import java.util.List;
 public class ReadAlertsServiceImpl implements ReadAlertsService {
     private final ICOProfileRepository icoProfileRepository;
     private final AlertRepository alertRepository;
+    private final RCHProfileRepository rCHProfileRepository;
 
-    public ReadAlertsServiceImpl(ICOProfileRepository icoProfileRepository, AlertRepository alertRepository) {
+    public ReadAlertsServiceImpl(ICOProfileRepository icoProfileRepository, AlertRepository alertRepository,
+                                 RCHProfileRepository rCHProfileRepository) {
         this.icoProfileRepository = icoProfileRepository;
         this.alertRepository = alertRepository;
+        this.rCHProfileRepository = rCHProfileRepository;
     }
 
     public Page<AlertResponse> getAllAlertsByCluster(Pageable pageable) {
@@ -49,7 +53,6 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
     }
 
 
-
     @Override
     public Page<AlertResponse> getAllPendingAlertsByICO(Pageable pageable) {
         var ico = AppUtils.getAuthenticatedUserDetails()
@@ -69,7 +72,18 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
                 alert.getTranAmount(),
                 alert.getTranId(),
                 alert.getTransactionDate(),
-                alert.getStatus()
-                );
+                alert.getStatus(),
+                alert.getAccountNo(),
+                alert.getProcessorId()
+        );
     }
+
+    @Override
+    public String getAuthenticatedUserCluster() {
+        var user = AppUtils.getAuthenticatedUserDetails()
+                .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
+        var icoProfile = icoProfileRepository.findByStaffId(user.getStaffId());
+        return icoProfile.getOnboardedBy().getCluster().getName();
+    }
+
 }
