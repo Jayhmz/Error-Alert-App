@@ -1,31 +1,27 @@
 package com.plantaccion.alartapp.authentication.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.plantaccion.alartapp.authentication.provider.UsernamePasswordAuthenticationProvider;
-import com.plantaccion.alartapp.common.model.AppUser;
 import com.plantaccion.alartapp.common.enums.Roles;
+import com.plantaccion.alartapp.common.model.app.AppUser;
 import com.plantaccion.alartapp.exception.TokenExpiredException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-
 import java.security.Key;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 @Component
 public class JWTService {
 
-    @Autowired
-    private UsernamePasswordAuthenticationProvider authenticationProvider;
     @Autowired
     private ObjectMapper mapper;
     @Value("${secret.key}")
@@ -95,16 +91,5 @@ public class JWTService {
             throw new TokenExpiredException("The token has expired");
         }
     }
-
-
-//        public String generateToken(String username) {
-//        Map<String, Object> claims = new HashMap<>();
-//        return createToken(claims, username);
-//    }
-
-//public String extractUsername(String token) {
-//    return extractClaim(token, Claims::getSubject);
-//}
-
 
 }

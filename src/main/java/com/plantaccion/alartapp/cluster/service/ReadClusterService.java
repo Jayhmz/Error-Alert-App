@@ -1,6 +1,6 @@
 package com.plantaccion.alartapp.cluster.service;
 
-import com.plantaccion.alartapp.common.model.Cluster;
+import com.plantaccion.alartapp.common.model.app.Cluster;
 
 import java.util.List;
 

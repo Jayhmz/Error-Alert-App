@@ -1,14 +1,13 @@
-package com.plantaccion.alartapp.common.model;
+package com.plantaccion.alartapp.common.model.app;
 
 import com.plantaccion.alartapp.common.enums.AlertStatus;
 import com.plantaccion.alartapp.common.utils.AlertSequenceIdGenerator;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "alerts")
@@ -17,7 +16,6 @@ public class Alert {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "alert_sequence")
     @GenericGenerator(
             name = "alert_sequence",
-            strategy = "com.plantaccion.alartapp.common.utils.AlertSequenceIdGenerator",
             parameters = {
                     @Parameter(name = AlertSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "Alert"),
                     @Parameter(name = AlertSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d"),
@@ -48,6 +46,12 @@ public class Alert {
 
     @Column(name = "tran_id")
     private String tranId;
+
+    @Column(name = "account_no")
+    private String accountNo;
+
+    @Column(name = "processor_id")
+    private String processorId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, columnDefinition = "ENUM('PENDING', 'RESOLVED', 'UNASSIGNED')")
@@ -189,5 +193,21 @@ public class Alert {
 
     public void setCluster(Cluster cluster) {
         this.cluster = cluster;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    public String getProcessorId() {
+        return processorId;
+    }
+
+    public void setProcessorId(String processorId) {
+        this.processorId = processorId;
     }
 }

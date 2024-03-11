@@ -23,7 +23,6 @@ public class ReadAlertController {
         this.readAlertsService = readAlertsService;
     }
 
-
     @GetMapping("/alerts")
     public ResponseEntity<?> getAllAlertsByCluster(
             @RequestParam(defaultValue = "0") int page,
@@ -60,5 +59,11 @@ public class ReadAlertController {
             return new ResponseEntity<>("Empty alert list", HttpStatus.NO_CONTENT);
         }
     }
+    @GetMapping("/get-user-cluster")
+    public ResponseEntity<?> getUserCluster() {
+        return new ResponseEntity<>(readAlertsService.getAuthenticatedUserCluster(), HttpStatus.OK);
+    }
+
+
 
 }

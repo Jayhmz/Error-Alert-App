@@ -1,8 +1,8 @@
 package com.plantaccion.alartapp.admin.scripts.service;
 
 import com.plantaccion.alartapp.admin.scripts.response.ScriptResponse;
-import com.plantaccion.alartapp.common.model.Script;
-import com.plantaccion.alartapp.common.repository.ScriptRepository;
+import com.plantaccion.alartapp.common.model.app.Script;
+import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.cluster.service;
 
-import com.plantaccion.alartapp.common.model.Cluster;
-import com.plantaccion.alartapp.common.repository.ClusterRepository;
+import com.plantaccion.alartapp.common.model.app.Cluster;
+import com.plantaccion.alartapp.common.repository.app.ClusterRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,12 +1,11 @@
 package com.plantaccion.alartapp.email.service;
 
-import com.plantaccion.alartapp.common.model.Alert;
-import com.plantaccion.alartapp.common.model.Cluster;
-import com.plantaccion.alartapp.common.model.InternalControlOfficerProfile;
-import com.plantaccion.alartapp.common.model.Script;
-import com.plantaccion.alartapp.common.repository.AlertRepository;
-import com.plantaccion.alartapp.common.repository.ICOProfileRepository;
-import com.plantaccion.alartapp.common.repository.RCHProfileRepository;
+import com.plantaccion.alartapp.common.model.app.Alert;
+import com.plantaccion.alartapp.common.model.app.Cluster;
+import com.plantaccion.alartapp.common.model.app.Script;
+import com.plantaccion.alartapp.common.repository.app.AlertRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +17,6 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.ISpringTemplateEngine;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 @Slf4j
