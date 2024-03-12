@@ -66,7 +66,7 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
                     .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
             var alert = alertRepository.findById(alertId).orElseThrow(() -> new AlertNotFoundException("Alert id does not exist in record."));
 
-            if (authenticatedStaff.equals(alert.getResolvedBy())) {
+            if (authenticatedStaff.getStaffId().equals(alert.getResolvedBy().getStaffId())) {
                 alert.setResolution(resolution.getResolution());
                 alert.setStatus(AlertStatus.RESOLVED);
                 alertRepository.save(alert);
