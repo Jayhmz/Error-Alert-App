@@ -50,9 +50,8 @@ public class AppSecurityConfig {
                             .anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(usernamePasswordAuthenticationProvider)
-
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(l ->
                         l.clearAuthentication(true)
                         .invalidateHttpSession(true)

@@ -49,7 +49,6 @@ public class AuthenticationServiceImpl implements AppUserService {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInDTO.getEmail(), signInDTO.getPassword()));
         if (authenticate.isAuthenticated()){
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
             return jwtService.generateToken(signInDTO.getEmail(), (AppUser) authenticate.getPrincipal());
         }else{
             throw new NullPointerException("Incorrect username or password");

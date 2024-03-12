@@ -25,8 +25,8 @@ import java.util.List;
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-    private final RequestMatcher authRequestMatcher = new AntPathRequestMatcher("/api/v1/users/**");
-    private final RequestMatcher swaggerRequestMatcher = new AntPathRequestMatcher("/swagger-ui/**");
+//    private final RequestMatcher authRequestMatcher = new AntPathRequestMatcher("/api/v1/users/**");
+//    private final RequestMatcher swaggerRequestMatcher = new AntPathRequestMatcher("/swagger-ui/**");
     private final AppUserRepository userRepository;
     private final JWTService jwtService;
     private final UsernamePasswordAuthenticationProvider authenticationProvider;
@@ -39,16 +39,9 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        HttpServletResponse res = (HttpServletResponse) response;
-        res.setHeader("Access-Control-Allow-Origin", "*");
-        res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
-        res.setHeader("Access-Control-Max-Age", "3600");
-        res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.setHeader("Access-Control-Expose-Headers", "Location");
         String requestHeader = request.getHeader("Authorization");
 
-        if (requestHeader != null && !(authRequestMatcher.matches(request) || swaggerRequestMatcher.matches(request))) {
+        if (requestHeader != null ) {
             String token;
 
             if (requestHeader.startsWith("Bearer ")) {
@@ -64,7 +57,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
               }
         }
-
         filterChain.doFilter(request, response);
     }
 
