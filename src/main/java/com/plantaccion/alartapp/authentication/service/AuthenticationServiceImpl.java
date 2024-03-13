@@ -8,11 +8,12 @@ import com.plantaccion.alartapp.common.enums.LoginProvider;
 import com.plantaccion.alartapp.common.enums.Roles;
 import com.plantaccion.alartapp.common.model.app.AppUser;
 import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +24,17 @@ public class AuthenticationServiceImpl implements AppUserService {
     private final AppUserRepository repository;
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
+    private final RCHProfileRepository rchProfileRepository;
+    private final ICOProfileRepository icoProfileRepository;
 
     public AuthenticationServiceImpl(PasswordEncoder encoder, AppUserRepository repository,
-                                     AuthenticationManager authenticationManager, JWTService jwtService) {
+                                     AuthenticationManager authenticationManager, JWTService jwtService, RCHProfileRepository rchProfileRepository, ICOProfileRepository icoProfileRepository) {
         this.encoder = encoder;
         this.repository = repository;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.rchProfileRepository = rchProfileRepository;
+        this.icoProfileRepository = icoProfileRepository;
     }
 
     @Override
@@ -49,9 +54,29 @@ public class AuthenticationServiceImpl implements AppUserService {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInDTO.getEmail(), signInDTO.getPassword()));
         if (authenticate.isAuthenticated()){
-            return jwtService.generateToken(signInDTO.getEmail(), (AppUser) authenticate.getPrincipal());
+            var appUser = (AppUser) authenticate.getPrincipal();
+           return  tokenGenerator(signInDTO, appUser);
         }else{
             throw new NullPointerException("Incorrect username or password");
         }
+    }
+
+    private String tokenGenerator(SignInDTO signInDTO, AppUser appUser) {
+        String token ;
+        switch(appUser.getRole()){
+            case RCH -> {
+                String cluster = rchProfileRepository.findByStaff(appUser).getCluster().getName();
+                token = jwtService.generateToken(signInDTO.getEmail(), appUser, cluster);
+            }
+            case ICO -> {
+                String cluster = icoProfileRepository.findByStaffId(appUser.getStaffId()).getOnboardedBy().getCluster().getName();
+               token =  jwtService.generateToken(signInDTO.getEmail(), appUser, cluster);
+            }
+            default -> {
+                String cluster = "Head Office";
+                token = jwtService.generateToken(signInDTO.getEmail(), appUser, cluster);
+            }
+        }
+        return token;
     }
 }

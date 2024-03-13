@@ -25,8 +25,7 @@ import java.util.List;
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-//    private final RequestMatcher authRequestMatcher = new AntPathRequestMatcher("/api/v1/users/**");
-//    private final RequestMatcher swaggerRequestMatcher = new AntPathRequestMatcher("/swagger-ui/**");
+
     private final AppUserRepository userRepository;
     private final JWTService jwtService;
     private final UsernamePasswordAuthenticationProvider authenticationProvider;
@@ -36,7 +35,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
         this.authenticationProvider = authenticationProvider;
     }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestHeader = request.getHeader("Authorization");
