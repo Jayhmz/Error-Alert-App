@@ -1,7 +1,8 @@
 package com.plantaccion.alartapp.admin.staff.controller;
 
-import com.plantaccion.alartapp.common.dto.RchDTO;
+import com.plantaccion.alartapp.common.dto.StaffProfileDTO;
 import com.plantaccion.alartapp.admin.staff.service.WriteStaffsService;
+import com.plantaccion.alartapp.common.dto.UpdateStaffProfileDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class WriteStaffsController {
     }
 
     @PostMapping(value = "/staffs", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createStaff(@Valid @RequestBody RchDTO staffDTO, BindingResult result) {
+    public ResponseEntity<?> createStaff(@Valid @RequestBody StaffProfileDTO staffDTO, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {
@@ -36,7 +37,7 @@ public class WriteStaffsController {
     }
 
     @PostMapping(value = "/staffs/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editStaff(@Valid @PathVariable("id") String staffId, @RequestBody RchDTO staffDTO, BindingResult result) {
+    public ResponseEntity<?> editStaff(@Valid @PathVariable("id") Long staffId, @RequestBody UpdateStaffProfileDTO staffDTO, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {

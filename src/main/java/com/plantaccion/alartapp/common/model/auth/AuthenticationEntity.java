@@ -2,22 +2,22 @@ package com.plantaccion.alartapp.common.model.auth;
 
 import jakarta.persistence.*;
 
-@Entity(name = "app_users")
+@Entity(name = "bank_staffs")
 public class AuthenticationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long user_id;
+    private Long staffId;
 
     private String email;
     private String password;
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getStaffId() {
+        return staffId;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
 
     public String getEmail() {

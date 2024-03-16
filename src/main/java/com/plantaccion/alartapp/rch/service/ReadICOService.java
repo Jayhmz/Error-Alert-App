@@ -7,5 +7,5 @@ import java.util.List;
 public interface ReadICOService {
     List<StaffResponse> getAllStaff();
 
-    StaffResponse getOneStaff(String staffId);
+    StaffResponse getOneStaff(Long staffId);
 }

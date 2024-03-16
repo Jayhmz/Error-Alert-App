@@ -24,8 +24,6 @@ public class ReadScriptServiceImpl implements ReadScriptService{
             Map<String, Object> user = new HashMap<>();
             user.put("id", script.getCreatedBy().getId());
             user.put("email", script.getCreatedBy().getEmail());
-            user.put("firstname", script.getCreatedBy().getFirstname());
-            user.put("lastname", script.getCreatedBy().getLastname());
 
             scriptResponses.add(new ScriptResponse(script.getId(), script.getTitle(), script.getBody(), user));
         }
@@ -39,8 +37,6 @@ public class ReadScriptServiceImpl implements ReadScriptService{
         Map<String, Object> user = new HashMap<>();
         user.put("id", script.get().getCreatedBy().getId());
         user.put("email", script.get().getCreatedBy().getEmail());
-        user.put("firstname", script.get().getCreatedBy().getFirstname());
-        user.put("lastname", script.get().getCreatedBy().getLastname());
         return new ScriptResponse(script.get().getId(), script.get().getTitle(), script.get().getBody(), user);
     }
 }

@@ -42,8 +42,6 @@ public class WriteScriptServiceImpl implements WriteScriptService {
         Map<String, Object> user = new HashMap<>();
         user.put("id", script.getCreatedBy().getId());
         user.put("email", script.getCreatedBy().getEmail());
-        user.put("firstname", script.getCreatedBy().getFirstname());
-        user.put("lastname", script.getCreatedBy().getLastname());
 
         return new ScriptResponse(script.getId(), script.getTitle(), script.getBody(), user);
     }
@@ -70,8 +68,6 @@ public class WriteScriptServiceImpl implements WriteScriptService {
         Map<String, Object> user = new HashMap<>();
         user.put("id", script.getCreatedBy().getId());
         user.put("email", script.getCreatedBy().getEmail());
-        user.put("firstname", script.getCreatedBy().getFirstname());
-        user.put("lastname", script.getCreatedBy().getLastname());
 
         return new ScriptResponse(script.getId(), script.getTitle(), script.getBody(), user);
     }

@@ -17,19 +17,19 @@ public class DeleteICOController {
     }
 
     @DeleteMapping("/soft-delete-staff/{id}")
-    public ResponseEntity<?> softDeleteStaff(@PathVariable("id") String id){
+    public ResponseEntity<?> softDeleteStaff(@PathVariable("id") Long id){
         deleteIcoService.softDelete(id);
         return new ResponseEntity<>("Staff deactivated successfully", HttpStatus.OK);
     }
 
     @PostMapping("/activate-staff/{id}")
-    public ResponseEntity<?> activateStaff(@PathVariable("id") String id){
+    public ResponseEntity<?> activateStaff(@PathVariable("id") Long id){
         deleteIcoService.activate(id);
         return new ResponseEntity<>("Staff reactivated successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/hard-delete-staff/{id}")
-    public ResponseEntity<?> hardDeleteStaff(@PathVariable("id") String id){
+    public ResponseEntity<?> hardDeleteStaff(@PathVariable("id") Long id){
         deleteIcoService.hardDelete(id);
         return new ResponseEntity<>("Staff deleted successfully", HttpStatus.OK);
     }

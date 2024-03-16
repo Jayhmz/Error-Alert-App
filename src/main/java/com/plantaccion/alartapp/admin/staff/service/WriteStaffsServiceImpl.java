@@ -1,18 +1,21 @@
 package com.plantaccion.alartapp.admin.staff.service;
 
 import com.plantaccion.alartapp.admin.staff.response.StaffResponse;
-import com.plantaccion.alartapp.common.dto.RchDTO;
-import com.plantaccion.alartapp.common.enums.LoginProvider;
+import com.plantaccion.alartapp.common.dto.StaffProfileDTO;
+import com.plantaccion.alartapp.common.dto.UpdateStaffProfileDTO;
 import com.plantaccion.alartapp.common.enums.Roles;
-import com.plantaccion.alartapp.common.model.app.RegionalControlHeadProfile;
 import com.plantaccion.alartapp.common.model.app.AppUser;
-import com.plantaccion.alartapp.common.repository.app.ClusterRepository;
-import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
+import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;
+import com.plantaccion.alartapp.common.model.app.ZonalControlHeadProfile;
 import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.app.ClusterRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.ZCHProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
+import com.plantaccion.alartapp.exception.ClusterNotFoundException;
+import com.plantaccion.alartapp.exception.NoContentException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,76 +24,125 @@ import java.util.Map;
 
 @Service
 public class WriteStaffsServiceImpl implements WriteStaffsService {
+
     private final AppUserRepository userRepository;
-    private final RCHProfileRepository rchRepository;
+    private final ZCHProfileRepository zchRepository;
+    private final ICOProfileRepository icoRepository;
     private final ClusterRepository clusterRepository;
-    private final PasswordEncoder encoder;
 
-    @Value("${staff.password}")
-    private String password;
-
-    public WriteStaffsServiceImpl(AppUserRepository userRepository, RCHProfileRepository rchRepository, ClusterRepository clusterRepository, PasswordEncoder encoder) {
+    public WriteStaffsServiceImpl(AppUserRepository userRepository, ZCHProfileRepository zchRepository,
+                                  ICOProfileRepository icoRepository,
+                                  ClusterRepository clusterRepository) {
         this.userRepository = userRepository;
-        this.rchRepository = rchRepository;
+        this.zchRepository = zchRepository;
+        this.icoRepository = icoRepository;
         this.clusterRepository = clusterRepository;
-        this.encoder = encoder;
     }
 
     @Override
-    public StaffResponse createStaff(RchDTO staffDTO) {
+    @Transactional
+    public StaffResponse createStaff(StaffProfileDTO staffDTO) {
         var authenticatedUser = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
-        var user = new AppUser(staffDTO.getStaffId(), staffDTO.getFirstname(), staffDTO.getLastname(),
-                staffDTO.getEmail(), Roles.RCH,
-                encoder.encode(password));
-        user.setProvider(LoginProvider.BASIC);
-        userRepository.save(user);
 
+        switch (Roles.valueOf(staffDTO.getRole().toUpperCase())) {
+            case ZCH -> {
+                AppUser user = new AppUser(staffDTO.getStaffId(), staffDTO.getEmail(), Roles.ZCH);
+                userRepository.save(user);
+
+                var zchProfile = createZCHProfile(staffDTO, authenticatedUser, user);
+                Map<String, Object> profileResponse = new HashMap<>();
+                profileResponse.put("id", zchProfile.getId());
+                profileResponse.put("staffId", zchProfile.getStaff().getStaffId());
+                profileResponse.put("Cluster", zchProfile.getCluster().getName());
+                profileResponse.put("createdBy", zchProfile.getCreatedBy().getStaffId());
+                return new StaffResponse(user.getStaffId(), user.getEmail(), user.getRole().name(), profileResponse);
+            }
+            case ICO -> {
+                AppUser user = new AppUser(staffDTO.getStaffId(), staffDTO.getEmail(), Roles.ICO);
+                userRepository.save(user);
+
+                var icoProfile = createICOProfile(staffDTO, authenticatedUser, user);
+                Map<String, Object> profileResponse = new HashMap<>();
+                profileResponse.put("id", icoProfile.getId());
+                profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
+                profileResponse.put("Cluster", icoProfile.getSupervisor().getCluster().getName());
+                profileResponse.put("createdBy", icoProfile.getSupervisor().getStaff().getStaffId());
+                return new StaffResponse(user.getStaffId(), user.getEmail(), user.getRole().name(), profileResponse);
+            }
+            default -> {
+                throw new NoContentException("Unknown user role");
+            }
+        }
+    }
+
+    private ZonalControlHeadProfile createZCHProfile(StaffProfileDTO staffDTO, AppUser authenticatedUser, AppUser user) {
         var cluster = clusterRepository.findByName(staffDTO.getCluster().toUpperCase());
-        var rchProfile = new RegionalControlHeadProfile();
-        rchProfile.setCreatedBy(authenticatedUser);
-        rchProfile.setStaff(user);
-        rchProfile.setCluster(cluster);
-        rchRepository.save(rchProfile);
+        if (cluster == null) {
+            throw new ClusterNotFoundException("Cluster/Zone is not available");
+        }
+        var zchProfile = new ZonalControlHeadProfile();
+        zchProfile.setCreatedBy(authenticatedUser);
+        zchProfile.setStaff(user);
+        zchProfile.setCluster(cluster);
+        zchRepository.save(zchProfile);
+        return zchProfile;
+    }
 
-        Map<String, Object> profileResponse = new HashMap<>();
-        profileResponse.put("id", rchProfile.getId());
-        profileResponse.put("staffId", rchProfile.getStaff().getStaffId());
-        profileResponse.put("Cluster", rchProfile.getCluster().getName());
-        profileResponse.put("createdBy", rchProfile.getCreatedBy().getStaffId());
-        return new StaffResponse(user.getStaffId(), user.getFirstname(), user.getLastname(),
-                user.getEmail(), user.getRole().name(), profileResponse);
+    private InternalControlOfficerProfile createICOProfile(StaffProfileDTO staffDTO, AppUser authenticatedUser, AppUser user) {
+        var rch = zchRepository.findByStaffId(staffDTO.getSupervisor());
+        var icoProfile = new InternalControlOfficerProfile();
+        icoProfile.setSupervisor(rch);
+        icoProfile.setIcoStaff(user);
+        icoRepository.save(icoProfile);
+        return icoProfile;
+    }
+
+    private ZonalControlHeadProfile updateZCHProfile(Long staffId, UpdateStaffProfileDTO staffDTO) {
+        var cluster = clusterRepository.findByName(staffDTO.getCluster().toUpperCase());
+        var zchProfile = zchRepository.findByStaffId(staffId);
+        zchProfile.setCluster(cluster);
+        zchRepository.save(zchProfile);
+        return zchProfile;
+    }
+
+    private InternalControlOfficerProfile updateICOProfile(Long staffId, UpdateStaffProfileDTO staffDTO) {
+        var cluster = clusterRepository.findByName(staffDTO.getCluster().toUpperCase());
+        var icoProfile = icoRepository.findByStaffId(staffId);
+        var zchProfile = zchRepository.findByStaffId(staffDTO.getSupervisor());
+        icoProfile.setSupervisor(zchProfile);
+        icoRepository.save(icoProfile);
+        return icoProfile;
     }
 
     @Override
-    public StaffResponse editStaff(String staffId, RchDTO staffDTO) {
+    public StaffResponse editStaff(Long staffId, UpdateStaffProfileDTO staffDTO) {
         var authenticatedUser = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
 
         var user = userRepository.findByStaffId(staffId);
-        if (user == null) {
-            throw new StaffNotFoundException("Staff does not exist in our record");
+        switch (Roles.valueOf(staffDTO.getRole().toUpperCase())) {
+            case ZCH -> {
+                var rchProfile = updateZCHProfile(staffId, staffDTO);
+                Map<String, Object> profileResponse = new HashMap<>();
+                profileResponse.put("id", rchProfile.getId());
+                profileResponse.put("staffId", rchProfile.getStaff().getStaffId());
+                profileResponse.put("Cluster", rchProfile.getCluster().getName());
+                profileResponse.put("createdBy", rchProfile.getCreatedBy().getStaffId());
+                return new StaffResponse(user.getStaffId(), user.getEmail(), user.getRole().name(), profileResponse);
+            }
+            case ICO -> {
+                var icoProfile = updateICOProfile(staffId, staffDTO);
+                Map<String, Object> profileResponse = new HashMap<>();
+                profileResponse.put("id", icoProfile.getId());
+                profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
+                profileResponse.put("Cluster", icoProfile.getSupervisor().getCluster().getName());
+                profileResponse.put("createdBy", icoProfile.getSupervisor().getStaff().getStaffId());
+                return new StaffResponse(user.getStaffId(), user.getEmail(), user.getRole().name(), profileResponse);
+            }
+            default -> {
+                throw new NoContentException("Unknown user role");
+            }
         }
-        user.setFirstname(staffDTO.getFirstname());
-        user.setLastname(staffDTO.getLastname());
-        user.setRole(Roles.RCH);
-        user.setProvider(LoginProvider.BASIC);
-        userRepository.save(user);
-
-        var cluster = clusterRepository.findByName(staffDTO.getCluster().toUpperCase());
-        var rchProfile = rchRepository.findByStaff(user);
-        rchProfile.setUpdatedBy(authenticatedUser);
-        rchProfile.setCluster(cluster);
-        rchProfile.setUpdatedOn(LocalDateTime.now());
-
-        Map<String, Object> profileResponse = new HashMap<>();
-        profileResponse.put("id", rchProfile.getId());
-        profileResponse.put("staffId", rchProfile.getStaff().getStaffId());
-        profileResponse.put("Cluster", rchProfile.getCluster().getName());
-        profileResponse.put("createdBy", rchProfile.getCreatedBy().getStaffId());
-        profileResponse.put("updatedBy", rchProfile.getUpdatedBy().getStaffId());
-
-        return new StaffResponse(user.getStaffId(), user.getFirstname(),
-                user.getLastname(), user.getEmail(), user.getRole().name(), profileResponse);
     }
 }

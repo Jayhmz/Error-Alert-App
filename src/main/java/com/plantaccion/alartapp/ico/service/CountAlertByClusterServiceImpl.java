@@ -21,13 +21,13 @@ public class CountAlertByClusterServiceImpl implements CountAlertByClusterServic
         var user = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         var ico = icoProfileRepository.findByStaffId(user.getStaffId());
-        return alertRepository.countAlertByCluster(ico.getOnboardedBy().getCluster());
+        return alertRepository.countAlertByCluster(ico.getSupervisor().getCluster());
     }
     @Override
     public int countAlertReviewedByICO() {
         var user = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         var ico = icoProfileRepository.findByStaffId(user.getStaffId());
-        return alertRepository.countAlertReviewedByICO(ico.getOnboardedBy().getCluster(), ico.getIcoStaff());
+        return alertRepository.countAlertReviewedByICO(ico.getSupervisor().getCluster(), ico.getIcoStaff());
     }
 }

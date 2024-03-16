@@ -31,8 +31,6 @@ public class JWTService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", Roles.valueOf(appUser.getRole().name()));
         claims.put("staffId", appUser.getStaffId());
-        claims.put("firstname", appUser.getFirstname());
-        claims.put("lastname", appUser.getLastname());
         claims.put("id", appUser.getId());
         claims.put("email", appUser.getEmail());
         claims.put("zone", cluster);

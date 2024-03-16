@@ -55,7 +55,7 @@ public class WriteAlertReviewServiceImpl implements WriteAlertReviewService {
     }
 
     private boolean isSameCluster(InternalControlOfficerProfile ico, Alert alert) {
-        return Objects.equals(ico.getOnboardedBy().getCluster().getName(), alert.getCluster().getName());
+        return Objects.equals(ico.getSupervisor().getCluster().getName(), alert.getCluster().getName());
     }
 
 

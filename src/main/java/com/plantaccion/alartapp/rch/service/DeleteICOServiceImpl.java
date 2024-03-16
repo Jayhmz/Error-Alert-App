@@ -13,7 +13,7 @@ public class DeleteICOServiceImpl implements DeleteICOService {
     }
 
     @Override
-    public void softDelete(String id) {
+    public void softDelete(Long id) {
         var staff = icoProfileRepository.findByStaffId(id);
         if (staff == null){
             throw new StaffNotFoundException("Staff does not exist in our record");
@@ -23,7 +23,7 @@ public class DeleteICOServiceImpl implements DeleteICOService {
     }
 
     @Override
-    public void activate(String id) {
+    public void activate(Long id) {
         var staff = icoProfileRepository.findByStaffId(id);
         if (staff == null){
             throw new StaffNotFoundException("Staff does not exist in our record");
@@ -33,7 +33,7 @@ public class DeleteICOServiceImpl implements DeleteICOService {
     }
 
     @Override
-    public void hardDelete(String id) {
+    public void hardDelete(Long id) {
         var staff = icoProfileRepository.findByStaffId(id);
         if (staff == null){
             throw new StaffNotFoundException("Staff does not exist in our record");

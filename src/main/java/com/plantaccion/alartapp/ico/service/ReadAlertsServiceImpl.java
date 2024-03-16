@@ -3,7 +3,7 @@ package com.plantaccion.alartapp.ico.service;
 import com.plantaccion.alartapp.common.model.app.Alert;
 import com.plantaccion.alartapp.common.repository.app.AlertRepository;
 import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
-import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.ZCHProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.NoContentException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
@@ -19,10 +19,10 @@ import java.util.List;
 public class ReadAlertsServiceImpl implements ReadAlertsService {
     private final ICOProfileRepository icoProfileRepository;
     private final AlertRepository alertRepository;
-    private final RCHProfileRepository rCHProfileRepository;
+    private final ZCHProfileRepository rCHProfileRepository;
 
     public ReadAlertsServiceImpl(ICOProfileRepository icoProfileRepository, AlertRepository alertRepository,
-                                 RCHProfileRepository rCHProfileRepository) {
+                                 ZCHProfileRepository rCHProfileRepository) {
         this.icoProfileRepository = icoProfileRepository;
         this.alertRepository = alertRepository;
         this.rCHProfileRepository = rCHProfileRepository;
@@ -32,7 +32,7 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
         var ico = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         var icoProfile = icoProfileRepository.findByStaffId(ico.getStaffId());
-        var cluster = icoProfile.getOnboardedBy().getCluster();
+        var cluster = icoProfile.getSupervisor().getCluster();
 
         Page<Alert> alerts = alertRepository.findAlertsByCluster(cluster, pageable);
 
@@ -58,7 +58,7 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
         var ico = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         var icoProfile = icoProfileRepository.findByStaffId(ico.getStaffId());
-        var cluster = icoProfile.getOnboardedBy().getCluster();
+        var cluster = icoProfile.getSupervisor().getCluster();
         var alerts = alertRepository.findAlertsByResolvedByAndStatusPending(ico, pageable);
         return alerts.map(this::mapToAlertResponse);
     }
@@ -83,7 +83,7 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
         var user = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
         var icoProfile = icoProfileRepository.findByStaffId(user.getStaffId());
-        return icoProfile.getOnboardedBy().getCluster().getName();
+        return icoProfile.getSupervisor().getCluster().getName();
     }
 
 }

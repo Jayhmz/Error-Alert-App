@@ -1,6 +1,5 @@
 package com.plantaccion.alartapp.common.model.app;
 
-import com.plantaccion.alartapp.common.model.app.AppUser;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -12,17 +11,17 @@ public class InternalControlOfficerProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "ico_staff_id", referencedColumnName = "staff_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ico_staff_id", referencedColumnName = "staff_id", nullable = false)
     private AppUser icoStaff;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "created_by", referencedColumnName = "rch_staff_id")
-    private RegionalControlHeadProfile onboardedBy;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "created_by", referencedColumnName = "zch_staff_id", nullable = false)
+    private ZonalControlHeadProfile supervisor;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "updated_by", referencedColumnName = "rch_staff_id")
-    private RegionalControlHeadProfile updatedBy;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "updated_by", referencedColumnName = "zch_staff_id")
+    private ZonalControlHeadProfile updatedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false,
@@ -36,12 +35,12 @@ public class InternalControlOfficerProfile {
     @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isDisabled;
 
-    public RegionalControlHeadProfile getOnboardedBy() {
-        return onboardedBy;
+    public ZonalControlHeadProfile getSupervisor() {
+        return supervisor;
     }
 
-    public void setOnboardedBy(RegionalControlHeadProfile onboardedBy) {
-        this.onboardedBy = onboardedBy;
+    public void setSupervisor(ZonalControlHeadProfile supervisor) {
+        this.supervisor = supervisor;
     }
 
     public Long getId() {
@@ -68,11 +67,11 @@ public class InternalControlOfficerProfile {
         this.icoStaff = icoStaff;
     }
 
-    public RegionalControlHeadProfile getUpdatedBy() {
+    public ZonalControlHeadProfile getUpdatedBy() {
         return updatedBy;
     }
 
-    public void setUpdatedBy(RegionalControlHeadProfile updatedBy) {
+    public void setUpdatedBy(ZonalControlHeadProfile updatedBy) {
         this.updatedBy = updatedBy;
     }
 
