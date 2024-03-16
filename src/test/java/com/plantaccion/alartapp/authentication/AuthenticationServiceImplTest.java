@@ -28,7 +28,7 @@ class AuthenticationServiceImplTest {
 
     @Test
     void createUser() {
-        RegistrationDTO registrationDTO = new RegistrationDTO("19623","James", "Damilare", "a@a.com",  "password");
-        AppUser expectedUser = new AppUser("19623","James","Damilare",  "a@a.com", Roles.valueOf("ADMIN"), "password");
+        RegistrationDTO registrationDTO = new RegistrationDTO(19623L,"James", "Damilare", "a@a.com",  "password");
+        AppUser expectedUser = new AppUser(19623L, "a@a.com", Roles.valueOf("ADMIN"));
     }
 }
