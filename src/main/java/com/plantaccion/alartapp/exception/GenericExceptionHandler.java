@@ -95,6 +95,14 @@ public class GenericExceptionHandler {
         errorResponse.put("message", ex.getMessage());
         return errorResponse;
     }
+    @ExceptionHandler(value = ClusterNotFoundException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, Object> handleClusterNotFoundException(ClusterNotFoundException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("exception name", "ClusterNotFoundException");
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
+    }
     @ExceptionHandler(value = AlertNotFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String, Object> handleAlertNotFoundException(AlertNotFoundException ex) {

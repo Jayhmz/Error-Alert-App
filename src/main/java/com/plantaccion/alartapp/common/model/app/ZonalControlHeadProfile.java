@@ -1,29 +1,28 @@
 package com.plantaccion.alartapp.common.model.app;
 
-import com.plantaccion.alartapp.common.model.app.AppUser;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "rch_profile")
-public class RegionalControlHeadProfile {
+@Table(name = "zch_profile")
+public class ZonalControlHeadProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "rch_staff_id", referencedColumnName = "staff_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "zch_staff_id", referencedColumnName = "staff_id", nullable = false)
     private AppUser staff;
 
     @OneToOne
     @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_name")
     private Cluster cluster;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
     private AppUser createdBy;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by", referencedColumnName = "staff_id")
     private AppUser updatedBy;
 

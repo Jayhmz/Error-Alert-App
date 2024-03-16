@@ -4,45 +4,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.plantaccion.alartapp.authentication.validation.ValidEmail;
 import jakarta.validation.constraints.NotNull;
 
-public class RchDTO {
+public class StaffProfileDTO {
     @JsonProperty("staffId")
     @NotNull(message = "staffId cannot be null")
-    private String staffId;
-    @JsonProperty("firstname")
-    @NotNull(message = "firstname cannot be null")
-    private String firstname;
-    @JsonProperty("lastname")
-    @NotNull(message = "lastname cannot be null")
-    private String lastname;
+    private Long staffId;
+    @JsonProperty("role")
+    @NotNull(message = "No role selected")
+    private String role;
     @JsonProperty("email")
     @ValidEmail(message = "Enter a valid email")
     private String email;
     @JsonProperty("cluster")
-    @NotNull(message = "Enter a valid cluster")
     private String cluster;
 
-    public String getStaffId() {
+    @JsonProperty("supervisor")
+    private Long supervisor;
+
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getRole() {
+        return role;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {
@@ -59,5 +50,13 @@ public class RchDTO {
 
     public void setCluster(String cluster) {
         this.cluster = cluster;
+    }
+
+    public Long getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(Long supervisor) {
+        this.supervisor = supervisor;
     }
 }

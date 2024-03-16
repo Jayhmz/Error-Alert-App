@@ -5,7 +5,7 @@ import com.plantaccion.alartapp.common.model.app.Cluster;
 import com.plantaccion.alartapp.common.model.app.Script;
 import com.plantaccion.alartapp.common.repository.app.AlertRepository;
 import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
-import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.ZCHProfileRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -24,14 +24,14 @@ public class WriteEmailServiceImpl implements WriteEmailService {
     private final JavaMailSender mailSender;
     private final ISpringTemplateEngine thymeleafTemplateEngine;
     private final AlertRepository alertRepository;
-    private final RCHProfileRepository rchProfileRepository;
+    private final ZCHProfileRepository ZCHProfileRepository;
     private final ICOProfileRepository icoProfileRepository;
 
-    public WriteEmailServiceImpl(JavaMailSender mailSender, ISpringTemplateEngine thymeleafTemplateEngine, AlertRepository alertRepository, RCHProfileRepository rchProfileRepository, ICOProfileRepository icoProfileRepository) {
+    public WriteEmailServiceImpl(JavaMailSender mailSender, ISpringTemplateEngine thymeleafTemplateEngine, AlertRepository alertRepository, ZCHProfileRepository ZCHProfileRepository, ICOProfileRepository icoProfileRepository) {
         this.mailSender = mailSender;
         this.thymeleafTemplateEngine = thymeleafTemplateEngine;
         this.alertRepository = alertRepository;
-        this.rchProfileRepository = rchProfileRepository;
+        this.ZCHProfileRepository = ZCHProfileRepository;
         this.icoProfileRepository = icoProfileRepository;
     }
 
@@ -43,16 +43,16 @@ public class WriteEmailServiceImpl implements WriteEmailService {
     public void sendMail(Cluster cluster, Script queriedScript) throws MessagingException {
         var alerts = alertRepository.findAlertsByClusterAndScript(cluster, queriedScript);
         if (alerts != null && !alerts.isEmpty()) {
-            var rch = rchProfileRepository.findByCluster(cluster);
-            var controlOfficers = icoProfileRepository.findICOsByRCH(rch);
+            var zch = ZCHProfileRepository.findByCluster(cluster);
+            var controlOfficers = icoProfileRepository.findICOsBySupervisor(zch);
             String[] ccEmails = controlOfficers.stream()
                     .map(co -> co.getIcoStaff().getEmail())
                     .toArray(String[]::new);
-            var rchEmail = rch.getStaff().getEmail();
+            var zchEmail = zch.getStaff().getEmail();
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(rchEmail);
+            helper.setTo(zchEmail);
             if(ccEmails.length > 0){
                 helper.setCc(ccEmails);
             }

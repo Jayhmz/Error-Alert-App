@@ -27,14 +27,13 @@ public class JWTService {
     @Value("${secret.key}")
     private String secretKey;
 
-    public String generateToken(String username, AppUser appUser) {
+    public String generateToken(String username, AppUser appUser, String cluster) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", Roles.valueOf(appUser.getRole().name()));
         claims.put("staffId", appUser.getStaffId());
-        claims.put("firstname", appUser.getFirstname());
-        claims.put("lastname", appUser.getLastname());
         claims.put("id", appUser.getId());
         claims.put("email", appUser.getEmail());
+        claims.put("zone", cluster);
         return createToken(claims, username);
     }
 

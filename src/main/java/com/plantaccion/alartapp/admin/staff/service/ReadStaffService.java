@@ -5,6 +5,8 @@ import com.plantaccion.alartapp.admin.staff.response.StaffResponse;
 import java.util.List;
 
 public interface ReadStaffService {
-    List<StaffResponse> getAllStaff();
-    StaffResponse getOneStaff(String staffId);
+    List<StaffResponse> getAllStaffProfile();
+    StaffResponse getOneStaffProfile(Long staffId);
+    StaffResponse findOneBankStaff(Long staffId);
+
 }

@@ -6,11 +6,7 @@ import java.util.Map;
 
 public class StaffResponse {
     @JsonProperty("id")
-    private String staffId;
-    @JsonProperty("firstname")
-    private String firstname;
-    @JsonProperty("lastname")
-    private String lastname;
+    private Long staffId;
     @JsonProperty("email")
     private String email;
     @JsonProperty("role")
@@ -18,19 +14,15 @@ public class StaffResponse {
     @JsonProperty("profile")
     private Map<String, Object> profile;
 
-    public StaffResponse(String staffId, String firstname, String lastname, String email, String role, Map<String, Object> profile) {
+    public StaffResponse(Long staffId, String email, String role,
+                         Map<String, Object> profile) {
         this.staffId = staffId;
-        this.firstname = firstname;
-        this.lastname = lastname;
         this.email = email;
         this.role = role;
         this.profile = profile;
     }
-    public StaffResponse(String staffId, String firstname, String lastname, String email, String role) {
+    public StaffResponse(Long staffId, String email) {
         this.staffId = staffId;
-        this.firstname = firstname;
-        this.lastname = lastname;
         this.email = email;
-        this.role = role;
     }
 }

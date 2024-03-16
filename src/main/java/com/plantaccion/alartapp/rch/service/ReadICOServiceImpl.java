@@ -3,7 +3,7 @@ package com.plantaccion.alartapp.rch.service;
 import com.plantaccion.alartapp.admin.staff.response.StaffResponse;
 import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;
 import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
-import com.plantaccion.alartapp.common.repository.app.RCHProfileRepository;
+import com.plantaccion.alartapp.common.repository.app.ZCHProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,19 +17,19 @@ import java.util.Map;
 public class ReadICOServiceImpl implements ReadICOService {
 
     private final ICOProfileRepository icoProfileRepository;
-    private final RCHProfileRepository rchProfileRepository;
+    private final ZCHProfileRepository ZCHProfileRepository;
 
-    public ReadICOServiceImpl(ICOProfileRepository icoProfileRepository, RCHProfileRepository rchProfileRepository) {
+    public ReadICOServiceImpl(ICOProfileRepository icoProfileRepository, ZCHProfileRepository ZCHProfileRepository) {
         this.icoProfileRepository = icoProfileRepository;
-        this.rchProfileRepository = rchProfileRepository;
+        this.ZCHProfileRepository = ZCHProfileRepository;
     }
 
     @Override
     public List<StaffResponse> getAllStaff() {
         var authenticatedUser = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
-        var rchProfile = rchProfileRepository.findByStaff(authenticatedUser);
-        var allStaffs = icoProfileRepository.findAllByOnboardedBy(rchProfile);
+        var rchProfile = ZCHProfileRepository.findByStaff(authenticatedUser);
+        var allStaffs = icoProfileRepository.findAllBySupervisor(rchProfile);
 
         List<StaffResponse> response = new ArrayList<>();
         for (InternalControlOfficerProfile profile : allStaffs) {
@@ -38,17 +38,16 @@ public class ReadICOServiceImpl implements ReadICOService {
             if (profile != null) {
                 profileResponse.put("id", staff.getId());
                 profileResponse.put("staffId", staff.getStaffId());
-                profileResponse.put("cluster", profile.getOnboardedBy().getCluster());
+                profileResponse.put("cluster", profile.getSupervisor().getCluster());
                 profileResponse.put("updatedBy", profile.getUpdatedBy().getStaff().getStaffId());
-                response.add(new StaffResponse(staff.getStaffId(), staff.getFirstname(),
-                        staff.getLastname(), staff.getEmail(), staff.getRole().name(), profileResponse));
+                response.add(new StaffResponse(staff.getStaffId(), staff.getEmail(), staff.getRole().name(), profileResponse));
             }
         }
         return response;
     }
 
     @Override
-    public StaffResponse getOneStaff(String staffId) {
+    public StaffResponse getOneStaff(Long staffId) {
         var profile = icoProfileRepository.findByStaffId(staffId);
         if (profile == null) {
             throw new StaffNotFoundException("Staff does not exist in our record");
@@ -58,11 +57,10 @@ public class ReadICOServiceImpl implements ReadICOService {
         if (profile != null) {
             profileResponse.put("id", profile.getId());
             profileResponse.put("staffId", staff.getStaffId());
-            profileResponse.put("createdBy", profile.getOnboardedBy().getStaff().getStaffId());
+            profileResponse.put("createdBy", profile.getSupervisor().getStaff().getStaffId());
             profileResponse.put("updatedBy", profile.getUpdatedBy().getStaff().getStaffId());
         }
-        return new StaffResponse(staff.getStaffId(), staff.getFirstname(),
-                staff.getLastname(), staff.getEmail(), staff.getRole().name(), profileResponse);
+        return new StaffResponse(staff.getStaffId(), staff.getEmail(), staff.getRole().name(), profileResponse);
     }
 
 }

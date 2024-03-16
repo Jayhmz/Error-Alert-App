@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 public class RegistrationDTO {
     @JsonProperty("staffId")
     @NotNull(message = "staff id cannot be null")
-    private String staffId;
+    private Long staffId;
     @JsonProperty("firstname")
     @NotNull(message = "firstname cannot be null")
     private String firstname;
@@ -26,7 +26,7 @@ public class RegistrationDTO {
     @NotNull(message = "Email cannot be null")
     private String password;
 
-    public RegistrationDTO(String staffId,String firstname, String lastname, String email, String password) {
+    public RegistrationDTO(Long staffId,String firstname, String lastname, String email, String password) {
         this.staffId = staffId;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -34,11 +34,11 @@ public class RegistrationDTO {
         this.password = password;
     }
 
-    public String getStaffId() {
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 

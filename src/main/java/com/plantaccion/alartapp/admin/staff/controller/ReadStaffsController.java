@@ -18,11 +18,15 @@ public class ReadStaffsController {
     }
 
     @GetMapping("/staffs")
-    public ResponseEntity<?> getAllStaffs(){
-        return new ResponseEntity<>(readStaffService.getAllStaff(), HttpStatus.OK);
+    public ResponseEntity<?> getAllStaffProfiles(){
+        return new ResponseEntity<>(readStaffService.getAllStaffProfile(), HttpStatus.OK);
     }
     @GetMapping("/staffs/{id}")
-    private ResponseEntity<?> getOneStaff(@PathVariable("id") String id){
-        return new ResponseEntity<>(readStaffService.getOneStaff(id), HttpStatus.OK);
+    public ResponseEntity<?> getOneStaffProfile(@PathVariable("id") Long id){
+        return new ResponseEntity<>(readStaffService.getOneStaffProfile(id), HttpStatus.OK);
+    }
+    @GetMapping("/bank-staffs/{id}")
+    public ResponseEntity<?> findOneBankStaff(@PathVariable("id") Long id){
+        return new ResponseEntity<>(readStaffService.findOneBankStaff(id), HttpStatus.OK);
     }
 }

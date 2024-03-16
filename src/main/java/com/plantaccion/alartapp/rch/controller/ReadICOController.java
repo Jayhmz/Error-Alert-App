@@ -23,7 +23,7 @@ public class ReadICOController {
         return new ResponseEntity<>(readICOservice.getAllStaff(), HttpStatus.OK);
     }
     @GetMapping("/staffs/{id}")
-    private ResponseEntity<?> getOneStaff(@PathVariable("id") String id){
+    private ResponseEntity<?> getOneStaff(@PathVariable("id") Long id){
         return new ResponseEntity<>(readICOservice.getOneStaff(id), HttpStatus.OK);
     }
 }

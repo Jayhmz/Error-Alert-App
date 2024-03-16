@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 public class IcoDTO {
     @JsonProperty("staffId")
     @NotNull(message = "staffId cannot be null")
-    private String staffId;
+    private Long staffId;
     @JsonProperty("firstname")
     @NotNull(message = "firstname cannot be null")
     private String firstname;
@@ -18,11 +18,11 @@ public class IcoDTO {
     @ValidEmail(message = "Enter a valid email")
     private String email;
 
-    public String getStaffId() {
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 
