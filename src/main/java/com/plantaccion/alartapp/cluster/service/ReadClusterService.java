@@ -1,9 +1,9 @@
 package com.plantaccion.alartapp.cluster.service;
 
-import com.plantaccion.alartapp.common.model.app.Cluster;
+import com.plantaccion.alartapp.cluster.response.ClusterResponse;
 
 import java.util.List;
 
 public interface ReadClusterService {
-    List<Cluster> getAllClusters();
+    List<ClusterResponse> getAllClusters();
 }
