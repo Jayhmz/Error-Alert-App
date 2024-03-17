@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class AuthenticationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "staff_id", nullable = false)
     private Long staffId;
 
     private String email;

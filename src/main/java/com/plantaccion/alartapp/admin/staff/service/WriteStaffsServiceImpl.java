@@ -121,7 +121,7 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
                 .orElseThrow(() -> new StaffNotFoundException("Unknown Staff/User"));
 
         var user = userRepository.findByStaffId(staffId);
-        switch (Roles.valueOf(staffDTO.getRole().toUpperCase())) {
+        switch (Roles.valueOf(user.getRole().toString())) {
             case ZCH -> {
                 var rchProfile = updateZCHProfile(staffId, staffDTO);
                 Map<String, Object> profileResponse = new HashMap<>();
