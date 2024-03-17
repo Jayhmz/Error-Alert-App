@@ -8,9 +8,6 @@ public class UpdateStaffProfileDTO {
     @JsonProperty("staffId")
     @NotNull(message = "staffId cannot be null")
     private Long staffId;
-    @JsonProperty("role")
-    @NotNull(message = "No role selected")
-    private String role;
     @JsonProperty("cluster")
     @NotNull(message = "Enter a valid cluster")
     private String cluster;
@@ -23,14 +20,6 @@ public class UpdateStaffProfileDTO {
 
     public void setStaffId(Long staffId) {
         this.staffId = staffId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 
     public String getCluster() {
