@@ -17,9 +17,6 @@ public class StaffProfileDTO {
     @JsonProperty("cluster")
     private String cluster;
 
-    @JsonProperty("supervisor")
-    private Long supervisor;
-
     public Long getStaffId() {
         return staffId;
     }
@@ -52,11 +49,4 @@ public class StaffProfileDTO {
         this.cluster = cluster;
     }
 
-    public Long getSupervisor() {
-        return supervisor;
-    }
-
-    public void setSupervisor(Long supervisor) {
-        this.supervisor = supervisor;
-    }
 }
