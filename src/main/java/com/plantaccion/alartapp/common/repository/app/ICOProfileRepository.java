@@ -1,5 +1,6 @@
 package com.plantaccion.alartapp.common.repository.app;
 
+import com.plantaccion.alartapp.common.model.app.AppUser;
 import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;
 import com.plantaccion.alartapp.common.model.app.ZonalControlHeadProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,8 +11,11 @@ import java.util.List;
 
 public interface ICOProfileRepository extends JpaRepository<InternalControlOfficerProfile, Long> {
     List<InternalControlOfficerProfile> findAllBySupervisor(ZonalControlHeadProfile rch);
+
+    InternalControlOfficerProfile findByIcoStaff(AppUser appuser);
     @Query("SELECT ico from InternalControlOfficerProfile ico where ico.icoStaff.staffId = :staffId")
     InternalControlOfficerProfile findByStaffId(Long staffId);
+
     @Query("SELECT ico FROM InternalControlOfficerProfile ico where ico.supervisor = :zch ")
     List<InternalControlOfficerProfile> findICOsBySupervisor(@Param("zch") ZonalControlHeadProfile zch);
 }

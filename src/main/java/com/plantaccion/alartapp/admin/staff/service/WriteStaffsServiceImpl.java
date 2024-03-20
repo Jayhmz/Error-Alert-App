@@ -18,7 +18,6 @@ import com.plantaccion.alartapp.exception.StaffNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,9 +89,9 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
     }
 
     private InternalControlOfficerProfile createICOProfile(StaffProfileDTO staffDTO, AppUser authenticatedUser, AppUser user) {
-        var rch = zchRepository.findByStaffId(staffDTO.getSupervisor());
+        var zch = zchRepository.findByCluster(staffDTO.getCluster());
         var icoProfile = new InternalControlOfficerProfile();
-        icoProfile.setSupervisor(rch);
+        icoProfile.setSupervisor(zch);
         icoProfile.setIcoStaff(user);
         icoRepository.save(icoProfile);
         return icoProfile;
@@ -107,9 +106,9 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
     }
 
     private InternalControlOfficerProfile updateICOProfile(Long staffId, UpdateStaffProfileDTO staffDTO) {
-        var cluster = clusterRepository.findByName(staffDTO.getCluster().toUpperCase());
         var icoProfile = icoRepository.findByStaffId(staffId);
-        var zchProfile = zchRepository.findByStaffId(staffDTO.getSupervisor());
+        var cluster = clusterRepository.findByName(staffDTO.getCluster().toUpperCase());
+        var zchProfile = zchRepository.findByCluster(cluster.getName());
         icoProfile.setSupervisor(zchProfile);
         icoRepository.save(icoProfile);
         return icoProfile;

@@ -1,12 +1,10 @@
 package com.plantaccion.alartapp.admin.staff.controller;
 
 import com.plantaccion.alartapp.admin.staff.service.ReadStaffService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app/v1/admin")
@@ -17,9 +15,17 @@ public class ReadStaffsController {
         this.readStaffService = readStaffService;
     }
 
-    @GetMapping("/staffs")
-    public ResponseEntity<?> getAllStaffProfiles(){
-        return new ResponseEntity<>(readStaffService.getAllStaffProfile(), HttpStatus.OK);
+    @GetMapping("/staffs/zch")
+    public ResponseEntity<?> getAllZCHProfiles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
+        return new ResponseEntity<>(readStaffService.getAllZCHs(PageRequest.of(page, size)), HttpStatus.OK);
+    }
+    @GetMapping("/staffs/ico")
+    public ResponseEntity<?> getAllICOProfiles(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
+        return new ResponseEntity<>(readStaffService.getAllICOs(PageRequest.of(page, size)), HttpStatus.OK);
     }
     @GetMapping("/staffs/{id}")
     public ResponseEntity<?> getOneStaffProfile(@PathVariable("id") Long id){

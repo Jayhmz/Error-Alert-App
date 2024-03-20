@@ -43,7 +43,7 @@ public class WriteEmailServiceImpl implements WriteEmailService {
     public void sendMail(Cluster cluster, Script queriedScript) throws MessagingException {
         var alerts = alertRepository.findAlertsByClusterAndScript(cluster, queriedScript);
         if (alerts != null && !alerts.isEmpty()) {
-            var zch = ZCHProfileRepository.findByCluster(cluster);
+            var zch = ZCHProfileRepository.findByCluster(cluster.getName());
             var controlOfficers = icoProfileRepository.findICOsBySupervisor(zch);
             String[] ccEmails = controlOfficers.stream()
                     .map(co -> co.getIcoStaff().getEmail())
