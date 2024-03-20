@@ -73,30 +73,36 @@ public class ReadStaffServiceImpl implements ReadStaffService {
     }
 
     private StaffResponse mapToStaffResponse(AppUser appuser) {
-        var profile = rchRepository.findByStaff(appuser);
         Map<String, Object> profileResponse = new HashMap<>();
-        if (profile != null) {
-            profileResponse.put("id", profile.getId());
-            profileResponse.put("staffId", profile.getStaff().getStaffId());
-            profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
-            profileResponse.put("cluster", profile.getCluster().getName());
-            var icos = icoProfileRepository.findAllBySupervisor(profile);
-            for (InternalControlOfficerProfile ico : icos) {
-                profileResponse.put("ico_staff_id", ico.getIcoStaff().getStaffId());
-                profileResponse.put("ico_staff_email", ico.getIcoStaff().getEmail());
-                profileResponse.put("ico_staff_role", ico.getIcoStaff().getRole().name());
-            }
-        }
-        var ico = icoProfileRepository.findByIcoStaff(appuser);
-        if (ico != null) {
-            profileResponse.put("id", profile.getId());
-            profileResponse.put("staffId", profile.getStaff().getStaffId());
-            profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
-            profileResponse.put("cluster", profile.getCluster().getName());
 
-            profileResponse.put("zch_staff_id", ico.getSupervisor().getStaff().getStaffId());
-            profileResponse.put("zch_staff_email", ico.getSupervisor().getStaff().getEmail());
-            profileResponse.put("zch_staff_role", ico.getSupervisor().getStaff().getRole().name());
+        var zchProfile = rchRepository.findByStaff(appuser);
+        if (zchProfile != null) {
+            profileResponse.put("id", zchProfile.getId());
+            profileResponse.put("staffId", zchProfile.getStaff().getStaffId());
+            profileResponse.put("createdBy", zchProfile.getCreatedBy().getStaffId());
+            profileResponse.put("cluster", zchProfile.getCluster().getName());
+
+            var icos = icoProfileRepository.findAllBySupervisor(zchProfile);
+            List<Map<String, Object>> icoOfficers = new ArrayList<>();
+            for (InternalControlOfficerProfile ico : icos) {
+                Map<String, Object> myICOs = new HashMap<>();
+                myICOs.put("ico_staff_id", ico.getIcoStaff().getStaffId());
+                myICOs.put("ico_staff_email", ico.getIcoStaff().getEmail());
+                myICOs.put("ico_staff_role", ico.getIcoStaff().getRole().name());
+                icoOfficers.add(myICOs);
+            }
+            profileResponse.put("ICOs", icoOfficers);
+        }
+
+        var icoProfile = icoProfileRepository.findByIcoStaff(appuser);
+        if (icoProfile != null) {
+            profileResponse.put("id", icoProfile.getId());
+            profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
+            profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
+
+            profileResponse.put("zch_staff_id", icoProfile.getSupervisor().getStaff().getStaffId());
+            profileResponse.put("zch_staff_email", icoProfile.getSupervisor().getStaff().getEmail());
+            profileResponse.put("zch_staff_role", icoProfile.getSupervisor().getStaff().getRole().toString());
 
         }
         return new StaffResponse(appuser.getStaffId(), appuser.getEmail(),
