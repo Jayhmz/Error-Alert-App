@@ -2,10 +2,15 @@ package com.plantaccion.alartapp.admin.staff.service;
 
 import com.plantaccion.alartapp.admin.staff.response.StaffResponse;
 import com.plantaccion.alartapp.common.model.app.AppUser;
+import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;
 import com.plantaccion.alartapp.common.repository.app.AppUserRepository;
+import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
 import com.plantaccion.alartapp.common.repository.app.ZCHProfileRepository;
 import com.plantaccion.alartapp.common.repository.auth.AuthenticationRepository;
+import com.plantaccion.alartapp.exception.NoContentException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,11 +23,13 @@ public class ReadStaffServiceImpl implements ReadStaffService {
     private final AppUserRepository appUserRepository;
     private final AuthenticationRepository authenticationRepository;
     private final ZCHProfileRepository rchRepository;
+    private final ICOProfileRepository icoProfileRepository;
 
-    public ReadStaffServiceImpl(AppUserRepository appUserRepository, AuthenticationRepository authenticationRepository, ZCHProfileRepository rchRepository) {
+    public ReadStaffServiceImpl(AppUserRepository appUserRepository, AuthenticationRepository authenticationRepository, ZCHProfileRepository rchRepository, ICOProfileRepository icoProfileRepository) {
         this.appUserRepository = appUserRepository;
         this.authenticationRepository = authenticationRepository;
         this.rchRepository = rchRepository;
+        this.icoProfileRepository = icoProfileRepository;
     }
 
     @Override
@@ -45,6 +52,55 @@ public class ReadStaffServiceImpl implements ReadStaffService {
             response.add(new StaffResponse(staff.getStaffId(), staff.getEmail(), staff.getRole().name(), profileResponse));
         }
         return response;
+    }
+
+    @Override
+    public Page<StaffResponse> getAllZCHs(Pageable pageable) {
+        var zch = appUserRepository.findAllByRoleZCH(pageable);
+        if (zch.isEmpty()) {
+            throw new NoContentException("No content found");
+        }
+        return zch.map(this::mapToStaffResponse);
+    }
+
+    @Override
+    public Page<StaffResponse> getAllICOs(Pageable pageable) {
+        var icos = appUserRepository.findAllByRoleICO(pageable);
+        if (icos.isEmpty()) {
+            throw new NoContentException("No content found");
+        }
+        return icos.map(this::mapToStaffResponse);
+    }
+
+    private StaffResponse mapToStaffResponse(AppUser appuser) {
+        var profile = rchRepository.findByStaff(appuser);
+        Map<String, Object> profileResponse = new HashMap<>();
+        if (profile != null) {
+            profileResponse.put("id", profile.getId());
+            profileResponse.put("staffId", profile.getStaff().getStaffId());
+            profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
+            profileResponse.put("cluster", profile.getCluster().getName());
+            var icos = icoProfileRepository.findAllBySupervisor(profile);
+            for (InternalControlOfficerProfile ico : icos) {
+                profileResponse.put("ico_staff_id", ico.getIcoStaff().getStaffId());
+                profileResponse.put("ico_staff_email", ico.getIcoStaff().getEmail());
+                profileResponse.put("ico_staff_role", ico.getIcoStaff().getRole().name());
+            }
+        }
+        var ico = icoProfileRepository.findByIcoStaff(appuser);
+        if (ico != null) {
+            profileResponse.put("id", profile.getId());
+            profileResponse.put("staffId", profile.getStaff().getStaffId());
+            profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
+            profileResponse.put("cluster", profile.getCluster().getName());
+
+            profileResponse.put("zch_staff_id", ico.getSupervisor().getStaff().getStaffId());
+            profileResponse.put("zch_staff_email", ico.getSupervisor().getStaff().getEmail());
+            profileResponse.put("zch_staff_role", ico.getSupervisor().getStaff().getRole().name());
+
+        }
+        return new StaffResponse(appuser.getStaffId(), appuser.getEmail(),
+                appuser.getRole().name(), profileResponse);
     }
 
     @Override

@@ -11,5 +11,6 @@ public interface ZCHProfileRepository extends JpaRepository<ZonalControlHeadProf
     ZonalControlHeadProfile findByStaff(AppUser appUser);
     @Query("SELECT zch FROM ZonalControlHeadProfile zch WHERE zch.staff.staffId = :id")
     ZonalControlHeadProfile findByStaffId(@Param("id") Long id);
-    ZonalControlHeadProfile findByCluster(Cluster cluster);
+    @Query("SELECT zch FROM ZonalControlHeadProfile zch where zch.cluster.name = :cluster")
+    ZonalControlHeadProfile findByCluster(String cluster);
 }
