@@ -56,54 +56,49 @@ public class ReadStaffServiceImpl implements ReadStaffService {
 
     @Override
     public Page<StaffResponse> getAllZCHs(Pageable pageable) {
-        var zch = appUserRepository.findAllByRoleZCH(pageable);
-        if (zch.isEmpty()) {
+        var zchProfiles = appUserRepository.findAllByRoleZCH(pageable);
+        if (zchProfiles.isEmpty()) {
             throw new NoContentException("No content found");
         }
-        return zch.map(this::mapToStaffResponse);
+        return zchProfiles.map(this::mapToStaffResponse);
     }
 
     @Override
     public Page<StaffResponse> getAllICOs(Pageable pageable) {
-        var icos = appUserRepository.findAllByRoleICO(pageable);
-        if (icos.isEmpty()) {
+        var icoProfiles = appUserRepository.findAllByRoleICO(pageable);
+        if (icoProfiles.isEmpty()) {
             throw new NoContentException("No content found");
         }
-        return icos.map(this::mapToStaffResponse);
+        return icoProfiles.map(this::mapToStaffResponse);
     }
 
     private StaffResponse mapToStaffResponse(AppUser appuser) {
         Map<String, Object> profileResponse = new HashMap<>();
 
-        var zchProfile = rchRepository.findByStaff(appuser);
-        if (zchProfile != null) {
-            profileResponse.put("id", zchProfile.getId());
-            profileResponse.put("staffId", zchProfile.getStaff().getStaffId());
-            profileResponse.put("createdBy", zchProfile.getCreatedBy().getStaffId());
-            profileResponse.put("cluster", zchProfile.getCluster().getName());
-
-            var icos = icoProfileRepository.findAllBySupervisor(zchProfile);
-            List<Map<String, Object>> icoOfficers = new ArrayList<>();
-            for (InternalControlOfficerProfile ico : icos) {
-                Map<String, Object> myICOs = new HashMap<>();
-                myICOs.put("ico_staff_id", ico.getIcoStaff().getStaffId());
-                myICOs.put("ico_staff_email", ico.getIcoStaff().getEmail());
-                myICOs.put("ico_staff_role", ico.getIcoStaff().getRole().name());
-                icoOfficers.add(myICOs);
+        switch (appuser.getRole()) {
+            case ZCH -> {
+                var zchProfile = rchRepository.findByStaff(appuser);
+                if (zchProfile != null) {
+                    profileResponse.put("id", zchProfile.getId());
+                    profileResponse.put("staffId", zchProfile.getStaff().getStaffId());
+                    profileResponse.put("createdBy", zchProfile.getCreatedBy().getStaffId());
+                    profileResponse.put("cluster", zchProfile.getCluster().getName());
+                }else{
+                    throw new NoContentException("User profile not found");
+                }
             }
-            profileResponse.put("ICOs", icoOfficers);
-        }
-
-        var icoProfile = icoProfileRepository.findByIcoStaff(appuser);
-        if (icoProfile != null) {
-            profileResponse.put("id", icoProfile.getId());
-            profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
-            profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
-
-            profileResponse.put("zch_staff_id", icoProfile.getSupervisor().getStaff().getStaffId());
-            profileResponse.put("zch_staff_email", icoProfile.getSupervisor().getStaff().getEmail());
-            profileResponse.put("zch_staff_role", icoProfile.getSupervisor().getStaff().getRole().toString());
-
+            case ICO -> {
+                var icoProfile = icoProfileRepository.findByIcoStaff(appuser);
+                if (icoProfile != null) {
+                    profileResponse.put("id", icoProfile.getId());
+                    profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
+                    profileResponse.put("staffEmail", icoProfile.getIcoStaff().getEmail());
+                    profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
+                }
+            }
+            default -> {
+                throw new NoContentException("User profile not found");
+            }
         }
         return new StaffResponse(appuser.getStaffId(), appuser.getEmail(),
                 appuser.getRole().name(), profileResponse);
@@ -112,19 +107,52 @@ public class ReadStaffServiceImpl implements ReadStaffService {
     @Override
     public StaffResponse getOneStaffProfile(Long id) {
         var staff = appUserRepository.findByStaffId(id);
+
         if (staff == null) {
             throw new StaffNotFoundException("Staff does not exist in our record");
         }
+
         Map<String, Object> profileResponse = new HashMap<>();
-        var profile = rchRepository.findByStaff(staff);
-        if (profile != null) {
-            profileResponse.put("id", profile.getId());
-            profileResponse.put("staffId", profile.getStaff().getStaffId());
-            profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
-            if (profile.getUpdatedBy() != null) {
-                profileResponse.put("updatedBy", profile.getUpdatedBy().getStaffId());
-            } else {
-                profileResponse.put("updatedBy", null);
+        switch (staff.getRole()) {
+            case ZCH -> {
+                var profile = rchRepository.findByStaff(staff);
+                if (profile != null) {
+                    profileResponse.put("id", profile.getId());
+                    profileResponse.put("staffId", profile.getStaff().getStaffId());
+                    profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
+
+                    var icos = icoProfileRepository.findAllBySupervisor(profile);
+                    List<Map<String, Object>> icoOfficers = new ArrayList<>();
+                    for (InternalControlOfficerProfile ico : icos) {
+                        Map<String, Object> myICOs = new HashMap<>();
+                        myICOs.put("ico_staff_id", ico.getIcoStaff().getStaffId());
+                        myICOs.put("ico_staff_email", ico.getIcoStaff().getEmail());
+                        myICOs.put("ico_staff_role", ico.getIcoStaff().getRole().name());
+                        icoOfficers.add(myICOs);
+                    }
+                    profileResponse.put("ICOs", icoOfficers);
+                } else {
+                    throw new NoContentException("User profile not found");
+                }
+            }
+            case ICO -> {
+                var icoProfile = icoProfileRepository.findByIcoStaff(staff);
+                if (icoProfile != null) {
+                    profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
+                    profileResponse.put("staffEmail", icoProfile.getIcoStaff().getEmail());
+                    profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
+
+                    Map<String, Object> zch = new HashMap<>();
+                    zch.put("zch_staff_id", icoProfile.getSupervisor().getStaff().getStaffId());
+                    zch.put("zch_staff_email", icoProfile.getSupervisor().getStaff().getEmail());
+                    zch.put("zch_staff_role", icoProfile.getSupervisor().getStaff().getRole().toString());
+                    profileResponse.put("zchProfile", zch);
+                } else {
+                    throw new NoContentException("User profile not found");
+                }
+            }
+            default -> {
+                throw new NoContentException("User profile not found");
             }
         }
         return new StaffResponse(staff.getStaffId(), staff.getEmail(), staff.getRole().name(), profileResponse);
