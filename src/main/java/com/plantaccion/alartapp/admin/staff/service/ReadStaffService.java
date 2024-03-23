@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ReadStaffService {
-    List<StaffResponse> getAllStaffProfile();
     Page<StaffResponse> getAllZCHs(Pageable pageable);
     Page<StaffResponse> getAllICOs(Pageable pageable);
     StaffResponse getOneStaffProfile(Long staffId);

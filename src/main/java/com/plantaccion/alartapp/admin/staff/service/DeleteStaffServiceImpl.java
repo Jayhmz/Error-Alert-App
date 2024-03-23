@@ -14,24 +14,30 @@ public class DeleteStaffServiceImpl implements DeleteStaffService {
 
     @Override
     public void softDelete(Long id) {
-        var staff = appUserRepository.findById(id)
-                .orElseThrow(() -> new StaffNotFoundException("Staff does not exist in our record"));
+        var staff = appUserRepository.findByStaffId(id);
+        if (staff == null){
+            throw new StaffNotFoundException("Staff does not exist in our record");
+        };
         staff.setDisabled(true);
         appUserRepository.save(staff);
     }
 
     @Override
     public void activate(Long id) {
-        var staff = appUserRepository.findById(id)
-                .orElseThrow(() -> new StaffNotFoundException("Staff does not exist in our record"));
+        var staff = appUserRepository.findByStaffId(id);
+        if (staff == null){
+            throw new StaffNotFoundException("Staff does not exist in our record");
+        };
         staff.setDisabled(false);
         appUserRepository.save(staff);
     }
 
     @Override
     public void hardDelete(Long id) {
-        var staff = appUserRepository.findById(id)
-                .orElseThrow(() -> new StaffNotFoundException("Staff does not exist in our record"));
+        var staff = appUserRepository.findByStaffId(id);
+        if (staff == null){
+            throw new StaffNotFoundException("Staff does not exist in our record");
+        };
         appUserRepository.deleteById(staff.getId());
     }
 }
