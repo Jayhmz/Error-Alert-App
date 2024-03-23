@@ -61,6 +61,7 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("staffId", zchProfile.getStaff().getStaffId());
                     profileResponse.put("createdBy", zchProfile.getCreatedBy().getStaffId());
                     profileResponse.put("cluster", zchProfile.getCluster().getName());
+                    profileResponse.put("deactivation-status", zchProfile.getStaff().isDisabled());
                 }else{
                     throw new NoContentException("User profile not found");
                 }
@@ -72,6 +73,7 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
                     profileResponse.put("staffEmail", icoProfile.getIcoStaff().getEmail());
                     profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
+                    profileResponse.put("deactivation-status", icoProfile.getIcoStaff().isDisabled());
                 }
             }
             default -> {
