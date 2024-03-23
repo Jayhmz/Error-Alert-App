@@ -33,28 +33,6 @@ public class ReadStaffServiceImpl implements ReadStaffService {
     }
 
     @Override
-    public List<StaffResponse> getAllStaffProfile() {
-        var allStaffs = appUserRepository.findAll();
-        List<StaffResponse> response = new ArrayList<>();
-        for (AppUser staff : allStaffs) {
-            Map<String, Object> profileResponse = new HashMap<>();
-            var profile = rchRepository.findByStaff(staff);
-            if (profile != null) {
-                profileResponse.put("id", profile.getId());
-                profileResponse.put("staffId", profile.getStaff().getStaffId());
-                profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
-                if (profile.getUpdatedBy() != null) {
-                    profileResponse.put("updatedBy", profile.getUpdatedBy().getStaffId());
-                } else {
-                    profileResponse.put("updatedBy", null);
-                }
-            }
-            response.add(new StaffResponse(staff.getStaffId(), staff.getEmail(), staff.getRole().name(), profileResponse));
-        }
-        return response;
-    }
-
-    @Override
     public Page<StaffResponse> getAllZCHs(Pageable pageable) {
         var zchProfiles = appUserRepository.findAllByRoleZCH(pageable);
         if (zchProfiles.isEmpty()) {
