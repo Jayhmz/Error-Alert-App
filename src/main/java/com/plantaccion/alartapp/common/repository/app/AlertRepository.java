@@ -15,7 +15,7 @@ import java.util.List;
 public interface AlertRepository extends JpaRepository<Alert, String> {
     @Query("SELECT a FROM Alert a WHERE a.script.title = :title ORDER BY a.entryDate DESC")
     Page<Alert> findLastRecordByScriptTitle(@Param("title") String title, Pageable pageable);
-    @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.isMailSent <> true AND a.script = :script")
+    @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.isMailSent = false AND a.script = :script")
     List<Alert> findAlertsByClusterAndScript(@Param("cluster") Cluster cluster, @Param("script") Script script);
     @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.status = 'UNASSIGNED' ")
     Page<Alert> findAlertsByCluster(@Param("cluster") Cluster cluster, Pageable pageable);

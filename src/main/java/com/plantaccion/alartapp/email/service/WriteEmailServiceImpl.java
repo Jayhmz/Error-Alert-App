@@ -38,26 +38,24 @@ public class WriteEmailServiceImpl implements WriteEmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-
     @Override
     public void sendMail(Cluster cluster, Script queriedScript) throws MessagingException {
         var alerts = alertRepository.findAlertsByClusterAndScript(cluster, queriedScript);
         if (alerts != null && !alerts.isEmpty()) {
             var zch = ZCHProfileRepository.findByCluster(cluster.getName());
             var controlOfficers = icoProfileRepository.findICOsBySupervisor(zch);
-            String[] ccEmails = controlOfficers.stream()
+            String[] icoEmails = controlOfficers.stream()
                     .map(co -> co.getIcoStaff().getEmail())
                     .toArray(String[]::new);
             var zchEmail = zch.getStaff().getEmail();
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(zchEmail);
-            if(ccEmails.length > 0){
-                helper.setCc(ccEmails);
-            }
+            helper.setTo(icoEmails);
+            helper.setCc(zchEmail);
+
             Alert firstAlert = alerts.get(0);
-            helper.setSubject("Testing mail service for " + firstAlert.getScript().getTitle() );
+            helper.setSubject("Testing mail service for " + firstAlert.getScript().getTitle());
 
             Context context = new Context();
             context.setVariable("alerts", alerts);
