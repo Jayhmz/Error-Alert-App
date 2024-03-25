@@ -11,6 +11,7 @@ import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
 import com.plantaccion.alartapp.email.service.WriteEmailService;
 import com.plantaccion.alartapp.exception.MailNotSentException;
 import com.plantaccion.alartapp.exception.ScriptNotFoundException;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -47,38 +48,38 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
     @Override
     @Transactional
     public void executeQuery(Script script) {
-        Script queriedScript = scriptRepository.findById(script.getId())
-                .orElseThrow(() -> new ScriptNotFoundException("Script does not exist in our record"));
-        Alert lastRecordedAlert = getLastRecordedAlert(queriedScript);
+//        Script queriedScript = scriptRepository.findById(script.getId())
+//                .orElseThrow(() -> new ScriptNotFoundException("Script does not exist in our record"));
+        Alert lastRecordedAlert = getLastRecordedAlert(script);
 
         for (Cluster cluster : getClusters()) {
-            List<Alert> alertsForCluster = new ArrayList<>();
+//            List<Alert> alertsForCluster = new ArrayList<>();
             for (Branch branch : cluster.getBranches()) {
-                String newScript = queriedScript.getBody().replace("&branch", "'" + branch.getSolId() + "'");
+                String newScript = script.getBody().replace("&branch", "'" + branch.getSolId() + "'");
                 if (lastRecordedAlert != null) {
                     String completeQuery = newScript + " AND a.entry_date > '" + lastRecordedAlert.getEntryDate() + "'";
                     var result = template.queryForList(completeQuery);
-                    createAlerts(result, queriedScript, cluster);
-//                    alertsForCluster.addAll(createAlerts(result, queriedScript, cluster));
+                    createAlerts(result, script, cluster);
+//                    alertsForCluster.addAll(createAlerts(result, script, cluster));
                 } else {
                     List<Map<String, Object>> result = template.queryForList(newScript);
-                    createAlerts(result, queriedScript, cluster);
-//                    alertsForCluster.addAll(createAlerts(result, queriedScript, cluster));
+                    createAlerts(result, script, cluster);
+//                    alertsForCluster.addAll(createAlerts(result, script, cluster));
                 }
             }
             try {
-                log.info("email sendig will be performed here...");
-                //emailService.sendMail(cluster, queriedScript);
-            } catch (MailNotSentException  e) {
+                log.info("email sending will be performed here...");
+                emailService.sendMail(cluster, script);
+            } catch (MailNotSentException | MessagingException e) {
                 throw new MailNotSentException("Mail sending failed." + e.getCause());
             }
         }
     }
 
-    private List<Alert> createAlerts(List<Map<String, Object>> result, Script queriedScript, Cluster cluster) {
+    private List<Alert> createAlerts(List<Map<String, Object>> result, Script script, Cluster cluster) {
         List<Alert> alerts = new ArrayList<>();
         for (Map<String, Object> record : result) {
-            Alert alert = new Alert(queriedScript, AlertStatus.UNASSIGNED);
+            Alert alert = new Alert(script, AlertStatus.UNASSIGNED);
             alert.setEntryDate(LocalDateTime.parse(record.get("entry_date").toString()));
             alert.setTransactionDate(LocalDate.parse(record.get("tran_date").toString()));
             alert.setTranId(record.get("tran_id").toString());
@@ -95,9 +96,9 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
     }
 
 
-    private Alert getLastRecordedAlert(Script queriedScript) {
+    private Alert getLastRecordedAlert(Script script) {
         Pageable pageable = PageRequest.of(0, 1);
-        Page<Alert> resultPage = alertRepository.findLastRecordByScriptTitle(queriedScript.getTitle(), pageable);
+        Page<Alert> resultPage = alertRepository.findLastRecordByScriptTitle(script.getTitle(), pageable);
         if (resultPage != null && !resultPage.isEmpty()) {
             return resultPage.getContent().get(0);
         } else {

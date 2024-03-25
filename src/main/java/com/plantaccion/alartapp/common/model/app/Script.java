@@ -16,8 +16,6 @@ public class Script {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private AppUser createdBy;
-    @Column(name = "is_disabled", nullable = false, columnDefinition = "BIT DEFAULT b'0'")
-    private boolean isDisabled;
     @Column(name = "is_active", nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isActive;
 
@@ -54,21 +52,12 @@ public class Script {
         this.body = body;
     }
 
-
     public AppUser getCreatedBy() {
         return createdBy;
     }
 
     public void setCreatedBy(AppUser createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public boolean isDisabled() {
-        return isDisabled;
-    }
-
-    public void setDisabled(boolean isDisabled) {
-        this.isDisabled = isDisabled;
     }
 
     public boolean isActive() {
