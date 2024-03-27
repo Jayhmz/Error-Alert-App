@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/app/v1/admin")
 public class ReadStaffsController {
     private final ReadStaffService readStaffService;
-
     public ReadStaffsController(ReadStaffService readStaffService) {
         this.readStaffService = readStaffService;
     }
