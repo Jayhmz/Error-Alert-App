@@ -16,7 +16,7 @@ public class DeleteScriptServiceImpl implements DeleteScriptService {
     public void softDeleteById(Long id) {
         var script = scriptRepository.findById(id)
                 .orElseThrow(() -> new ScriptNotFoundException("Script does not exist"));
-            script.setDisabled(true);
+            script.setActive(true);
             scriptRepository.save(script);
     }
 
@@ -24,7 +24,7 @@ public class DeleteScriptServiceImpl implements DeleteScriptService {
     public void activateScriptById(Long id) {
         var script = scriptRepository.findById(id)
                 .orElseThrow(() -> new ScriptNotFoundException("Script does not exist"));
-        script.setDisabled(false);
+        script.setActive(false);
         scriptRepository.save(script);
     }
 
