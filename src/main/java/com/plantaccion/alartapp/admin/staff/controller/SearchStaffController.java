@@ -4,10 +4,7 @@ import com.plantaccion.alartapp.admin.staff.dto.SearchStaffDTO;
 import com.plantaccion.alartapp.admin.staff.service.SearchStaffsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app/v1/admin")
@@ -19,7 +16,7 @@ public class SearchStaffController {
         this.searchStaffsService = searchStaffsService;
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public ResponseEntity<?> searchStaff(@RequestBody SearchStaffDTO searchStaffDTO){
         return new ResponseEntity<>(searchStaffsService.searchByStaff(searchStaffDTO), HttpStatus.OK);
     }
