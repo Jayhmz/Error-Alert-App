@@ -100,6 +100,7 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("id", profile.getId());
                     profileResponse.put("staffId", profile.getStaff().getStaffId());
                     profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
+                    profileResponse.put("deactivation-status", profile.getStaff().isDisabled());
 
                     var icos = icoProfileRepository.findAllBySupervisor(profile);
                     List<Map<String, Object>> icoOfficers = new ArrayList<>();
@@ -121,6 +122,7 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
                     profileResponse.put("staffEmail", icoProfile.getIcoStaff().getEmail());
                     profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
+                    profileResponse.put("deactivation-status", icoProfile.getIcoStaff().isDisabled());
 
                     Map<String, Object> zch = new HashMap<>();
                     zch.put("zch_staff_id", icoProfile.getSupervisor().getStaff().getStaffId());
