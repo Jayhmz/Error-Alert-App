@@ -97,10 +97,11 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
         return icoProfile;
     }
 
-    private ZonalControlHeadProfile updateZCHProfile(Long staffId, UpdateStaffProfileDTO staffDTO) {
+    private ZonalControlHeadProfile updateZCHProfile(Long staffId, UpdateStaffProfileDTO staffDTO, AppUser admin) {
         var cluster = clusterRepository.findByName(staffDTO.getCluster().toUpperCase());
         var zchProfile = zchRepository.findByStaffId(staffId);
         zchProfile.setCluster(cluster);
+        zchProfile.setUpdatedBy(admin);
         zchRepository.save(zchProfile);
         return zchProfile;
     }
@@ -122,7 +123,7 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
         var user = userRepository.findByStaffId(staffId);
         switch (Roles.valueOf(user.getRole().toString())) {
             case ZCH -> {
-                var rchProfile = updateZCHProfile(staffId, staffDTO);
+                var rchProfile = updateZCHProfile(staffId, staffDTO, authenticatedUser);
                 Map<String, Object> profileResponse = new HashMap<>();
                 profileResponse.put("id", rchProfile.getId());
                 profileResponse.put("staffId", rchProfile.getStaff().getStaffId());

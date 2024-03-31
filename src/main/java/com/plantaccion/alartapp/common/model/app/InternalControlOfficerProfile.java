@@ -16,7 +16,7 @@ public class InternalControlOfficerProfile {
     private AppUser icoStaff;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "created_by", referencedColumnName = "zch_staff_id", nullable = false)
+    @JoinColumn(name = "created_by", referencedColumnName = "zch_staff_id")
     private ZonalControlHeadProfile supervisor;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -31,9 +31,8 @@ public class InternalControlOfficerProfile {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at")
     private LocalDateTime UpdatedOn;
-
-    @Column(nullable = false, columnDefinition = "BIT DEFAULT b'0'")
-    private boolean isDisabled;
+    @Column(name = "is_active",nullable = false, columnDefinition = "BIT DEFAULT b'1'")
+    private boolean isActive;
 
     public ZonalControlHeadProfile getSupervisor() {
         return supervisor;
@@ -83,11 +82,11 @@ public class InternalControlOfficerProfile {
         UpdatedOn = updatedOn;
     }
 
-    public boolean isDisabled() {
-        return isDisabled;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setDisabled(boolean disabled) {
-        isDisabled = disabled;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

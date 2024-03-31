@@ -18,7 +18,7 @@ public class DeleteICOServiceImpl implements DeleteICOService {
         if (staff == null){
             throw new StaffNotFoundException("Staff does not exist in our record");
         }
-        staff.setDisabled(true);
+        staff.setActive(false);
         icoProfileRepository.save(staff);
     }
 
@@ -28,7 +28,7 @@ public class DeleteICOServiceImpl implements DeleteICOService {
         if (staff == null){
             throw new StaffNotFoundException("Staff does not exist in our record");
         }
-        staff.setDisabled(false);
+        staff.setActive(false);
         icoProfileRepository.save(staff);
     }
 
