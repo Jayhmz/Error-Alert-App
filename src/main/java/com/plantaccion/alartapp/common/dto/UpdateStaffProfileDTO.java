@@ -5,22 +5,9 @@ import com.plantaccion.alartapp.authentication.validation.ValidEmail;
 import jakarta.validation.constraints.NotNull;
 
 public class UpdateStaffProfileDTO {
-    @JsonProperty("staffId")
-    @NotNull(message = "staffId cannot be null")
-    private Long staffId;
     @JsonProperty("cluster")
     @NotNull(message = "Enter a valid cluster")
     private String cluster;
-    @JsonProperty("supervisor")
-    private Long supervisor;
-
-    public Long getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(Long staffId) {
-        this.staffId = staffId;
-    }
 
     public String getCluster() {
         return cluster;
@@ -28,13 +15,5 @@ public class UpdateStaffProfileDTO {
 
     public void setCluster(String cluster) {
         this.cluster = cluster;
-    }
-
-    public Long getSupervisor() {
-        return supervisor;
-    }
-
-    public void setSupervisor(Long supervisor) {
-        this.supervisor = supervisor;
     }
 }

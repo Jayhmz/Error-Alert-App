@@ -12,7 +12,7 @@ public class Cluster {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cluster_name", unique = true, nullable = false)
+    @Column(name = "cluster_name", nullable = false)
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

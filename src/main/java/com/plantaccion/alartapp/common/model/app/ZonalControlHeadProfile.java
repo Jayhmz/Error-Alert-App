@@ -14,9 +14,12 @@ public class ZonalControlHeadProfile {
     @JoinColumn(name = "zch_staff_id", referencedColumnName = "staff_id", nullable = false)
     private AppUser staff;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_name")
     private Cluster cluster;
+
+    @Column(name="is_active", nullable = false, columnDefinition = "BIT DEFAULT b'1'")
+    private boolean isActive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
@@ -89,5 +92,12 @@ public class ZonalControlHeadProfile {
 
     public void setUpdatedOn(LocalDateTime updatedOn) {
         UpdatedOn = updatedOn;
+    }
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

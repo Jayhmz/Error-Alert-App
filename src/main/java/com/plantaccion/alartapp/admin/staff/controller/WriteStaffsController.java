@@ -16,7 +16,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/app/v1/admin")
-@CrossOrigin(origins = {"https://scripting-app-frontend.vercel.app", "http://localhost:5173"})
 public class WriteStaffsController {
     private final WriteStaffsService writeStaffsService;
 
@@ -37,7 +36,8 @@ public class WriteStaffsController {
     }
 
     @PostMapping(value = "/staffs/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> editStaff(@Valid @PathVariable("id") Long staffId, @RequestBody UpdateStaffProfileDTO staffDTO, BindingResult result) {
+    public ResponseEntity<?> editStaff(@Valid @PathVariable("id") Long staffId,
+                                       @RequestBody UpdateStaffProfileDTO staffDTO, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {

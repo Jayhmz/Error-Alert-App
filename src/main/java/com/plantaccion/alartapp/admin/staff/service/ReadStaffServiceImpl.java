@@ -100,6 +100,7 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("id", profile.getId());
                     profileResponse.put("staffId", profile.getStaff().getStaffId());
                     profileResponse.put("createdBy", profile.getCreatedBy().getStaffId());
+                    profileResponse.put("cluster", profile.getCluster().getName());
                     profileResponse.put("deactivation-status", profile.getStaff().isDisabled());
 
                     var icos = icoProfileRepository.findAllBySupervisor(profile);
