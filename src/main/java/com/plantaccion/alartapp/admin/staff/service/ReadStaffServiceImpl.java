@@ -60,6 +60,9 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("id", zchProfile.getId());
                     profileResponse.put("staffId", zchProfile.getStaff().getStaffId());
                     profileResponse.put("createdBy", zchProfile.getCreatedBy().getStaffId());
+                    if(!zchProfile.isActive()){
+                        profileResponse.put("cluster", "Kindly set new cluster");
+                    }
                     profileResponse.put("cluster", zchProfile.getCluster().getName());
                     profileResponse.put("deactivation-status", zchProfile.getStaff().isDisabled());
                 }else{
@@ -72,6 +75,9 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("id", icoProfile.getId());
                     profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
                     profileResponse.put("staffEmail", icoProfile.getIcoStaff().getEmail());
+                    if(!icoProfile.isActive()){
+                        profileResponse.put("cluster", "Kindly set new cluster");
+                    }
                     profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
                     profileResponse.put("deactivation-status", icoProfile.getIcoStaff().isDisabled());
                 }
