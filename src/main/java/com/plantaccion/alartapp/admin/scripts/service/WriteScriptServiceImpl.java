@@ -43,7 +43,7 @@ public class WriteScriptServiceImpl implements WriteScriptService {
         user.put("id", script.getCreatedBy().getId());
         user.put("email", script.getCreatedBy().getEmail());
 
-        return new ScriptResponse(script.getId(), script.getTitle(), script.getBody(), user);
+        return new ScriptResponse(script.getId(), script.getTitle(), script.getBody(),script.isActive(), user);
     }
 
     @Override
@@ -69,6 +69,6 @@ public class WriteScriptServiceImpl implements WriteScriptService {
         user.put("id", script.getCreatedBy().getId());
         user.put("email", script.getCreatedBy().getEmail());
 
-        return new ScriptResponse(script.getId(), script.getTitle(), script.getBody(), user);
+        return new ScriptResponse(script.getId(), script.getTitle(), script.getBody(),script.isActive(), user);
     }
 }
