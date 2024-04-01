@@ -16,12 +16,24 @@ public class ScriptResponse {
     @JsonProperty("createdBy")
     private Map<String, Object> createdBy;
 
-    public ScriptResponse(Long id,String title, String body,
+    @JsonProperty("status")
+    private boolean status;
+
+
+    public ScriptResponse(Long id,String title, String body, boolean status,
                           Map<String, Object> createdBy) {
         this.id = id;
         this.title = title;
         this.body = body;
+        this.status = status;
         this.createdBy = createdBy;
+    }
+
+    public ScriptResponse(Long id, String title, String body, boolean status){
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.status = status;
     }
 
 }

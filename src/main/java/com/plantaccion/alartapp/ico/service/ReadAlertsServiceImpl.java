@@ -37,7 +37,7 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
         Page<Alert> alerts = alertRepository.findAlertsByCluster(cluster, pageable);
 
         if (!alerts.hasContent()) {
-            throw new NoContentException("No alerts found for the specified page");
+            throw new NoContentException("No more existing alerts");
         }
         return alerts.map(this::mapToAlertResponse);
     }
