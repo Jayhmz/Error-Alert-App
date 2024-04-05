@@ -16,7 +16,7 @@ public class ScriptResponse {
     @JsonProperty("createdBy")
     private Map<String, Object> createdBy;
 
-    @JsonProperty("status")
+    @JsonProperty("active")
     private boolean status;
 
 
@@ -35,5 +35,4 @@ public class ScriptResponse {
         this.body = body;
         this.status = status;
     }
-
 }

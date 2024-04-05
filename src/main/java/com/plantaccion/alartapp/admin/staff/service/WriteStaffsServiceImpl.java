@@ -137,7 +137,7 @@ public class WriteStaffsServiceImpl implements WriteStaffsService {
                 profileResponse.put("id", icoProfile.getId());
                 profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
                 profileResponse.put("Cluster", icoProfile.getSupervisor().getCluster().getName());
-                profileResponse.put("createdBy", icoProfile.getSupervisor().getStaff().getStaffId());
+                profileResponse.put("supervisor", icoProfile.getSupervisor().getStaff().getStaffId());
                 return new StaffResponse(user.getStaffId(), user.getEmail(), user.getRole().name(), profileResponse);
             }
             default -> {

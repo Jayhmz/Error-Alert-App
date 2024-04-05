@@ -1,4 +1,4 @@
-package com.plantaccion.alartapp.ico.service;
+package com.plantaccion.alartapp.cluster.ico.service;
 
 public interface CountAlertByClusterService {
     int countAlertByCluster();

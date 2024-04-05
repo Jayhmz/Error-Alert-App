@@ -1,4 +1,4 @@
-package com.plantaccion.alartapp.ico.service;
+package com.plantaccion.alartapp.cluster.ico.service;
 
 import com.plantaccion.alartapp.common.repository.app.AlertRepository;
 import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;

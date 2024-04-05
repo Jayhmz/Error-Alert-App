@@ -1,6 +1,6 @@
-package com.plantaccion.alartapp.ico.service;
+package com.plantaccion.alartapp.cluster.ico.service;
 
-import com.plantaccion.alartapp.ico.dto.ResolutionDTO;
+import com.plantaccion.alartapp.cluster.ico.dto.ResolutionDTO;
 
 public interface WriteAlertReviewService {
     boolean assignAlertToUser(String alertId);

@@ -1,4 +1,4 @@
-package com.plantaccion.alartapp.ico.service;
+package com.plantaccion.alartapp.cluster.ico.service;
 
 import com.plantaccion.alartapp.common.model.app.Alert;
 import com.plantaccion.alartapp.common.repository.app.AlertRepository;
@@ -7,7 +7,7 @@ import com.plantaccion.alartapp.common.repository.app.ZCHProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.NoContentException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
-import com.plantaccion.alartapp.ico.response.AlertResponse;
+import com.plantaccion.alartapp.cluster.ico.response.AlertResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

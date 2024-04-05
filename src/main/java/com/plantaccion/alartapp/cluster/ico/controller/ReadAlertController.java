@@ -1,11 +1,10 @@
-package com.plantaccion.alartapp.ico.controller;
+package com.plantaccion.alartapp.cluster.ico.controller;
 
-import com.plantaccion.alartapp.ico.response.AlertResponse;
-import com.plantaccion.alartapp.ico.service.ReadAlertsService;
+import com.plantaccion.alartapp.cluster.ico.response.AlertResponse;
+import com.plantaccion.alartapp.cluster.ico.service.ReadAlertsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
