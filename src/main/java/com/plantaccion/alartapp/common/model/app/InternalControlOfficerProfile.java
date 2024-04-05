@@ -16,7 +16,7 @@ public class InternalControlOfficerProfile {
     private AppUser icoStaff;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "created_by", referencedColumnName = "zch_staff_id")
+    @JoinColumn(name = "supervisor", referencedColumnName = "zch_staff_id")
     private ZonalControlHeadProfile supervisor;
 
     @ManyToOne(fetch = FetchType.EAGER)

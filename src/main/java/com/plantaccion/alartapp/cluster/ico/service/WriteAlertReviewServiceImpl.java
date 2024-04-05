@@ -1,5 +1,6 @@
-package com.plantaccion.alartapp.ico.service;
+package com.plantaccion.alartapp.cluster.ico.service;
 
+import com.plantaccion.alartapp.cluster.ico.dto.ResolutionDTO;
 import com.plantaccion.alartapp.common.enums.AlertStatus;
 import com.plantaccion.alartapp.common.model.app.Alert;
 import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;
@@ -8,7 +9,6 @@ import com.plantaccion.alartapp.common.repository.app.ICOProfileRepository;
 import com.plantaccion.alartapp.common.utils.AppUtils;
 import com.plantaccion.alartapp.exception.AlertNotFoundException;
 import com.plantaccion.alartapp.exception.StaffNotFoundException;
-import com.plantaccion.alartapp.ico.dto.ResolutionDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

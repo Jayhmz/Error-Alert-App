@@ -76,7 +76,8 @@ public class ReadStaffServiceImpl implements ReadStaffService {
                     profileResponse.put("id", icoProfile.getId());
                     profileResponse.put("staffId", icoProfile.getIcoStaff().getStaffId());
                     profileResponse.put("staffEmail", icoProfile.getIcoStaff().getEmail());
-                    if(!icoProfile.isActive() || icoProfile.getSupervisor().getCluster() == null){
+                    if(!icoProfile.isActive() || icoProfile.getSupervisor().getCluster() == null
+                            || icoProfile.getSupervisor() == null){
                         profileResponse.put("cluster", "Kindly set new cluster");
                     }else {
                         profileResponse.put("cluster", icoProfile.getSupervisor().getCluster().getName());
