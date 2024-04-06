@@ -13,6 +13,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -30,7 +31,7 @@ public class ScriptScheduler {
     public void startScheduler(Long scriptId) {
         synchronized (lock) {
             Script script = getScript(scriptId);
-            if(!scriptIdList.contains(script)){
+            if (!scriptIdList.contains(script)) {
                 if (!script.isActive()) {
                     script.setActive(true);
                     scriptRepository.save(script);
@@ -64,12 +65,16 @@ public class ScriptScheduler {
 
     public void stopScheduler(Long id) {
         synchronized (lock) {
-            var script = getScript(id);
-            if (scriptIdList.contains(script)){
-                script.setActive(false);
-                scriptRepository.save(script);
-                scriptIdList.remove(script);
+            Script script = getScript(id);
+            for(Script s : scriptIdList){
+                if (Objects.equals(s.getId(), script.getId())){
+                    script.setActive(false);
+                    scriptRepository.save(script);
+                    log.info("------------ active script with id {} stopped ...", script.getId());
+                    scriptIdList.remove(s);
+                }
             }
         }
+
     }
 }
