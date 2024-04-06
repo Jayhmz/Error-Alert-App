@@ -31,6 +31,7 @@ public class WriteClusterServiceImpl implements WriteClusterService{
     }
 
     @Override
+    @Transactional
     public void updateCluster(String clusterName, ClusterDTO clusterDTO) {
         var admin = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new StaffNotFoundException("Unknown admin"));

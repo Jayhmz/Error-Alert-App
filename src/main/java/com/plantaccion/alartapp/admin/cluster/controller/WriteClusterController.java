@@ -44,6 +44,6 @@ public class WriteClusterController {
             return new ResponseEntity<>(validationErrors, HttpStatus.BAD_REQUEST);
         }
         writeClusterService.updateCluster(cluster, clusterDTO);
-        return new ResponseEntity<>("Cluster created successfully.", HttpStatus.CREATED);
+        return new ResponseEntity<>("Cluster updated successfully.", HttpStatus.CREATED);
     }
 }
