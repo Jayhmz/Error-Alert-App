@@ -20,7 +20,7 @@ public class ScriptScheduler {
     private final Object lock = new Object();
     private final ScriptRepository scriptRepository;
     private final ExecuteScriptService scriptService;
-    private final List<Long> scriptIdList = new ArrayList<>();
+    private final List<Script> scriptIdList = new ArrayList<>();
 
     public ScriptScheduler(ScriptRepository scriptRepository, ExecuteScriptService scriptService) {
         this.scriptRepository = scriptRepository;
@@ -29,27 +29,26 @@ public class ScriptScheduler {
 
     public void startScheduler(Long scriptId) {
         synchronized (lock) {
-            if(!scriptIdList.contains(scriptId)){
-                scriptIdList.add(scriptId);
+            Script script = getScript(scriptId);
+            if(!scriptIdList.contains(script)){
+                if (!script.isActive()) {
+                    script.setActive(true);
+                    scriptRepository.save(script);
+                    log.info("------------ inactive scripts are running fine ...");
+                }
+                scriptIdList.add(script);
             }
         }
     }
 
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 10000)
     public void processScript() throws MessagingException, IOException {
         synchronized (lock) {
-            for (Long scriptId : scriptIdList) {
-                Script script = getScript(scriptId);
-
+            for (Script script : scriptIdList) {
                 var today = LocalDateTime.now();
                 String[] runDays = {"SATURDAY", "SUNDAY"};
                 for (String day : runDays) {
                     if (today.getDayOfWeek() != DayOfWeek.valueOf(day.toUpperCase())) {
-                        if (!script.isActive()) {
-                            script.setActive(true);
-                            scriptRepository.save(script);
-                            log.info("------------ inactive scripts are running fine ...");
-                        }
                         scriptService.executeQuery(script);
                     }
                 }
@@ -65,11 +64,11 @@ public class ScriptScheduler {
 
     public void stopScheduler(Long id) {
         synchronized (lock) {
-            if (scriptIdList.contains(id)){
-                var script = getScript(id);
+            var script = getScript(id);
+            if (scriptIdList.contains(script)){
                 script.setActive(false);
                 scriptRepository.save(script);
-                scriptIdList.remove(id);
+                scriptIdList.remove(script);
             }
         }
     }
