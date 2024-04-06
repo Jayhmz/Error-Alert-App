@@ -10,22 +10,20 @@ public class Branch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_name")
     private Cluster cluster;
-
     @Column(name = "branch", unique = true, nullable = false)
     private String name;
 
     @Column(name = "sol_id", unique = true, nullable = false)
     private String solId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
     private AppUser createdBy;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by", referencedColumnName = "staff_id")
     private AppUser updatedBy;
 
