@@ -1,7 +1,7 @@
-package com.plantaccion.alartapp.cluster.ico.controller;
+package com.plantaccion.alartapp.ico.controller;
 
-import com.plantaccion.alartapp.cluster.ico.dto.ResolutionDTO;
-import com.plantaccion.alartapp.cluster.ico.service.WriteAlertReviewService;
+import com.plantaccion.alartapp.ico.dto.ResolutionDTO;
+import com.plantaccion.alartapp.ico.service.WriteAlertReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app/v1/ico")
-@CrossOrigin(origins = {"https://scripting-app-frontend.vercel.app", "http://localhost:5173"})
 public class WriteAlertReviewController {
     private final WriteAlertReviewService alertReviewService;
 

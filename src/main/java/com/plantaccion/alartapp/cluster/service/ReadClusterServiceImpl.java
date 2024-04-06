@@ -3,6 +3,8 @@ package com.plantaccion.alartapp.cluster.service;
 import com.plantaccion.alartapp.cluster.response.ClusterResponse;
 import com.plantaccion.alartapp.common.model.app.Cluster;
 import com.plantaccion.alartapp.common.repository.app.ClusterRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,5 +30,15 @@ public class ReadClusterServiceImpl implements ReadClusterService{
             response.add(clusterResponse);
         }
         return response;
+    }
+
+    @Override
+    public Page<ClusterResponse> getPaginatedClusters(Pageable pageable) {
+        var clusterList = clusterRepository.findClusterByName(pageable);
+        return clusterList.map(this::mapToClusterResponse);
+    }
+
+    private ClusterResponse mapToClusterResponse(Cluster cluster){
+        return new ClusterResponse(cluster.getName(), cluster.getState(), cluster.getRegion());
     }
 }

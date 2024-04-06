@@ -1,6 +1,6 @@
-package com.plantaccion.alartapp.cluster.ico.service;
+package com.plantaccion.alartapp.ico.service;
 
-import com.plantaccion.alartapp.cluster.ico.dto.ResolutionDTO;
+import com.plantaccion.alartapp.ico.dto.ResolutionDTO;
 import com.plantaccion.alartapp.common.enums.AlertStatus;
 import com.plantaccion.alartapp.common.model.app.Alert;
 import com.plantaccion.alartapp.common.model.app.InternalControlOfficerProfile;

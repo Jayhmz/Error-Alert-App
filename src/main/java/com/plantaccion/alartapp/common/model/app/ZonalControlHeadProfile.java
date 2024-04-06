@@ -14,7 +14,7 @@ public class ZonalControlHeadProfile {
     @JoinColumn(name = "zch_staff_id", referencedColumnName = "staff_id", nullable = false)
     private AppUser staff;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cluster_id", referencedColumnName = "cluster_name")
     private Cluster cluster;
 
