@@ -26,7 +26,6 @@ public class AppSecurityConfig {
 
     @Value("${frontend-url}")
     private String frontendUrl;
-
     private final UsernamePasswordAuthenticationProvider usernamePasswordAuthenticationProvider;
     private final JWTAuthenticationFilter authenticationFilter;
     private final AuthenticationEntryPointException authenticationEntryPointException;
@@ -45,7 +44,7 @@ public class AppSecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/swagger-ui/**", "/api/v1/users/**", "/v3/api-docs/**", "/").permitAll()
                             .requestMatchers("/app/v1/clusters").permitAll()
-                            .requestMatchers("/app/v1/admin/**").hasAuthority("ADMIN")
+                            .requestMatchers("/app/v1/admin/**", "/app/v1/clusters/all").hasAuthority("ADMIN")
                             .requestMatchers("/app/v1/rch/**").hasAuthority("RCH")
                             .requestMatchers("/app/v1/ico/**").hasAuthority("ICO")
                             .anyRequest().authenticated();

@@ -1,6 +1,6 @@
-package com.plantaccion.alartapp.cluster.ico.service;
+package com.plantaccion.alartapp.ico.service;
 
-import com.plantaccion.alartapp.cluster.ico.response.AlertResponse;
+import com.plantaccion.alartapp.ico.response.AlertResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -19,7 +19,7 @@ public class InternalControlOfficerProfile {
     @JoinColumn(name = "supervisor", referencedColumnName = "zch_staff_id")
     private ZonalControlHeadProfile supervisor;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by", referencedColumnName = "zch_staff_id")
     private ZonalControlHeadProfile updatedBy;
 

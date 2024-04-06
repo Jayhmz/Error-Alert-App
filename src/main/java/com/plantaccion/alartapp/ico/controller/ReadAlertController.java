@@ -1,7 +1,7 @@
-package com.plantaccion.alartapp.cluster.ico.controller;
+package com.plantaccion.alartapp.ico.controller;
 
-import com.plantaccion.alartapp.cluster.ico.response.AlertResponse;
-import com.plantaccion.alartapp.cluster.ico.service.ReadAlertsService;
+import com.plantaccion.alartapp.ico.response.AlertResponse;
+import com.plantaccion.alartapp.ico.service.ReadAlertsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

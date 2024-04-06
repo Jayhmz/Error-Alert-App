@@ -1,4 +1,4 @@
-package com.plantaccion.alartapp.cluster.ico.response;
+package com.plantaccion.alartapp.ico.response;
 
 import com.plantaccion.alartapp.common.enums.AlertStatus;
 

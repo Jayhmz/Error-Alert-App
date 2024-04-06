@@ -15,11 +15,16 @@ public class Cluster {
     @Column(name = "cluster_name", nullable = false)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name = "state")
+    private String state;
+    @Column(name = "region")
+    private String region;
+
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
     private AppUser createdBy;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by", referencedColumnName = "staff_id")
     private AppUser updatedBy;
 
@@ -35,9 +40,6 @@ public class Cluster {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "cluster")
     private List<Branch> branches;
 
-    @Column(name = "region")
-    private String region;
-
     public Long getId() {
         return id;
     }
@@ -52,6 +54,14 @@ public class Cluster {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public AppUser getCreatedBy() {

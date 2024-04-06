@@ -1,6 +1,6 @@
-package com.plantaccion.alartapp.cluster.ico.controller;
+package com.plantaccion.alartapp.ico.controller;
 
-import com.plantaccion.alartapp.cluster.ico.service.CountAlertByClusterService;
+import com.plantaccion.alartapp.ico.service.CountAlertByClusterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

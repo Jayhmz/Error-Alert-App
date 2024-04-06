@@ -51,7 +51,7 @@ public class GenericExceptionHandler {
         errorResponse.put("exception name", "NullPointerException");
         errorResponse.put("message", ex.getMessage());
         errorResponse.put("source", ex.getCause());
-        errorResponse.put("error_message", "Incorrect data entry");
+        errorResponse.put("error_message", "Oops, Contact admin for help");
         return errorResponse;
     }
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
