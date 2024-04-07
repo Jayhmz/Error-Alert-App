@@ -34,7 +34,8 @@ public class WriteBranchController {
     }
 
     @PutMapping("/{solId}")
-    public ResponseEntity<?> updateBranch(@Valid @PathVariable("solId") String solId, @RequestBody BranchDTO branchDTO, BindingResult result){
+    public ResponseEntity<?> updateBranch(@PathVariable("solId") String solId,
+                                          @Valid @RequestBody BranchDTO branchDTO, BindingResult result){
         if (result.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
             for (FieldError error : result.getFieldErrors()) {

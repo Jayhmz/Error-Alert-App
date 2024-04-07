@@ -1,7 +1,6 @@
 package com.plantaccion.alartapp.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.plantaccion.alartapp.authentication.validation.ValidEmail;
 import jakarta.validation.constraints.NotNull;
 
 public class UpdateStaffProfileDTO {
