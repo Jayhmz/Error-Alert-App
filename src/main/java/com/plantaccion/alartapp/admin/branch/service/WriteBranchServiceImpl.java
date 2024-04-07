@@ -32,7 +32,7 @@ public class WriteBranchServiceImpl implements WriteBranchService {
     public BranchResponse createBranch(BranchDTO branchDTO) {
         var admin = AppUtils.getAuthenticatedUserDetails()
                 .orElseThrow(() -> new UsernameNotFoundException("Unknown User"));
-        Cluster cluster = getCluster(branchDTO);
+        Cluster cluster = getCluster(branchDTO.getCluster());
         Branch branch = new Branch();
         branch.setName(branchDTO.getBranchName().toUpperCase());
         branch.setSolId(branchDTO.getBranchId());
@@ -46,8 +46,8 @@ public class WriteBranchServiceImpl implements WriteBranchService {
         return new BranchResponse(branch.getSolId(), branch.getName(), clusterProperty);
     }
 
-    private Cluster getCluster(BranchDTO branchDTO) {
-        var cluster = clusterRepository.findByName(branchDTO.getCluster());
+    private Cluster getCluster(String clusterName) {
+        var cluster = clusterRepository.findByName(clusterName);
         if (cluster == null) {
             throw new NoContentException("Cluster not found");
         }
@@ -61,7 +61,7 @@ public class WriteBranchServiceImpl implements WriteBranchService {
                 .orElseThrow(() -> new NoContentException("Branch not found"));
         branch.setSolId(branchDTO.getBranchId());
         branch.setName(branchDTO.getBranchName().toUpperCase());
-        branch.setCluster(getCluster(branchDTO));
+        branch.setCluster(getCluster(branchDTO.getCluster()));
         branchRepository.save(branch);
         Map<String, Object> clusterProperty = new HashMap<>();
         clusterProperty.put("name", branch.getCluster().getName().toUpperCase());
