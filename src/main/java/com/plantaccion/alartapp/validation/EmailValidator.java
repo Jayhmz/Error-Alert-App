@@ -1,4 +1,4 @@
-package com.plantaccion.alartapp.authentication.validation;
+package com.plantaccion.alartapp.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

@@ -1,7 +1,7 @@
 package com.plantaccion.alartapp.rch.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.plantaccion.alartapp.authentication.validation.ValidEmail;
+import com.plantaccion.alartapp.validation.ValidEmail;
 import jakarta.validation.constraints.NotNull;
 
 public class IcoDTO {

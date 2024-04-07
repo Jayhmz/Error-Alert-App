@@ -1,8 +1,8 @@
 package com.plantaccion.alartapp.authentication.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.plantaccion.alartapp.authentication.validation.StrongPassword;
-import com.plantaccion.alartapp.authentication.validation.ValidEmail;
+import com.plantaccion.alartapp.validation.StrongPassword;
+import com.plantaccion.alartapp.validation.ValidEmail;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
