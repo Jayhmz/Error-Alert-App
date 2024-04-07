@@ -112,7 +112,7 @@ public class GenericExceptionHandler {
         return errorResponse;
     }
     @ExceptionHandler(value = NoContentException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Map<String, Object> handleNoContentException(NoContentException ex) {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("exception name", "AlertNotFoundException");
