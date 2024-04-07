@@ -37,7 +37,7 @@ public class Cluster {
     @Column(name = "updated_at")
     private LocalDateTime UpdatedOn;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy = "cluster")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "cluster")
     private List<Branch> branches;
 
     public Long getId() {

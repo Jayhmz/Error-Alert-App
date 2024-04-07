@@ -13,11 +13,13 @@ public class DeleteBranchServiceImpl implements DeleteBranchService{
         this.branchRepository = branchRepository;
     }
 
+    @Transactional
     @Override
     public boolean deleteBranch(String solId) {
-        var branch = branchRepository.findBySolId(solId);
-        if (branch.isPresent()){
-            branchRepository.delete(branch.get());
+        var branch = branchRepository.findBySolId(solId)
+                .orElseThrow(() -> new NoContentException("Branch does not exist"));
+        if (branch != null){
+            branchRepository.deleteById(branch.getId());
             return true;
         }
         return false;
