@@ -25,9 +25,7 @@ public class ReadClusterServiceImpl implements ReadClusterService{
         List<ClusterResponse> response = new ArrayList<>();
         var clusters = clusterRepository.findAll();
         for(Cluster c : clusters){
-            ClusterResponse clusterResponse = new ClusterResponse();
-            clusterResponse.setCluster(c.getName());
-            response.add(clusterResponse);
+            response.add(new ClusterResponse(c.getId(), c.getName()));
         }
         return response;
     }
@@ -39,6 +37,6 @@ public class ReadClusterServiceImpl implements ReadClusterService{
     }
 
     private ClusterResponse mapToClusterResponse(Cluster cluster){
-        return new ClusterResponse(cluster.getName(), cluster.getState(), cluster.getRegion());
+        return new ClusterResponse(cluster.getId(), cluster.getName(), cluster.getState(), cluster.getRegion());
     }
 }
