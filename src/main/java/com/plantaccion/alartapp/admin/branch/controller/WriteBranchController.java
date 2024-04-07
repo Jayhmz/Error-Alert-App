@@ -33,7 +33,7 @@ public class WriteBranchController {
         return new ResponseEntity<>(writeBranchService.createBranch(branchDTO), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{solId}")
+    @PutMapping("/{solId}")
     public ResponseEntity<?> updateBranch(@Valid @PathVariable("solId") String solId, @RequestBody BranchDTO branchDTO, BindingResult result){
         if (result.hasErrors()) {
             Map<String, String> validationErrors = new HashMap<>();
