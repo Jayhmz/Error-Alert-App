@@ -111,4 +111,12 @@ public class GenericExceptionHandler {
         errorResponse.put("message", ex.getMessage());
         return errorResponse;
     }
+    @ExceptionHandler(value = NoContentException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Map<String, Object> handleNoContentException(NoContentException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("exception name", "AlertNotFoundException");
+        errorResponse.put("message", ex.getMessage());
+        return errorResponse;
+    }
 }
