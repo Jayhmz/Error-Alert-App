@@ -17,6 +17,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.ISpringTemplateEngine;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -39,8 +40,7 @@ public class WriteEmailServiceImpl implements WriteEmailService {
     private String sender;
 
     @Override
-    public void sendMail(Cluster cluster, Script queriedScript) throws MessagingException {
-        var alerts = alertRepository.findAlertsByClusterAndScript(cluster, queriedScript);
+    public void sendMail(Cluster cluster, List<Alert> alerts) throws MessagingException {
         if (alerts != null && !alerts.isEmpty()) {
             var zch = ZCHProfileRepository.findByCluster(cluster.getName());
             var controlOfficers = icoProfileRepository.findICOsBySupervisor(zch);
@@ -55,10 +55,11 @@ public class WriteEmailServiceImpl implements WriteEmailService {
             helper.setCc(zchEmail);
 
             Alert firstAlert = alerts.get(0);
-            helper.setSubject("Testing mail service for " + firstAlert.getScript().getTitle());
+            helper.setSubject("Error alert for "+firstAlert.getScript().getTitle());
 
             Context context = new Context();
             context.setVariable("alerts", alerts);
+            context.setVariable("alertCount", alerts.size());
             context.setVariable("alert_group", firstAlert.getScript().getTitle());
 
             // Process the Thymeleaf template

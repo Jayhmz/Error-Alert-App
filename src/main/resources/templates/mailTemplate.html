@@ -41,11 +41,12 @@
     <body>
         <p>Dear Team, </p>
         <h1 th:text="${alert_group}" class="htext text-center">Alert Group</h1>
-        <p>This is just a test mail, don't worry you are safest as this does not implicate you in any way. <br>
-        This mail is just to test the possible alert review app on an MVP phase 1.
+        <p>You have received <span th:text="${alertCount}"></span> new alerts to review
             <br>
-            Hopefully it works well, then we have an app to pitch about.
+            Click on the <a class="link" href="https://scripting-app-frontend.vercel.app/">Auto-Cry</a> Alert app to view alert details and review them. <br>
+            Find the instance(s) of the alert(s) below.
         </p>
+        <br>
             <table class=".table-striped-columns">
                 <thead class="th-back">
                     <tr>
@@ -54,8 +55,7 @@
                         <th scope="col">Transaction Amount</th>
                         <th scope="col">Transaction Date</th>
                         <th scope="col">Sol ID</th>
-                        <th scope="col">Account Opened At</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Account Number</th>
                     </tr>
                 </thead>
             <tbody>
@@ -66,14 +66,13 @@
                 <td scope="col" class="text-dark-purple" th:text="${#numbers.formatDecimal(alert.tranAmount, 0, 'COMMA', 2, 'POINT')}"></td>
                 <td scope="col" class="text-dark-purple" th:text="${alert.transactionDate}"></td>
                 <td scope="col" class="text-dark-purple" th:text="${alert.solId}"></td>
-                <td scope="col" class="text-dark-purple" th:text="999">999</td>
-                <td scope="col" class="text-dark-purple" th:text="${alert.status}"></td>
+                <td scope="col" class="text-dark-purple" th:text="${alert.accountNo}">999</td>
             </tr>
             </tbody>
         </table>
         <p>Please ensure 100% review of these transactions and document your
-            findings in the <a class="link" href="#">Alert Review App</a>. This link is not working now,
-            so no need to click as this is just the format to which the mail will be like.</p>
+            findings in the <a class="link" href="https://scripting-app-frontend.vercel.app/">Alert Review App</a>. This link is not working now,
+        </p>
         <br>
         Regards.
     <br>
