@@ -51,8 +51,10 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
     List<Object[]> findMostOccurringAlert();
     @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND MONTH(a.generatedOn) = MONTH(CURRENT_TIMESTAMP)")
     int countAlertByCluster(@Param("cluster") Cluster cluster);
-    @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND a.resolvedBy = :staff")
+    @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND a.resolvedBy = :staff AND a.status = 'RESOLVED' ")
     int countAlertReviewedByICO(@Param("cluster") Cluster cluster, @Param("staff") AppUser staff);
+    @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND a.resolvedBy = :staff AND a.status = 'PENDING' ")
+    int countAlertPendingByICO(@Param("cluster") Cluster cluster, @Param("staff") AppUser staff);
     @Query("SELECT a from Alert a where a.cluster = :cluster AND a.resolvedBy = :staff")
     Page<Alert> findAlertsByICO(@Param("cluster") Cluster cluster, Pageable pageable, @Param("staff") AppUser staff);
 }
