@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,12 +40,14 @@ public class ScriptScheduler {
     @Scheduled(fixedDelay = 10000)
     public void processScript() throws MessagingException, IOException {
         synchronized (lock) {
-            for (Script script : scriptIdList) {
-                var today = LocalDateTime.now();
-                String[] runDays = {"SATURDAY", "SUNDAY"};
-                for (String day : runDays) {
-                    if (today.getDayOfWeek() != DayOfWeek.valueOf(day.toUpperCase())) {
-                        scriptService.executeQuery(script);
+            if(!scriptIdList.isEmpty()){
+                for (Script script : scriptIdList) {
+                    var today = LocalDateTime.now();
+                    String[] runDays = {"SATURDAY", "SUNDAY"};
+                    for (String day : runDays) {
+                        if (today.getDayOfWeek() != DayOfWeek.valueOf(day.toUpperCase())) {
+                            scriptService.executeQuery(script);
+                        }
                     }
                 }
             }
@@ -58,10 +61,11 @@ public class ScriptScheduler {
     }
 
     public void stopScheduler(Script script) {
-        for(Script s : scriptIdList){
-            if (s.getId() == script.getId()){
-                scriptIdList.remove(s);
-            }
+        synchronized (lock) {
+            // Use iterator to safely remove elements
+            // Safely remove the script from the list
+            scriptIdList.removeIf(s -> Objects.equals(s.getId(), script.getId()));
         }
     }
+
 }

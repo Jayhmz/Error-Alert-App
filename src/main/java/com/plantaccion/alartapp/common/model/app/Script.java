@@ -14,7 +14,7 @@ public class Script {
     @Column(nullable = false)
     private String body;
     @ManyToOne
-    @JoinColumn(name = "created_by")
+    @JoinColumn(name = "created_by", referencedColumnName = "staff_id")
     private AppUser createdBy;
     @Column(name = "is_active", nullable = false, columnDefinition = "BIT DEFAULT b'0'")
     private boolean isActive;

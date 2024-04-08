@@ -18,13 +18,14 @@ public class Alert {
             name = "alert_sequence",
             parameters = {
                     @Parameter(name = AlertSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "Alert"),
-                    @Parameter(name = AlertSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d"),
-            }
+                    @Parameter(name = AlertSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%010d")
+            },
+            type = AlertSequenceIdGenerator.class
     )
-    @Column(name = "alert_id")
+    @Column(name = "alert_id", nullable = false)
     private String alertId;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "script_title", referencedColumnName = "title")
     private Script script;
 

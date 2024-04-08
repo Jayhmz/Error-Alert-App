@@ -10,7 +10,6 @@ import com.plantaccion.alartapp.common.repository.app.ClusterRepository;
 import com.plantaccion.alartapp.common.repository.app.ScriptRepository;
 import com.plantaccion.alartapp.email.service.WriteEmailService;
 import com.plantaccion.alartapp.exception.MailNotSentException;
-import com.plantaccion.alartapp.exception.ScriptNotFoundException;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -48,31 +47,37 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
     @Override
     @Transactional
     public void executeQuery(Script script) {
-//        Script queriedScript = scriptRepository.findById(script.getId())
-//                .orElseThrow(() -> new ScriptNotFoundException("Script does not exist in our record"));
         Alert lastRecordedAlert = getLastRecordedAlert(script);
 
         for (Cluster cluster : getClusters()) {
-//            List<Alert> alertsForCluster = new ArrayList<>();
+            List<Alert> clusterAlerts = new ArrayList<>();
             for (Branch branch : cluster.getBranches()) {
                 String newScript = script.getBody().replace("&branch", "'" + branch.getSolId() + "'");
                 if (lastRecordedAlert != null) {
                     String completeQuery = newScript + " AND a.entry_date > '" + lastRecordedAlert.getEntryDate() + "'";
                     var result = template.queryForList(completeQuery);
-                    createAlerts(result, script, cluster);
-//                    alertsForCluster.addAll(createAlerts(result, script, cluster));
+                    if (result.size() != 0) {
+                        var alerts = createAlerts(result, script, cluster);
+                        clusterAlerts.addAll(alerts);
+                    }
                 } else {
                     List<Map<String, Object>> result = template.queryForList(newScript);
-                    createAlerts(result, script, cluster);
-//                    alertsForCluster.addAll(createAlerts(result, script, cluster));
+                    if (result.size() != 0) {
+                        var alerts = createAlerts(result, script, cluster);
+                        clusterAlerts.addAll(alerts);
+                    }
                 }
             }
-            try {
-                log.info("email sending will be performed here...");
-                emailService.sendMail(cluster, script);
-            } catch (MailNotSentException | MessagingException e) {
-                throw new MailNotSentException("Mail sending failed." + e.getCause());
+            if (clusterAlerts.size() != 0) {
+                try {
+                    log.info("email sending will be performed here...");
+                    emailService.sendMail(cluster, clusterAlerts);
+                    clusterAlerts.clear();
+                } catch (MailNotSentException | MessagingException e) {
+                    throw new MailNotSentException("Mail sending failed." + e.getCause());
+                }
             }
+
         }
     }
 
@@ -90,11 +95,10 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
             alert.setAccountNo(record.get("account_no").toString());
             alerts.add(alert);
             alertRepository.save(alert);
-            log.info("================= created Alert for " + alert.getAlertId()+" " +alert.getScript() +" "+ alert.getCluster()+" ===================");
+            log.info("================= created Alert for " + alert.getAlertId() + " " + alert.getScript() + " " + alert.getCluster() + " ===================");
         }
         return alerts;
     }
-
 
     private Alert getLastRecordedAlert(Script script) {
         Pageable pageable = PageRequest.of(0, 1);
