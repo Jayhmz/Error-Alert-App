@@ -21,6 +21,11 @@ public class CountAlertByICORegionController {
         return new ResponseEntity<>(countAlertByClusterService.countAlertByCluster(), HttpStatus.OK);
     }
 
+    @GetMapping("/count-alerts-pending-by-ico")
+    private ResponseEntity<?> countAlertPendingByIco(){
+        return new ResponseEntity<>(countAlertByClusterService.countAlertPendingByICO(), HttpStatus.OK);
+    }
+
     @GetMapping("/count-alerts-resolved-by-ico")
     private ResponseEntity<?> countAlertResolvedByIco(){
         return new ResponseEntity<>(countAlertByClusterService.countAlertReviewedByICO(), HttpStatus.OK);
