@@ -25,9 +25,11 @@ public class Alert {
     @Column(name = "alert_id", nullable = false)
     private String alertId;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    @JoinColumn(name = "script_title", referencedColumnName = "title")
-    private Script script;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "script_title", referencedColumnName = "title")
+//    private Script script;
+    @Column(name = "script_title", nullable = false)
+    private String script;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "generated_on", nullable = false, updatable = false,
@@ -79,7 +81,11 @@ public class Alert {
         this.generatedOn = LocalDateTime.now();
     }
 
-    public Alert(Script script, AlertStatus status) {
+//    public Alert(Script script, AlertStatus status) {
+//        this.script = script;
+//        this.status = status;
+//    }
+    public Alert(String script, AlertStatus status) {
         this.script = script;
         this.status = status;
     }
@@ -92,11 +98,11 @@ public class Alert {
         this.alertId = alertId;
     }
 
-    public Script getScript() {
+    public String getScript() {
         return script;
     }
 
-    public void setScript(Script script) {
+    public void setScript(String script) {
         this.script = script;
     }
 
