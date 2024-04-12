@@ -16,15 +16,15 @@ import java.util.Map;
 @RestControllerAdvice
 public class GenericExceptionHandler {
 
-    @ExceptionHandler(value = DataIntegrityViolationException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public Map<String, Object> handleDuplicateEntryException(DataIntegrityViolationException ex) {
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("exception name", "DataIntegrityViolationException");
-        errorResponse.put("message", ex.getMessage());
-        errorResponse.put("error_message", "Duplicate data entry");
-        return errorResponse;
-    }
+//    @ExceptionHandler(value = DataIntegrityViolationException.class)
+//    @ResponseStatus(HttpStatus.CONFLICT)
+//    public Map<String, Object> handleDuplicateEntryException(DataIntegrityViolationException ex) {
+//        Map<String, Object> errorResponse = new HashMap<>();
+//        errorResponse.put("exception name", "DataIntegrityViolationException");
+//        errorResponse.put("message", ex.getMessage());
+//        errorResponse.put("error_message", "Duplicate data entry");
+//        return errorResponse;
+//    }
 
     @ExceptionHandler(value = IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

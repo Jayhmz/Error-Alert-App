@@ -64,7 +64,8 @@ public class ReadAlertsServiceImpl implements ReadAlertsService {
     private AlertResponse mapToAlertResponse(Alert alert) {
         return new AlertResponse(
                 alert.getAlertId(),
-                alert.getScript().getTitle(),
+//                alert.getScript().getTitle(),
+                alert.getScript(),
                 alert.getResolution(),
                 alert.getSolId(),
                 alert.getTranAmount(),

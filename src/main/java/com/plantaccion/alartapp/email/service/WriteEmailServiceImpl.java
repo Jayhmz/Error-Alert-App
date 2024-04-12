@@ -55,12 +55,14 @@ public class WriteEmailServiceImpl implements WriteEmailService {
             helper.setCc(zchEmail);
 
             Alert firstAlert = alerts.get(0);
-            helper.setSubject("Error alert for "+firstAlert.getScript().getTitle());
+//            helper.setSubject("Error alert for "+firstAlert.getScript().getTitle());
+            helper.setSubject("Error alert for "+firstAlert.getScript());
 
             Context context = new Context();
             context.setVariable("alerts", alerts);
             context.setVariable("alertCount", alerts.size());
-            context.setVariable("alert_group", firstAlert.getScript().getTitle());
+            context.setVariable("alert_group", firstAlert.getScript());
+//            context.setVariable("alert_group", firstAlert.getScript().getTitle());
 
             // Process the Thymeleaf template
             String htmlContent = thymeleafTemplateEngine.process("mailTemplate.html", context);

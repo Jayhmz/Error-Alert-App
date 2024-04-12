@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AlertRepository extends JpaRepository<Alert, String> {
-    @Query("SELECT a FROM Alert a WHERE a.script.title = :title ORDER BY a.entryDate DESC")
+    @Query("SELECT a FROM Alert a WHERE a.script = :title ORDER BY a.entryDate DESC")
     Page<Alert> findLastRecordByScriptTitle(@Param("title") String title, Pageable pageable);
     @Query("SELECT a FROM Alert a WHERE a.cluster = :cluster AND a.isMailSent = false AND a.script = :script")
     List<Alert> findAlertsByClusterAndScript(@Param("cluster") Cluster cluster, @Param("script") Script script);
@@ -44,10 +44,10 @@ public interface AlertRepository extends JpaRepository<Alert, String> {
     Long countAlertsByYear(@Param("year") int year);
     @Query("SELECT COUNT(a) FROM Alert a WHERE MONTH(a.generatedOn) = :month AND YEAR(a.generatedOn) = :year")
     Long countAlertsByMonthAndYear(@Param("month") int month, @Param("year") int year);
-    @Query("SELECT a.script.title, COUNT(a.alertId) AS count FROM Alert a " +
+    @Query("SELECT a.script, COUNT(a.alertId) AS count FROM Alert a " +
             "WHERE MONTH(a.generatedOn) = MONTH(CURRENT_TIMESTAMP) " +
             "AND YEAR(a.generatedOn) = YEAR(CURRENT_TIMESTAMP) " +
-            "GROUP BY a.script.title ORDER BY count DESC")
+            "GROUP BY a.script ORDER BY count DESC")
     List<Object[]> findMostOccurringAlert();
     @Query("SELECT COUNT(a) FROM Alert a WHERE a.cluster = :cluster AND MONTH(a.generatedOn) = MONTH(CURRENT_TIMESTAMP)")
     int countAlertByCluster(@Param("cluster") Cluster cluster);

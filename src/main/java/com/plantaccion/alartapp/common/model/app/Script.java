@@ -3,6 +3,8 @@ package com.plantaccion.alartapp.common.model.app;
 import com.plantaccion.alartapp.common.model.app.AppUser;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "scripts")
 public class Script {
