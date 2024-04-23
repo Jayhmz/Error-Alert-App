@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,6 +46,7 @@ public class ScriptScheduler {
                     for (String day : runDays) {
                         if (today.getDayOfWeek() != DayOfWeek.valueOf(day.toUpperCase())) {
                             scriptService.executeQuery(script);
+                            log.info("========= executed a query");
                         }
                     }
                 }
@@ -62,8 +62,6 @@ public class ScriptScheduler {
 
     public void stopScheduler(Script script) {
         synchronized (lock) {
-            // Use iterator to safely remove elements
-            // Safely remove the script from the list
             scriptIdList.removeIf(s -> Objects.equals(s.getId(), script.getId()));
         }
     }
