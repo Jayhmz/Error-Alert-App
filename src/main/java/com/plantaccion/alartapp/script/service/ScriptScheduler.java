@@ -36,7 +36,7 @@ public class ScriptScheduler {
         }
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     public void processScript() throws MessagingException, IOException {
         synchronized (lock) {
             if(!scriptIdList.isEmpty()){
