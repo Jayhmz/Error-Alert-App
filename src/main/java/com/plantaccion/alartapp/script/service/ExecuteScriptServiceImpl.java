@@ -84,7 +84,7 @@ public class ExecuteScriptServiceImpl implements ExecuteScriptService {
     private List<Alert> createAlerts(List<Map<String, Object>> result, Script script, Cluster cluster) {
         List<Alert> alerts = new ArrayList<>();
         for (Map<String, Object> record : result) {
-            Alert alert = new Alert(script.getBody(), AlertStatus.UNASSIGNED);
+            Alert alert = new Alert(script.getTitle(), AlertStatus.UNASSIGNED);
             alert.setEntryDate(LocalDateTime.parse(record.get("entry_date").toString()));
             alert.setTransactionDate(LocalDate.parse(record.get("tran_date").toString()));
             alert.setTranId(record.get("tran_id").toString());
